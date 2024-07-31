@@ -1,7 +1,7 @@
 import { Button } from '@/components/common/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/common/form';
 import { Input } from '@/components/common/input';
-import { ModeToggle } from '@/components/common/mode-toggle';
+import Navbar from '@/components/common/navigation-bar';
 import { PageLayout } from '@/components/common/pagelayout';
 import { useStrictForm } from '@/hooks/form-hook';
 import { LoanFormDefaultValues, LoanFormSchema } from '@/types/schema/loan';
@@ -14,10 +14,10 @@ function IndexPage() {
   };
   return (
     <PageLayout>
-      <div className="">
+      <Navbar />
+      <div className="container">
         <div>
           <div className="text-secondary-foreground">test</div>
-          <ModeToggle />
         </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
