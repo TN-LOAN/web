@@ -1,10 +1,9 @@
-import { PageLayout } from "@/components/common/pagelayout";
-
+import { PageLayout } from '@/components/common/pagelayout';
 
 function IndexPage() {
   return (
     <PageLayout>
-      <div className="text-3xl font-bold flex h-screen items-center justify-center">hihihihihi</div>
+      <div className="flex h-screen items-center justify-center bg-slate-300 text-3xl font-bold">hihihihihi</div>
     </PageLayout>
   );
 }
