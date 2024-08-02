@@ -19,6 +19,7 @@ function InputPage() {
   const [loanAmountError, setLoanAmountError] = useState<string | null>(null);
   const [showLoanDetails, setShowLoanDetails] = useState<boolean>(false);
   const [calculatedLoanAmount, setCalculatedLoanAmount] = useState<number | null>(null);
+  
 
   const onSubmit = (data: LoanFormType) => {
     const salary = form.getValues('salary');
@@ -70,7 +71,7 @@ function InputPage() {
                         <SelectContent>
                           <SelectGroup>
                             <SelectLabel>อาชีพ</SelectLabel>
-                            <SelectItem value="office">พนักงานประจำ</SelectItem>
+                            <SelectItem value="office">พนักงานบริษัท</SelectItem>
                           </SelectGroup>
                         </SelectContent>
                       </Select>
@@ -84,16 +85,16 @@ function InputPage() {
             <div className='w-full max-w-[343px] h-[45px] mx-auto'>
               <FormField
                 control={form.control}
-                name="dateOfBirth"
+                name="debtexpenses"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>วันเกิด <span className="text-destructive"> *</span></FormLabel>
+                    <FormLabel>ภาระหนี้สิ้นต่อเดือน (บาท)</FormLabel>
                     <FormControl>
                       <Input
-                        type="date"
+                        type="number"
                         {...field}
-                        placeholder="กรุณาเลือกวันเกิดของคุณ"
-                        className={`w-[343px] h-[45px] ${form.formState.errors.dateOfBirth ? 'border-destructive' : ''}`}
+                        placeholder="เช่น 1,000"
+                        className={`w-[343px] h-[45px] ${form.formState.errors.debtexpenses ? 'border-destructive' : ''}`}
                       />
                     </FormControl>
                     <FormMessage />
@@ -105,16 +106,16 @@ function InputPage() {
             <div className='w-full max-w-[343px] h-[45px] mx-auto'>
               <FormField
                 control={form.control}
-                name="salary"
+                name="dateOfBirth"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>รายได้ต่อเดือน (บาท) <span className="text-destructive"> *</span></FormLabel>
+                    <FormLabel>วัน/เดือน/ปีเกิด <span className="text-destructive"> *</span></FormLabel>
                     <FormControl>
                       <Input
-                        type="number"
+                        type="date"
                         {...field}
-                        placeholder="กรุณากรอกรายได้ต่อเดือนของคุณ"
-                        className={`w-[343px] h-[45px] ${form.formState.errors.salary ? 'border-destructive' : ''}`}
+                        placeholder="กรุณาเลือกวันเกิดของคุณ"
+                        className={`w-[343px] h-[45px] ${form.formState.errors.dateOfBirth ? 'border-destructive' : ''}`}
                       />
                     </FormControl>
                     <FormMessage />
@@ -134,7 +135,7 @@ function InputPage() {
                       <Input
                         type="number"
                         {...field}
-                        placeholder="กรุณากรอกระยะเวลากู้ที่คุณต้องการ"
+                        placeholder="เช่น 10"
                         className={`w-[343px] h-[45px] ${form.formState.errors.loanPeriod ? 'border-destructive' : ''}`}
                       />
                     </FormControl>
@@ -147,16 +148,16 @@ function InputPage() {
             <div className='w-full max-w-[343px] h-[45px] mx-auto'>
               <FormField
                 control={form.control}
-                name="debtexpenses"
+                name="salary"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>ภาระหนี้สิ้นต่อเดือน (บาท)</FormLabel>
+                    <FormLabel>รายได้ต่อเดือน (บาท) <span className="text-destructive"> *</span></FormLabel>
                     <FormControl>
                       <Input
                         type="number"
                         {...field}
-                        placeholder="กรุณากรอกภาระหนี้สิ้น"
-                        className={`w-[343px] h-[45px] ${form.formState.errors.debtexpenses ? 'border-destructive' : ''}`}
+                        placeholder="เช่น 10,000"
+                        className={`w-[343px] h-[45px] ${form.formState.errors.salary ? 'border-destructive' : ''}`}
                       />
                     </FormControl>
                     <FormMessage />
@@ -171,12 +172,12 @@ function InputPage() {
                 name="loanAmount"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>วงเงินกู้ (บาท)</FormLabel>
+                    <FormLabel>วงเงินกู้ (บาท) <span className="text-destructive"> *</span></FormLabel>
                     <FormControl>
                       <Input
                         type="number"
                         {...field}
-                        placeholder="กรุณากรอกวงเงินกู้ที่คุณต้องการ"
+                        placeholder="เช่น 1,000,000"
                         className="w-[343px] h-[45px]"
                       />
                     </FormControl>
@@ -196,7 +197,7 @@ function InputPage() {
                     <FormControl>
                       <div className="flex items-center space-x-2">
                         <Checkbox id="terms" checked={field.value} onCheckedChange={field.onChange} />
-                        <Label htmlFor="terms">ฉันยอมรับ ข้อตกลงและเงื่อนไข</Label>
+                        <Label htmlFor="terms">ฉันยอมรับ <span className="text-blue-600 underline"> ข้อตกลงและเงื่อนไข</span></Label>
                       </div>
                     </FormControl>
                     <FormMessage />
