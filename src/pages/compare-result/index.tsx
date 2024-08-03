@@ -1,9 +1,11 @@
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import React from 'react';
+
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/common/dialog';
 import Navbar from '@/components/common/navigation-bar';
 import { PageLayout } from '@/components/common/pagelayout';
-import React from 'react';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
-
+import { ScrollArea } from '@/components/common/scroll';
 
 interface ComparisonCardProps {
   title: string;
@@ -27,99 +29,114 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
   backgroundColor = 'white',
 }) => {
   return (
-    
     <div
-    className="flex flex-col items-start rounded-lg shadow-lg p-6 m-4 w-1/2"
-    style={{ backgroundColor }} // ใช้ inline style สำหรับ backgroundColor
-  >
-    <div className="text-2xl font-bold mb-4 text-center w-full">
-      <h2 >{title}</h2>
-    </div>
+      className="m-4 flex w-1/2 flex-col items-start rounded-lg p-6 shadow-lg"
+      style={{ backgroundColor }} // ใช้ inline style สำหรับ backgroundColor
+    >
+      <div className="mb-4 w-full text-center text-2xl font-bold">
+        <h2>{title}</h2>
+      </div>
 
-      <div className="text-lg mb-2 text-left">ยอดเงินกู้</div>
-      <div className="text-lg font-semibold mb-4 text-left">{amount} บาท</div>
-      <div className="text-lg mb-2">ดอกเบี้ยต่อปี</div>
-      <div className="text-lg font-semibold mb-4">{interestRate}%</div>
-      <div className="text-lg mb-2">ระยะเวลาผ่อน(ปี)</div>
-      <div className="text-lg font-semibold mb-4">{duration} ปี</div>
-      <div className="text-lg mb-2">ยอดผ่อนต่อเดือน</div>
-      <div className="text-lg font-semibold mb-4">{monthlyPayment} บาท</div>
-      <div className="text-lg mb-2">ดอกเบี้ยรวม</div>
-      <div className="text-lg font-semibold mb-4">{totalInterest} บาท</div>
-      <div className="text-lg mb-2">ยอดสินเชื่อรวมดอกเบี้ย</div>
-      <div className="text-lg font-semibold mb-4">{totalAmount} บาท</div>
-      <div className="flex justify-end w-full hide-in-pdf">
-        <button className="text-blue-500 mb-4 underline">รายละเอียดเพิ่มเติม</button>
+      <div className="mb-2 text-left text-lg">ยอดเงินกู้</div>
+      <div className="mb-4 text-left text-lg font-semibold">{amount} บาท</div>
+      <div className="mb-2 text-lg">ดอกเบี้ยต่อปี</div>
+      <div className="mb-4 text-lg font-semibold">{interestRate}%</div>
+      <div className="mb-2 text-lg">ระยะเวลาผ่อน(ปี)</div>
+      <div className="mb-4 text-lg font-semibold">{duration} ปี</div>
+      <div className="mb-2 text-lg">ยอดผ่อนต่อเดือน</div>
+      <div className="mb-4 text-lg font-semibold">{monthlyPayment} บาท</div>
+      <div className="mb-2 text-lg">ดอกเบี้ยรวม</div>
+      <div className="mb-4 text-lg font-semibold">{totalInterest} บาท</div>
+      <div className="mb-2 text-lg">ยอดสินเชื่อรวมดอกเบี้ย</div>
+      <div className="mb-4 text-lg font-semibold">{totalAmount} บาท</div>
+
+      <div className="hide-in-pdf flex w-full justify-end">
+        <Dialog>
+          <DialogTrigger asChild>
+            <button className="mb-4 text-blue-500 underline">รายละเอียดเพิ่มเติม</button>
+          </DialogTrigger>
+          <DialogContent className="bg-white sm:max-w-[675px]">
+            <DialogHeader>
+              <DialogTitle className="text-xl">{title}</DialogTitle>
+              <ScrollArea className="h-[300px]">
+                <p>ธนาคาร</p>
+                <p>รายละเอียด </p>
+                <p>บลาๆ</p>
+              </ScrollArea>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
       </div>
-      <div className=" flex justify-center w-full hide-in-pdf">
-      <button className="bg-green-500 text-black font-bold py-2 px-6 rounded-lg ">สนใจ</button>
+      <div className="hide-in-pdf flex w-full justify-center">
+        <button className="rounded-lg bg-green-500 px-6 py-2 font-bold text-black">สนใจ</button>
       </div>
     </div>
-    
-      
   );
 };
 
 const ComparisonPage: React.FC = () => {
-    const downloadPDF = () => {
-        const input = document.getElementById('comparison-cards');
-        
-        document.querySelectorAll('.hide-in-pdf').forEach(element => {
-          element.classList.add('hidden');
-        });
-    
-        if (input) {
-          html2canvas(input).then((canvas) => {
-            const imgData = canvas.toDataURL('image/png');
-            const pdf = new jsPDF('landscape', 'mm', 'a4');
-            const imgWidth = 297;
-            
-            const imgHeight = canvas.height * imgWidth / canvas.width;
-    
-            pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-            pdf.save('comparison.pdf');
-    
-            
-            document.querySelectorAll('.hide-in-pdf').forEach(element => {
-              element.classList.remove('hidden');
-            });
-          }).catch((error) => {
-            console.error('Error capturing the canvas:', error);
+  const downloadPDF = () => {
+    const input = document.getElementById('comparison-cards');
+
+    document.querySelectorAll('.hide-in-pdf').forEach((element) => {
+      element.classList.add('hidden');
+    });
+
+    if (input) {
+      html2canvas(input)
+        .then((canvas) => {
+          const imgData = canvas.toDataURL('image/png');
+          const pdf = new jsPDF('landscape', 'mm', 'a4');
+          const imgWidth = 297;
+
+          const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+          pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+          pdf.save('comparison.pdf');
+
+          document.querySelectorAll('.hide-in-pdf').forEach((element) => {
+            element.classList.remove('hidden');
           });
-        } else {
-          console.error('Element with id "comparison-cards" not found');
-        }
-      };
+        })
+        .catch((error) => {
+          console.error('Error capturing the canvas:', error);
+        });
+    } else {
+      console.error('Element with id "comparison-cards" not found');
+    }
+  };
   return (
     <PageLayout>
       <Navbar />
-      <div className="flex justify-end w-full px-10 mt-6 mb-6">
-        <button onClick={downloadPDF} className="bg-green-500 text-black font-bold py-2 px-4 rounded-lg">ดาวน์โหลด</button>
+      <div className="mb-6 mt-6 flex w-full justify-end px-10">
+        <button onClick={downloadPDF} className="rounded-lg bg-green-500 px-4 py-2 font-bold text-black">
+          ดาวน์โหลด
+        </button>
       </div>
-    <div className="container mx-auto py-10">
-      <h1 className="text-3xl font-bold text-center mb-10">เปรียบเทียบสินเชื่อ</h1>
-      <div id="comparison-cards" className="flex justify-center w-full">
-        <ComparisonCard
-          title="สินเชื่อ A"
-          amount="1,000,000"
-          interestRate="3"
-          duration="3"
-          monthlyPayment="xxx"
-          totalInterest="xxx"
-          totalAmount="xxx"
-        />
-        <ComparisonCard
-          title="สินเชื่อ B"
-          amount="1,500,000"
-          interestRate="4"
-          duration="4"
-          monthlyPayment="xxx"
-          totalInterest="xxx"
-          totalAmount="xxx"
-          backgroundColor="#CAF6E3"
-        />
+      <div className="container mx-auto py-10">
+        <h1 className="mb-10 text-center text-3xl font-bold">เปรียบเทียบสินเชื่อ</h1>
+        <div id="comparison-cards" className="flex w-full justify-center">
+          <ComparisonCard
+            title="สินเชื่อ A"
+            amount="1,000,000"
+            interestRate="3"
+            duration="3"
+            monthlyPayment="xxx"
+            totalInterest="xxx"
+            totalAmount="xxx"
+          />
+          <ComparisonCard
+            title="สินเชื่อ B"
+            amount="1,500,000"
+            interestRate="4"
+            duration="4"
+            monthlyPayment="xxx"
+            totalInterest="xxx"
+            totalAmount="xxx"
+            backgroundColor="#CAF6E3"
+          />
+        </div>
       </div>
-    </div>
     </PageLayout>
   );
 };
