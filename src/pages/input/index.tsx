@@ -3,18 +3,13 @@ import { Link } from 'react-router-dom';
 
 import { Button } from '@/components/common/button';
 import { Checkbox } from '@/components/common/checkbox';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/common/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/common/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/common/form';
 import { Input } from '@/components/common/input';
 import { Label } from '@/components/common/label';
 import Navbar from '@/components/common/navigation-bar';
 import { PageLayout } from '@/components/common/pagelayout';
+import { ScrollArea } from '@/components/common/scroll';
 import {
   Select,
   SelectContent,
@@ -28,14 +23,12 @@ import { useStrictForm } from '@/hooks/form-hook';
 import { calculateLoanAmount } from '@/libs/calculateLoanAmount';
 import { cn } from '@/libs/utils';
 import { LoanFormDefaultValues, LoanFormSchema, LoanFormType } from '@/types/schema/loan';
-import { ScrollArea } from '@/components/common/scroll';
 
 function InputPage() {
   const form = useStrictForm(LoanFormSchema, LoanFormDefaultValues);
   const [loanAmountError, setLoanAmountError] = useState<string | null>(null);
   const [showLoanDetails, setShowLoanDetails] = useState<boolean>(false);
   const [calculatedLoanAmount, setCalculatedLoanAmount] = useState<number | null>(null);
-
 
   const onSubmit = (data: LoanFormType) => {
     const salary = form.getValues('salary');
@@ -126,7 +119,9 @@ function InputPage() {
                     </FormItem>
                   )}
                 />
-                <p className='text-xs text-gray-400 pt-1'>(รวมถึงสินเชื่อเพื่อการศึกษา, สินเชื่อรถยนต์, สินเชื่อส่วนบุคคล และอื่นๆ)</p>
+                <p className="pt-1 text-xs text-gray-400">
+                  (รวมถึงสินเชื่อเพื่อการศึกษา, สินเชื่อรถยนต์, สินเชื่อส่วนบุคคล และอื่นๆ)
+                </p>
               </div>
 
               <div className="mx-auto h-[45px] w-full max-w-[343px]">
@@ -229,33 +224,68 @@ function InputPage() {
                           <Label htmlFor="terms">ฉันยอมรับ</Label>
                           <Dialog>
                             <DialogTrigger asChild>
-                              <Button variant="link" className='text-blue-600 p-0'>ข้อตกลงและเงื่อนไข</Button>
+                              <Button variant="link" className="p-0 text-blue-600">
+                                ข้อตกลงและเงื่อนไข
+                              </Button>
                             </DialogTrigger>
-                            <DialogContent className="sm:max-w-[675px] bg-white ">
+                            <DialogContent className="min-w-[50%] bg-white">
                               <DialogHeader>
-                                <DialogTitle className='text-xl'>ข้อตกลงและเงื่อนไขการใช้บริการเว็บแอปพลิเคชันคำนวณวงเงินกู้สินเชื่อบ้าน</DialogTitle>
-                                <ScrollArea className="h-[300px]">
+                                <DialogTitle className="text-xl">
+                                  ข้อตกลงและเงื่อนไขการใช้บริการเว็บแอปพลิเคชันคำนวณวงเงินกู้สินเชื่อบ้าน
+                                </DialogTitle>
+                              </DialogHeader>
+                              <ScrollArea className="h-[450px] px-4">
                                 <p>1. ขอบเขตการให้บริการ</p>
-                                <p>1.1 เว็บแอปนี้ให้บริการการคำนวณวงเงินกู้สินเชื่อบ้านตามหลักเกณฑ์ของธนาคารแห่งประเทศไทย (ธปอ.) โดยคำนวณตามข้อมูลที่ผู้ใช้ป้อนเข้ามา และไม่ถือว่าเป็นคำแนะนำทางการเงินที่เป็นทางการ </p>
-                                <p>1.2 การคำนวณในเว็บแอปนี้มีวัตถุประสงค์เพื่อให้ผู้ใช้ได้รับข้อมูลเบื้องต้นเกี่ยวกับวงเงินกู้สินเชื่อบ้านเท่านั้น ผู้ใช้ควรปรึกษากับที่ปรึกษาการเงินหรือธนาคารที่เกี่ยวข้องสำหรับข้อมูลที่ถูกต้องและเป็นปัจจุบัน</p>
+                                <p>
+                                  1.1 เว็บแอปนี้ให้บริการการคำนวณวงเงินกู้สินเชื่อบ้านตามหลักเกณฑ์ของธนาคารแห่งประเทศไทย
+                                  (ธปอ.) โดยคำนวณตามข้อมูลที่ผู้ใช้ป้อนเข้ามา
+                                  และไม่ถือว่าเป็นคำแนะนำทางการเงินที่เป็นทางการ{' '}
+                                </p>
+                                <p>
+                                  1.2
+                                  การคำนวณในเว็บแอปนี้มีวัตถุประสงค์เพื่อให้ผู้ใช้ได้รับข้อมูลเบื้องต้นเกี่ยวกับวงเงินกู้สินเชื่อบ้านเท่านั้น
+                                  ผู้ใช้ควรปรึกษากับที่ปรึกษาการเงินหรือธนาคารที่เกี่ยวข้องสำหรับข้อมูลที่ถูกต้องและเป็นปัจจุบัน
+                                </p>
                                 <p>2. ข้อมูลที่ต้องให้</p>
                                 <p>2.1 ผู้ใช้จะต้องป้อนข้อมูลที่ถูกต้องและครบถ้วนตามที่กำหนดในเว็บแอป</p>
-                                <p>2.2 ผู้ใช้มีหน้าที่รับผิดชอบต่อความถูกต้องของข้อมูลที่ป้อนเข้าในระบบ และจะต้องตรวจสอบข้อมูลดังกล่าวก่อนการใช้งาน</p>
+                                <p>
+                                  2.2 ผู้ใช้มีหน้าที่รับผิดชอบต่อความถูกต้องของข้อมูลที่ป้อนเข้าในระบบ
+                                  และจะต้องตรวจสอบข้อมูลดังกล่าวก่อนการใช้งาน
+                                </p>
                                 <p>3. ข้อจำกัดความรับผิดชอบ</p>
-                                <p>3.1 เว็บแอปนี้อาจมีข้อผิดพลาดหรือข้อมูลที่ไม่เป็นปัจจุบัน โดยการคำนวณและการแสดงผลที่ได้จากการใช้เว็บแอปนี้อาจไม่ตรงกับข้อกำหนดหรือข้อเสนอจริงจากธนาคาร</p>
-                                <p>3.2 ผู้พัฒนาเว็บแอปจะไม่รับผิดชอบต่อความเสียหายใดๆ ที่เกิดจากการใช้ข้อมูลที่ได้จากเว็บแอปนี้ รวมถึงแต่ไม่จำกัดเฉพาะความเสียหายทางการเงินหรือการสูญเสียทางธุรกิจ</p>
+                                <p>
+                                  3.1 เว็บแอปนี้อาจมีข้อผิดพลาดหรือข้อมูลที่ไม่เป็นปัจจุบัน
+                                  โดยการคำนวณและการแสดงผลที่ได้จากการใช้เว็บแอปนี้อาจไม่ตรงกับข้อกำหนดหรือข้อเสนอจริงจากธนาคาร
+                                </p>
+                                <p>
+                                  3.2 ผู้พัฒนาเว็บแอปจะไม่รับผิดชอบต่อความเสียหายใดๆ
+                                  ที่เกิดจากการใช้ข้อมูลที่ได้จากเว็บแอปนี้
+                                  รวมถึงแต่ไม่จำกัดเฉพาะความเสียหายทางการเงินหรือการสูญเสียทางธุรกิจ
+                                </p>
                                 <p>4. การเปลี่ยนแปลง</p>
-                                <p>4.1 ผู้พัฒนาสงวนสิทธิ์ในการเปลี่ยนแปลงข้อกำหนดและเงื่อนไขนี้โดยไม่ต้องแจ้งให้ทราบล่วงหน้า การเปลี่ยนแปลงจะมีผลทันทีเมื่อเผยแพร่บนเว็บไซต์</p>
+                                <p>
+                                  4.1
+                                  ผู้พัฒนาสงวนสิทธิ์ในการเปลี่ยนแปลงข้อกำหนดและเงื่อนไขนี้โดยไม่ต้องแจ้งให้ทราบล่วงหน้า
+                                  การเปลี่ยนแปลงจะมีผลทันทีเมื่อเผยแพร่บนเว็บไซต์
+                                </p>
                                 <p>5. ความเป็นส่วนตัว</p>
-                                <p>5.1 ข้อมูลที่ผู้ใช้ป้อนเข้าสู่ระบบจะถูกเก็บรักษาเป็นความลับและจะไม่ถูกเปิดเผยแก่บุคคลที่สาม นอกจากในกรณีที่จำเป็นต้องปฏิบัติตามกฎหมาย</p>
-                                <p>5.2 ผู้ใช้ยอมรับว่าเว็บแอปอาจเก็บข้อมูลการใช้งานเพื่อปรับปรุงการให้บริการและประสบการณ์การใช้งาน</p>
+                                <p>
+                                  5.1
+                                  ข้อมูลที่ผู้ใช้ป้อนเข้าสู่ระบบจะถูกเก็บรักษาเป็นความลับและจะไม่ถูกเปิดเผยแก่บุคคลที่สาม
+                                  นอกจากในกรณีที่จำเป็นต้องปฏิบัติตามกฎหมาย
+                                </p>
+                                <p>
+                                  5.2
+                                  ผู้ใช้ยอมรับว่าเว็บแอปอาจเก็บข้อมูลการใช้งานเพื่อปรับปรุงการให้บริการและประสบการณ์การใช้งาน
+                                </p>
                                 <p>6. การยกเลิกและการปิดการใช้งาน</p>
-                                <p>6.1 ผู้พัฒนาสงวนสิทธิ์ในการยกเลิกหรือปิดการใช้งานเว็บแอปตามดุลยพินิจ โดยไม่ต้องแจ้งให้ทราบล่วงหน้า</p>
+                                <p>
+                                  6.1 ผู้พัฒนาสงวนสิทธิ์ในการยกเลิกหรือปิดการใช้งานเว็บแอปตามดุลยพินิจ
+                                  โดยไม่ต้องแจ้งให้ทราบล่วงหน้า
+                                </p>
                                 <p>7. กฎหมายที่ใช้บังคับ</p>
                                 <p>7.1 ข้อกำหนดและเงื่อนไขนี้จะถูกตีความและบังคับใช้ตามกฎหมายของราชอาณาจักรไทย</p>
-                                </ScrollArea>
-                              </DialogHeader>
-
+                              </ScrollArea>
                             </DialogContent>
                           </Dialog>
                         </div>
@@ -289,7 +319,6 @@ function InputPage() {
             </Link>
           </div>
         )}
-
       </div>
     </PageLayout>
   );
