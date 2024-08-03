@@ -7,34 +7,22 @@ import { Link } from 'react-router-dom';
 function IndexPage() {
  
   const sectionStyle1: React.CSSProperties = {
-    backgroundImage: 'url(src/assets/Roadmap.png)', 
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    height: '100vh',
+    backgroundImage: 'url(src/assets/Frame2.png)', 
+    backgroundSize: 'cover', 
+    backgroundPosition: 'center', 
+    minHeight: '200vh',
     width: '100%',
     display: 'flex',
+    flexDirection: 'column', 
+    justifyContent: 'flex-end', 
     alignItems: 'center',
-    justifyContent: 'center',
     color: 'white',
     textAlign: 'center',
-    position: 'relative'
+    position: 'relative',
+    paddingBottom: '160px',
+
   };
 
-  const sectionStyle2: React.CSSProperties = {
-    backgroundImage: 'url(src/assets/Home.png)', 
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    height: '100vh', 
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center', 
-    color: 'white',
-    textAlign: 'center',
-    marginTop: '-50px', 
-    position: 'relative',
-    zIndex: 2 
-  };
 
   const navbarStyle: React.CSSProperties = {
     position: 'fixed',
@@ -51,8 +39,8 @@ function IndexPage() {
     color: 'black',
     border: 'none',
     cursor: 'pointer',
-    transform: 'translateY(70px)', 
     borderRadius: '40px',
+    marginBottom: '100px',
     
   };
 
@@ -63,10 +51,7 @@ function IndexPage() {
       </div>
       <div>
         <section style={sectionStyle1}>
-       
-        </section>
-        <section style={sectionStyle2}>
-          <div>
+        <div>
           <Link to="/input">
             <Button style={buttonStyle} >
               สินเชื่อแนะนำ
@@ -74,6 +59,7 @@ function IndexPage() {
             </Link>
           </div>
         </section>
+        
       </div>
     </PageLayout>
   );
