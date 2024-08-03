@@ -27,11 +27,13 @@ import {
 import { useStrictForm } from '@/hooks/form-hook';
 import { calculateLoanAmount } from '@/libs/calculateLoanAmount';
 import { cn } from '@/libs/utils';
-import { LoanFormDefaultValues, LoanFormSchema, LoanFormType } from '@/types/schema/loan';
+import { LoanFormSchema, LoanFormType } from '@/types/schema/loan';
 import { ScrollArea } from '@/components/common/scroll';
+import { useLoanFormStore } from '@/libs/loanFormStore'
 
 function InputPage() {
-  const form = useStrictForm(LoanFormSchema, LoanFormDefaultValues);
+  const { formData, setFormData } = useLoanFormStore();
+  const form = useStrictForm(LoanFormSchema, formData);
   const [loanAmountError, setLoanAmountError] = useState<string | null>(null);
   const [showLoanDetails, setShowLoanDetails] = useState<boolean>(false);
   const [calculatedLoanAmount, setCalculatedLoanAmount] = useState<number | null>(null);
@@ -58,6 +60,7 @@ function InputPage() {
         });
       }, 100);
       console.log(data);
+      setFormData(data);
     }
   };
 
@@ -283,9 +286,9 @@ function InputPage() {
             <p className="mt-12 text-3xl">วงเงินกู้สูงสุด</p>
             <h3 className="mt-12 text-5xl font-bold text-primary">{calculatedLoanAmount?.toLocaleString()}</h3>
             <p className="mt-12 text-lg text-gray-400">หมายเหตุ: วงเงินที่คำนวนนี้เป็นเพียงการคำนวนเบื้องต้นเท่านั้น</p>
-            <Link to="/eiei">
+            <Link to="/product">
               <Button className="col-span-2 mx-auto mt-20 h-[70px] w-[301px] text-2xl text-black">ถัดไป</Button>
-              <link rel="" href="/eiei" />
+              <link rel="" href="/product" />
             </Link>
           </div>
         )}
