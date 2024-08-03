@@ -70,9 +70,9 @@ function ProductPage() {
     <PageLayout className="bg-background">
       <Navbar />
       <div className="container mx-auto py-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mx-6 md:mx-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 mx-6 md:mx-10">
           {/* Left Panel */}
-          <div className="bg-white p-8 rounded-lg">
+          <div className="bg-white p-8 rounded-l-lg">
             <div className="text-center">
               <h1 className="text-2xl md:text-4xl font-bold mb-4">รายละเอียดกู้สินเชื่อ</h1>
               <p className="text-xl md:text-4xl">วงเงินกู้</p>
@@ -111,7 +111,7 @@ function ProductPage() {
           </div>
 
           {/* Right Panel */}
-          <div className="bg-[#d6efe4] p-6 rounded-lg">
+          <div className="bg-[#d6efe4] p-6 rounded-r-lg">
             <h2 className="text-2xl md:text-4xl font-bold text-center mb-4">สินเชื่อแนะนำ</h2>
             <div className="flex justify-between items-center mb-4">
               <div className="flex space-x-2 items-center">
