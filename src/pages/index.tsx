@@ -1,43 +1,69 @@
-import { Button } from '@/components/common/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/common/form';
-import { Input } from '@/components/common/input';
+import React from 'react';
 import Navbar from '@/components/common/navigation-bar';
 import { PageLayout } from '@/components/common/pagelayout';
-import { useStrictForm } from '@/hooks/form-hook';
-import { LoanFormDefaultValues, LoanFormSchema } from '@/types/schema/loan';
+import { Button } from '@/components/common/button';
 
 function IndexPage() {
-  const form = useStrictForm(LoanFormSchema, LoanFormDefaultValues);
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const sectionStyle1: React.CSSProperties = {
+    backgroundImage: 'url(src/assets/Home.png)', 
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    height: '100vh', 
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: 'white',
+    textAlign: 'center'
   };
+
+  const sectionStyle2: React.CSSProperties = {
+    backgroundImage: 'url(src/assets/Home.png)', 
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    height: '100vh', 
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: 'white',
+    textAlign: 'center'
+  };
+
+  const navbarStyle: React.CSSProperties = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    zIndex: 1000 
+  };
+
+  const buttonStyle: React.CSSProperties = {
+    padding: '10px 20px',
+    backgroundColor: '#1ECC83', 
+    color: 'black',
+    border: 'none',
+    cursor: 'pointer'
+  };
+
   return (
     <PageLayout>
-      <Navbar />
-      <div className="container">
-        <div>
-          <div className="text-secondary-foreground">test</div>
-        </div>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <FormField
-              control={form.control}
-              name="career"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Carrer</FormLabel>
-                  <FormControl>
-                    <Input placeholder="" autoComplete="username" className="h-9" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <Button type="submit">Submit</Button>
-          </form>
-        </Form>
+      <div style={navbarStyle}>
+        <Navbar />
+      </div>
+      <div>
+        <section style={sectionStyle1}>
+       
+        </section>
+        <section style={sectionStyle2}>
+          <div>
+           
+            <Button style={buttonStyle} onClick={() => console.log('Button clicked')}>
+              สินเชื่อแนะนำ
+            </Button>
+          </div>
+        </section>
       </div>
     </PageLayout>
   );
