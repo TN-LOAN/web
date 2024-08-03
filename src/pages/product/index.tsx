@@ -191,12 +191,15 @@ function ProductPage() {
       </div>
 
       {selectedDetail && (
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <Dialog  open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>{selectedDetail.title}</DialogTitle>
             </DialogHeader>
             <div>{selectedDetail.details}</div>
+            <div className='flex justify-center'>
+            <Button className='rounded-2xl text-black w-36'>สนใจ</Button>
+            </div>
           </DialogContent>
         </Dialog>
       )}
