@@ -3,19 +3,21 @@ import Navbar from '@/components/common/navigation-bar';
 import { PageLayout } from '@/components/common/pagelayout';
 import { Button } from '@/components/common/button';
 
+import { Link } from 'react-router-dom';
 function IndexPage() {
-
+ 
   const sectionStyle1: React.CSSProperties = {
-    backgroundImage: 'url(src/assets/Home.png)', 
+    backgroundImage: 'url(src/assets/Roadmap.png)', 
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    height: '100vh', 
+    height: '100vh',
     width: '100%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     color: 'white',
-    textAlign: 'center'
+    textAlign: 'center',
+    position: 'relative'
   };
 
   const sectionStyle2: React.CSSProperties = {
@@ -26,9 +28,12 @@ function IndexPage() {
     width: '100%',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center', 
     color: 'white',
-    textAlign: 'center'
+    textAlign: 'center',
+    marginTop: '-50px', 
+    position: 'relative',
+    zIndex: 2 
   };
 
   const navbarStyle: React.CSSProperties = {
@@ -40,11 +45,15 @@ function IndexPage() {
   };
 
   const buttonStyle: React.CSSProperties = {
-    padding: '10px 20px',
+    padding: '35px 35px', 
+    fontSize: '1.5rem', 
     backgroundColor: '#1ECC83', 
     color: 'black',
     border: 'none',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    transform: 'translateY(70px)', 
+    borderRadius: '40px',
+    
   };
 
   return (
@@ -58,10 +67,11 @@ function IndexPage() {
         </section>
         <section style={sectionStyle2}>
           <div>
-           
-            <Button style={buttonStyle} onClick={() => console.log('Button clicked')}>
+          <Link to="/input">
+            <Button style={buttonStyle} >
               สินเชื่อแนะนำ
             </Button>
+            </Link>
           </div>
         </section>
       </div>
