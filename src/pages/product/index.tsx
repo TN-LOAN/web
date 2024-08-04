@@ -13,6 +13,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/c
 import { cn } from '@/libs/utils';
 import { useCompareStore } from '@/libs/compareStore';
 import { Checkbox } from '@/components/common/checkbox';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
 function ProductPage() {
   const { formData } = useLoanFormStore();
@@ -24,13 +25,19 @@ function ProductPage() {
   };
 
   const mockDataSet1 = Array.from({ length: 10 }).map((_, index) => ({
-    title: `ทั่วไป Card ${index}`,
-    details: `Details of ทั่วไป ${index}`, 
+    title: `${index} ทั่วไป`,
+    details: `Details of ทั่วไป ${index}`,
+    interestRate: index + 1,
+    loanAmountProduct: (index + 1) * 1000000,
+    loanPeriod: index + 1,
   }));
 
   const mockDataSet2 = Array.from({ length: 7 }).map((_, index) => ({
-    title: `110% Card ${index}`,
-    details: `Details of 110% ${index}`, 
+    title: `${index} 110%`,
+    details: `Details of 110% ${index}`,
+    interestRate: index + 1.5,
+    loanAmountProduct: (index + 1) * 2000000,
+    loanPeriod: index + 2,
   }));
 
   const [selectedDataSet, setSelectedDataSet] = useState('ทั่วไป');
@@ -74,7 +81,10 @@ function ProductPage() {
           {/* Left Panel */}
           <div className="bg-white p-8 rounded-l-lg">
             <div className="text-center">
-              <h1 className="text-2xl md:text-4xl font-bold mb-4">รายละเอียดกู้สินเชื่อ</h1>
+              <div className='flex justify-center items-center'>
+                <h1 className="text-2xl md:text-4xl font-bold mb-4">รายละเอียดกู้สินเชื่อ</h1>
+                <EditOutlinedIcon className='mb-3 ml-2'/>
+              </div>
               <p className="text-xl md:text-4xl">วงเงินกู้</p>
               <p className="text-4xl md:text-6xl font-bold text-primary mt-2">{formData.loanAmount.toLocaleString()}</p>
             </div>
@@ -167,7 +177,7 @@ function ProductPage() {
 
             <Separator className="my-4 bg-black" />
 
-            <p className="mb-4 text-gray-600">{`ผลการค้นหา ${mockData.length} ผลิตภัณฑ์`}</p> 
+            <p className="mb-4 text-gray-600">{`ผลการค้นหา ${mockData.length} ผลิตภัณฑ์`}</p>
 
             <ScrollArea className="h-[300px] md:h-[500px]">
               <div className="space-y-4 mx-auto w-[80%] md:w-[80%]">
@@ -181,7 +191,15 @@ function ProductPage() {
                         disabled={!selectedCards.some(card => card.title === data.title) && selectedCards.length >= 2}
                       />
                     )}
-                    <TestCard title={data.title} onClick={() => handleCardClick(data)} />
+                    <TestCard 
+                      title={data.title} 
+                      onClick={() => handleCardClick(data)} 
+                      interestRate={data.interestRate}
+                      loanAmountProduct={data.loanAmountProduct}
+                      loanPeriodProduct={data.loanPeriod}
+                      isRed={data.loanPeriod < formData.loanPeriod} 
+                      installment={formData.loanAmount}
+                    />
                   </div>
                 ))}
               </div>
@@ -191,14 +209,14 @@ function ProductPage() {
       </div>
 
       {selectedDetail && (
-        <Dialog  open={dialogOpen} onOpenChange={setDialogOpen}>
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>{selectedDetail.title}</DialogTitle>
             </DialogHeader>
             <div>{selectedDetail.details}</div>
             <div className='flex justify-center'>
-            <Button className='rounded-2xl text-black w-36'>สนใจ</Button>
+              <Button className='rounded-2xl text-black w-36'>สนใจ</Button>
             </div>
           </DialogContent>
         </Dialog>

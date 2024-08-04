@@ -97,7 +97,7 @@ function InputPage() {
                           <SelectContent>
                             <SelectGroup>
                               <SelectLabel>อาชีพ</SelectLabel>
-                              <SelectItem value="office">พนักงานบริษัท</SelectItem>
+                              <SelectItem value="พนักงานบริษัท">พนักงานบริษัท</SelectItem>
                             </SelectGroup>
                           </SelectContent>
                         </Select>
