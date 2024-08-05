@@ -51,7 +51,8 @@ export const LoanFormDefaultValues: LoanFormType = {
 // 	ProductWebsite           string  `json:"product_website"`
 
 export const LoanResponseType = z.object({
-  id: z.string(),
+  loan: z.object({
+    id: z.string(),
   provider: z.string(),
   product: z.string(),
   interest_rate_average: z.number(),
@@ -78,6 +79,8 @@ export const LoanResponseType = z.object({
   fee: z.string(),
   payment_fee: z.string(),
   product_website: z.string(),
+  }),
+  installment: z.number()
 });
 
 export type LoanResponseType = z.infer<typeof LoanResponseType>;

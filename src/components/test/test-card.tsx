@@ -1,6 +1,5 @@
 import { cn } from '@/libs/utils';
-import { calculateMonthlyInstallment } from '@/libs/calculateInstallment';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader } from '../common/card';
+import { Card, CardContent, CardFooter, CardHeader } from '../common/card';
 
 type TestCardProps = {
   title: string;
@@ -13,22 +12,21 @@ type TestCardProps = {
 };
 
 export default function TestCard({ title, onClick, interestRate, loanAmountProduct, loanPeriodProduct, isRed = false, installment,}: TestCardProps) {
-  const monthlyInstallment = calculateMonthlyInstallment(installment, interestRate);
   return (
     <Card className={cn('cursor-pointer transition-colors duration-300 hover:bg-primary/10')} onClick={onClick}>
       <CardHeader className='font-bold'>
         สินเชื่อ {title}
-        <CardDescription>This is a test card</CardDescription>
       </CardHeader>
 
       <CardContent>
+      <p className='font-bold text-xl text-black'>งวดผ่อนต่อเดือน: {Number(installment).toFixed(2)} บาท </p>
       <p>อัตราดอกเบี้ย: {interestRate}%</p>
       <p>วงเงินกู้: {loanAmountProduct.toLocaleString()} บาท</p>
       <p className={`text-sm ${isRed ? 'text-red-500' : ''}`}>ระยะเวลากู้: {loanPeriodProduct} ปี</p>
 
       </CardContent>
       <CardFooter>
-      <p>งวดผ่อนต่อเดือน: {monthlyInstallment} บาท</p>
+          <p className='text-blue-500 underline hover:text-blue-800'>รายละเอียด</p>
       </CardFooter>
     </Card>
   );

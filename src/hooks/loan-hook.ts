@@ -1,12 +1,13 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { LoanFormType } from '@/types/schema/loan';
 
 import { loanService } from '@/services/loan-service';
 
 export const useGetLoan = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: () => loanService.getLoans(),
+    mutationFn: (data:LoanFormType ) => loanService.getLoans(data),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['loans'],
@@ -23,8 +24,4 @@ export const useGetLoan = () => {
   });
 };
 
-export const useTest = () =>
-  useQuery({
-    queryKey: ['test'],
-    queryFn: () => loanService.getLoans(),
-  });
+ 
