@@ -3,11 +3,14 @@ import { useState } from 'react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-
+ 
   return (
-    <nav className="bg-primary p-4">
+    <nav className="bg-primary p-4 sticky top-0 ">
       <div className="container mx-auto flex items-center justify-between">
-        <div className="text-xl font-bold text-white">TN LOAN</div>
+        <div className='flex items-center'>
+        <img src= "src/assets/17.png" width={70}  height={70}></img>      
+        <div className="text-xl font-bold text-white ">TN LOAN</div>
+        </div>
         <div className="md:hidden">
           <button onClick={() => setIsOpen(!isOpen)} type="button" className="text-white focus:outline-none">
             <svg
@@ -33,12 +36,7 @@ const Navbar = () => {
               Home
             </a>
           </div>
-          <div className="flex items-center space-x-2 text-white hover:text-gray-300">
-            <HousePlusIcon size={24} />
-            <a href="#home" className="">
-              Recommend
-            </a>
-          </div>
+          
         </div>
       </div>
     </nav>
