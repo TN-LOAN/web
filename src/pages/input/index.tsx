@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Button } from '@/components/common/button';
@@ -27,31 +27,61 @@ import { LoanFormSchema, LoanFormType } from '@/types/schema/loan';
 
 function InputPage() {
   const navigate = useNavigate();
-  const { formData, setFormData } = useLoanFormStore();
+  const { formData, setFormData, resetFormData } = useLoanFormStore();
   const form = useStrictForm(LoanFormSchema, formData);
   const [loanAmountError, setLoanAmountError] = useState<string | null>(null);
   const [, setCalculatedLoanAmount] = useState<number | null>(null);
+
+  useEffect(() => {
+    resetFormData();
+  }, [resetFormData]);
 
   const onSubmit = (data: LoanFormType) => {
     const salary = form.getValues('salary');
     const debtexpenses = form.getValues('debtexpenses');
     const inputLoanAmount = form.getValues('loanAmount');
+    const dateOfBirthString = form.getValues('dateOfBirth');
+    const loanPeriod = parseInt(form.getValues('loanPeriod') as unknown as string, 10);
 
+    const dateOfBirth = new Date(dateOfBirthString);
+    const yearOfBirth = dateOfBirth.getFullYear();
+
+    if (isNaN(yearOfBirth)) {
+      console.error('Invalid dateOfBirth:', dateOfBirthString);
+      return; 
+    }
+
+    const ageLimit = 2024 - yearOfBirth + loanPeriod;
+  
     const calculated = calculateLoanAmount(salary, debtexpenses);
     console.log("Onsubmit",calculated)
     setCalculatedLoanAmount(calculated);
-
+  
+    if (yearOfBirth < 1963 || yearOfBirth > 2005) {
+      form.setError('dateOfBirth', {
+        type: 'manual',
+        message: 'อายุของคุณไม่อยู่ในเกณฑ์',
+      });
+      return;
+    } else {
+      form.clearErrors('dateOfBirth');
+    }
+  
+    if (ageLimit > 70) {
+      form.setError('loanPeriod', {
+        type: 'manual',
+        message: 'ระยะเวลาในการกู้ของคุณไม่อยู่ในเกณฑ์',
+      });
+      return;
+    } else {
+      form.clearErrors('loanPeriod');
+    }
+  
     if (inputLoanAmount > 0 && calculated < inputLoanAmount) {
       setLoanAmountError(`วงเงินกู้สูงสุดของคุณคือ ${calculated.toLocaleString()} บาท`);
     } else {
-      // setLoanAmountError(null);
-      // setTimeout(() => {
-      //   window.scrollTo({
-      //     top: document.body.scrollHeight,
-      //     behavior: 'smooth',
-      //   });
-      // }, 100);
       console.log(data);
+      setLoanAmountError(null);
       setFormData(data);
       navigate('/product');
     }
@@ -66,9 +96,9 @@ function InputPage() {
       <div className="mb-20">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className={cn('mx-auto mt-2.5 grid h-[620px] w-[1065px] grid-cols-2 gap-x-4 gap-y-6 bg-white p-6')}>
+            <div className={cn('mx-auto mt-2.5 grid h-[620px] w-11/12 grid-cols-2 gap-x-4 gap-y-6 bg-white p-6 rounded-md')}>
               {/* Form fields */}
-              <div className="mx-auto h-[45px] w-full max-w-[343px]">
+              <div className="mx-auto h-[45px] w-full">
                 <FormField
                   control={form.control}
                   name="career"
@@ -80,7 +110,7 @@ function InputPage() {
                       <FormControl>
                         <Select onValueChange={field.onChange} value={field.value}>
                           <SelectTrigger
-                            className={`h-[45px] w-[343px] ${form.formState.errors.career ? 'border-destructive' : ''}`}
+                            className={`h-[45px] w-full ${form.formState.errors.career ? 'border-destructive' : ''}`}
                           >
                             <SelectValue placeholder="กรุณาเลือกอาชีพของคุณ" />
                           </SelectTrigger>
@@ -98,7 +128,7 @@ function InputPage() {
                 />
               </div>
 
-              <div className="mx-auto h-[45px] w-full max-w-[343px]">
+              <div className="mx-auto h-[45px] w-full">
                 <FormField
                   control={form.control}
                   name="debtexpenses"
@@ -110,7 +140,7 @@ function InputPage() {
                           type="number"
                           {...field}
                           placeholder="เช่น 1,000"
-                          className={`h-[45px] w-[343px] ${form.formState.errors.debtexpenses ? 'border-destructive' : ''}`}
+                          className={`h-[45px] w-full ${form.formState.errors.debtexpenses ? 'border-destructive' : ''}`}
                         />
                       </FormControl>
                       <FormMessage />
@@ -122,7 +152,7 @@ function InputPage() {
                 </p>
               </div>
 
-              <div className="mx-auto h-[45px] w-full max-w-[343px]">
+              <div className="mx-auto h-[45px] w-full">
                 <FormField
                   control={form.control}
                   name="dateOfBirth"
@@ -136,7 +166,7 @@ function InputPage() {
                           type="date"
                           {...field}
                           placeholder="กรุณาเลือกวันเกิดของคุณ"
-                          className={`h-[45px] w-[343px] ${form.formState.errors.dateOfBirth ? 'border-destructive' : ''}`}
+                          className={`h-[45px] w-full ${form.formState.errors.dateOfBirth ? 'border-destructive' : ''}`}
                         />
                       </FormControl>
                       <FormMessage />
@@ -145,7 +175,7 @@ function InputPage() {
                 />
               </div>
 
-              <div className="mx-auto h-[45px] w-full max-w-[343px]">
+              <div className="mx-auto h-[45px] w-full">
                 <FormField
                   control={form.control}
                   name="loanPeriod"
@@ -159,7 +189,7 @@ function InputPage() {
                           type="number"
                           {...field}
                           placeholder="เช่น 10"
-                          className={`h-[45px] w-[343px] ${form.formState.errors.loanPeriod ? 'border-destructive' : ''}`}
+                          className={`h-[45px] w-full ${form.formState.errors.loanPeriod ? 'border-destructive' : ''}`}
                         />
                       </FormControl>
                       <FormMessage />
@@ -168,7 +198,7 @@ function InputPage() {
                 />
               </div>
 
-              <div className="mx-auto h-[45px] w-full max-w-[343px]">
+              <div className="mx-auto h-[45px] w-full">
                 <FormField
                   control={form.control}
                   name="salary"
@@ -182,7 +212,7 @@ function InputPage() {
                           type="number"
                           {...field}
                           placeholder="เช่น 10,000"
-                          className={`h-[45px] w-[343px] ${form.formState.errors.salary ? 'border-destructive' : ''}`}
+                          className={`h-[45px] w-full ${form.formState.errors.salary ? 'border-destructive' : ''}`}
                         />
                       </FormControl>
                       <FormMessage />
@@ -191,7 +221,7 @@ function InputPage() {
                 />
               </div>
 
-              <div className="mx-auto h-[45px] w-full max-w-[343px]">
+              <div className="mx-auto h-[45px] w-full">
                 <FormField
                   control={form.control}
                   name="loanAmount"
@@ -201,7 +231,12 @@ function InputPage() {
                         วงเงินกู้ (บาท) <span className="text-destructive"> *</span>
                       </FormLabel>
                       <FormControl>
-                        <Input type="number" {...field} placeholder="เช่น 1,000,000" className="h-[45px] w-[343px]" />
+                        <Input
+                          type="number"
+                          {...field}
+                          placeholder="เช่น 1,000,000"
+                          className={`h-[45px] w-full ${form.formState.errors.loanAmount ? 'border-destructive' : ''}`}
+                        />
                       </FormControl>
                       <FormMessage />
                       {loanAmountError && <p className="mt-2 text-sm text-destructive">{loanAmountError}</p>}
@@ -210,7 +245,7 @@ function InputPage() {
                 />
               </div>
 
-              <div className="mx-auto h-[45px] w-full max-w-[343px]">
+              <div className="mx-auto h-[45px] w-full">
                 <FormField
                   control={form.control}
                   name="acceptTerms"
