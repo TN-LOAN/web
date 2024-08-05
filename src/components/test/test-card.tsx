@@ -16,7 +16,7 @@ export default function TestCard({ title, onClick, interestRate, loanAmountProdu
   const monthlyInstallment = calculateMonthlyInstallment(installment, interestRate);
   return (
     <Card className={cn('cursor-pointer transition-colors duration-300 hover:bg-primary/10')} onClick={onClick}>
-      <CardHeader>
+      <CardHeader className='font-bold'>
         สินเชื่อ {title}
         <CardDescription>This is a test card</CardDescription>
       </CardHeader>

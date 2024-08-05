@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/common/button';
 import Navbar from '@/components/common/navigation-bar';
@@ -14,10 +14,25 @@ import { cn } from '@/libs/utils';
 import { useCompareStore } from '@/libs/compareStore';
 import { Checkbox } from '@/components/common/checkbox';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import { calculateLoanAmount } from '@/libs/calculateLoanAmount'; 
 
 function ProductPage() {
-  const { formData } = useLoanFormStore();
+  const { formData, setFormData } = useLoanFormStore();
   const { setSelectedItems } = useCompareStore();
+
+  const [editMode, setEditMode] = useState(false);
+  const [editedData, setEditedData] = useState({
+    dateOfBirth: formData.dateOfBirth,
+    salary: formData.salary,
+    debtexpenses: formData.debtexpenses,
+    loanPeriod: formData.loanPeriod,
+    loanAmount: calculateLoanAmount(formData.salary, formData.debtexpenses)
+  });
+
+  useEffect(() => {
+    const newLoanAmount = calculateLoanAmount(editedData.salary, editedData.debtexpenses);
+    setEditedData((prev) => ({ ...prev, loanAmount: newLoanAmount }));
+  }, [editedData.salary, editedData.debtexpenses]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -83,40 +98,75 @@ function ProductPage() {
             <div className="text-center">
               <div className='flex justify-center items-center'>
                 <h1 className="text-2xl md:text-4xl font-bold mb-4">รายละเอียดกู้สินเชื่อ</h1>
-                <EditOutlinedIcon className='mb-3 ml-2'/>
+                <EditOutlinedIcon 
+                  className='mb-3 ml-2 cursor-pointer'
+                  onClick={() => setEditMode(!editMode)}
+                />
               </div>
               <p className="text-xl md:text-4xl">วงเงินกู้</p>
-              <p className="text-4xl md:text-6xl font-bold text-primary mt-2">{formData.loanAmount.toLocaleString()}</p>
+              <p className="text-4xl md:text-6xl font-bold text-primary mt-2">{editedData.loanAmount.toLocaleString()}</p>
             </div>
             <p className="text-xs md:text-sm text-gray-500 mt-4 pt-4">
               หมายเหตุ: ผลการคำนวณนี้เป็นเพียงการคำนวณเบื้องต้นเท่านั้น
               การพิจารณาวงเงินสินเชื่ออาจมีการเปลี่ยนแปลงได้ตามข้อกำหนดของสถาบันการเงินที่ท่านเลือก
             </p>
             <div className="mt-9 space-y-4">
-              <div>
-                <p className="text-sm">อาชีพ:</p>
-                <p>{formData.career}</p>
-              </div>
-
-              <div>
-                <p className="text-sm">วัน/เดือน/ปีเกิด:</p>
-                <p>{formatDate(formData.dateOfBirth)}</p>
-              </div>
-
-              <div>
-                <p className="text-sm">รายได้ต่อเดือน:</p>
-                <p>{formData.salary.toLocaleString()} บาท</p>
-              </div>
-
-              <div>
-                <p className="text-sm">ภาระหนี้สินต่อเดือน:</p>
-                <p>{formData.debtexpenses.toLocaleString()} บาท</p>
-              </div>
-
-              <div>
-                <p className="text-sm">ระยะเวลากู้:</p>
-                <p>{formData.loanPeriod} ปี</p>
-              </div>
+              {editMode ? (
+                <div>
+                  <label className="block mb-2">วัน/เดือน/ปีเกิด:</label>
+                  <input
+                    type="date"
+                    value={editedData.dateOfBirth}
+                    onChange={(e) => setEditedData({ ...editedData, dateOfBirth: e.target.value })}
+                    className="border p-2 rounded mb-4"
+                  />
+                  <label className="block mb-2">รายได้ต่อเดือน:</label>
+                  <input
+                    type="number"
+                    value={editedData.salary}
+                    onChange={(e) => setEditedData({ ...editedData, salary: +e.target.value })}
+                    className="border p-2 rounded mb-4"
+                  />
+                  <label className="block mb-2">ภาระหนี้สินต่อเดือน:</label>
+                  <input
+                    type="number"
+                    value={editedData.debtexpenses}
+                    onChange={(e) => setEditedData({ ...editedData, debtexpenses: +e.target.value })}
+                    className="border p-2 rounded mb-4"
+                  />
+                  <label className="block mb-2">ระยะเวลากู้:</label>
+                  <input
+                    type="number"
+                    value={editedData.loanPeriod}
+                    onChange={(e) => setEditedData({ ...editedData, loanPeriod: +e.target.value })}
+                    className="border p-2 rounded mb-4"
+                  />
+                  <div className="flex justify-end space-x-2 mt-4">
+                    <Button className='text-black' onClick={() => { 
+                      setFormData({ ...formData, ...editedData });
+                      setEditMode(false);
+                    }}>
+                      บันทึก
+                    </Button>
+                    <Button className='bg-gray-300 text-black hover:bg-gray-200' onClick={() => setEditMode(false)}>
+                      ยกเลิก
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="mt-9 space-y-4">
+                  <p className="text-sm">อาชีพ:</p>
+                  <p>{formData.career}</p>
+                  <p className="text-sm">วัน/เดือน/ปีเกิด:</p>
+                  <p>{formatDate(formData.dateOfBirth)}</p>
+                  <p className="text-sm">รายได้ต่อเดือน:</p>
+                  <p>{formData.salary.toLocaleString()} บาท</p>
+                  <p className="text-sm">ภาระหนี้สินต่อเดือน:</p>
+                  <p>{formData.debtexpenses.toLocaleString()} บาท</p>
+                  <p className="text-sm">ระยะเวลากู้:</p>
+                  <p>{formData.loanPeriod} ปี</p>
+                </div>
+              )}
             </div>
           </div>
 
@@ -159,7 +209,7 @@ function ProductPage() {
                     </Button>
                   </Link>
                   <Button 
-                    className="rounded-2xl bg-red-500 hover:bg-red-400 px-4 py-2 text-black" 
+                    className="rounded-2xl bg-gray-300 hover:bg-gray-200 px-4 py-2 text-black" 
                     onClick={handleCancelCompare}
                   >
                     ยกเลิก
