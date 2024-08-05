@@ -1,11 +1,10 @@
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import React from 'react';
+import React, { useState } from 'react';
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/common/dialog';
+import CustomDialog from '@/components/common/customDialog';
 import Navbar from '@/components/common/navigation-bar';
 import { PageLayout } from '@/components/common/pagelayout';
-import { ScrollArea } from '@/components/common/scroll';
 
 interface ComparisonCardProps {
   title: string;
@@ -28,11 +27,18 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
   totalAmount,
   backgroundColor = 'white',
 }) => {
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const handleOpenDialog = () => {
+    setDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+  };
+
   return (
-    <div
-      className="m-4 flex w-1/2 flex-col items-start rounded-lg p-6 shadow-lg"
-      style={{ backgroundColor }} // ใช้ inline style สำหรับ backgroundColor
-    >
+    <div className="m-4 flex w-1/2 flex-col items-start rounded-lg p-6 shadow-lg" style={{ backgroundColor }}>
       <div className="mb-4 w-full text-center text-2xl font-bold">
         <h2>{title}</h2>
       </div>
@@ -51,22 +57,20 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
       <div className="mb-4 text-lg font-semibold">{totalAmount} บาท</div>
 
       <div className="hide-in-pdf flex w-full justify-end">
-        <Dialog>
-          <DialogTrigger asChild>
-            <button className="mb-4 text-blue-500 underline">รายละเอียดเพิ่มเติม</button>
-          </DialogTrigger>
-          <DialogContent className="bg-white sm:max-w-[675px]">
-            <DialogHeader>
-              <DialogTitle className="text-xl">{title}</DialogTitle>
-              <ScrollArea className="h-[300px]">
-                <p>ธนาคาร</p>
-                <p>รายละเอียด </p>
-                <p>บลาๆ</p>
-              </ScrollArea>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
+        <button className="mb-4 text-blue-500 underline" onClick={handleOpenDialog}>
+          รายละเอียดเพิ่มเติม
+        </button>
+
+        <CustomDialog
+          open={dialogOpen}
+          onClose={handleCloseDialog}
+          title={title}
+          bankName="XYZ Bank"
+          loanAmount={amount}
+          interestRate={interestRate.toString()}
+        />
       </div>
+
       <div className="hide-in-pdf flex w-full justify-center">
         <button className="rounded-lg bg-green-500 px-6 py-2 font-bold text-black">สนใจ</button>
       </div>
