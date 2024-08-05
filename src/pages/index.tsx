@@ -1,43 +1,65 @@
-import { Button } from '@/components/common/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/common/form';
-import { Input } from '@/components/common/input';
+import React from 'react';
 import Navbar from '@/components/common/navigation-bar';
 import { PageLayout } from '@/components/common/pagelayout';
-import { useStrictForm } from '@/hooks/form-hook';
-import { LoanFormDefaultValues, LoanFormSchema } from '@/types/schema/loan';
+import { Button } from '@/components/common/button';
 
+import { Link } from 'react-router-dom';
 function IndexPage() {
-  const form = useStrictForm(LoanFormSchema, LoanFormDefaultValues);
+ 
+  const sectionStyle1: React.CSSProperties = {
+    backgroundImage: 'url(src/assets/Frame2.png)', 
+    backgroundSize: 'cover', 
+    backgroundPosition: 'center', 
+    minHeight: '200vh',
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column', 
+    justifyContent: 'flex-end', 
+    alignItems: 'center',
+    color: 'white',
+    textAlign: 'center',
+    position: 'relative',
+    paddingBottom: '160px',
 
-  const onSubmit = (data: any) => {
-    console.log(data);
   };
+
+
+  const navbarStyle: React.CSSProperties = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    zIndex: 1000 
+  };
+
+  const buttonStyle: React.CSSProperties = {
+    padding: '35px 35px', 
+    fontSize: '1.5rem', 
+    backgroundColor: '#1ECC83', 
+    color: 'black',
+    border: 'none',
+    cursor: 'pointer',
+    borderRadius: '40px',
+    marginBottom: '100px',
+    
+  };
+
   return (
     <PageLayout>
-      <Navbar />
-      <div className="container">
+      <div style={navbarStyle}>
+        <Navbar />
+      </div>
+      <div>
+        <section style={sectionStyle1}>
         <div>
-          <div className="text-secondary-foreground">test</div>
-        </div>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <FormField
-              control={form.control}
-              name="career"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Carrer</FormLabel>
-                  <FormControl>
-                    <Input placeholder="" autoComplete="username" className="h-9" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <Button type="submit">Submit</Button>
-          </form>
-        </Form>
+          <Link to="/input">
+            <Button style={buttonStyle} >
+              สินเชื่อแนะนำ
+            </Button>
+            </Link>
+          </div>
+        </section>
+        
       </div>
     </PageLayout>
   );
