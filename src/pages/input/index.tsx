@@ -33,17 +33,49 @@ function InputPage() {
   const [, setCalculatedLoanAmount] = useState<number | null>(null);
 
   useEffect(() => {
-    resetFormData(); 
+    resetFormData();
   }, [resetFormData]);
 
   const onSubmit = (data: LoanFormType) => {
     const salary = form.getValues('salary');
     const debtexpenses = form.getValues('debtexpenses');
     const inputLoanAmount = form.getValues('loanAmount');
+    const dateOfBirthString = form.getValues('dateOfBirth');
+    const loanPeriod = parseInt(form.getValues('loanPeriod') as unknown as string, 10);
 
+    const dateOfBirth = new Date(dateOfBirthString);
+    const yearOfBirth = dateOfBirth.getFullYear();
+
+    if (isNaN(yearOfBirth)) {
+      console.error('Invalid dateOfBirth:', dateOfBirthString);
+      return; 
+    }
+
+    const ageLimit = 2024-yearOfBirth + loanPeriod;
+  
     const calculated = calculateLoanAmount(salary, debtexpenses);
     setCalculatedLoanAmount(calculated);
-
+  
+    if (yearOfBirth < 1963 || yearOfBirth > 2005) {
+      form.setError('dateOfBirth', {
+        type: 'manual',
+        message: 'อายุของคุณไม่อยู่ในเกณฑ์',
+      });
+      return;
+    } else {
+      form.clearErrors('dateOfBirth');
+    }
+  
+    if (ageLimit > 70) {
+      form.setError('loanPeriod', {
+        type: 'manual',
+        message: 'ระยะเวลาในการกู้ของคุณไม่อยู่ในเกณฑ์',
+      });
+      return;
+    } else {
+      form.clearErrors('loanPeriod');
+    }
+  
     if (inputLoanAmount > 0 && calculated < inputLoanAmount) {
       setLoanAmountError(`วงเงินกู้สูงสุดของคุณคือ ${calculated.toLocaleString()} บาท`);
     } else {
@@ -55,10 +87,13 @@ function InputPage() {
       //   });
       // }, 100);
       console.log(data);
+      setLoanAmountError(null);
       setFormData(data);
       navigate('/product');
     }
   };
+  
+  
 
   return (
     <PageLayout className="bg-background">
@@ -69,9 +104,9 @@ function InputPage() {
       <div className="mb-20">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className={cn('mx-auto mt-2.5 grid h-[620px] w-[1065px] grid-cols-2 gap-x-4 gap-y-6 bg-white p-6 rounded-md')}>
+            <div className={cn('mx-auto mt-2.5 grid h-[620px] w-11/12 grid-cols-2 gap-x-4 gap-y-6 bg-white p-6 rounded-md')}>
               {/* Form fields */}
-              <div className="mx-auto h-[45px] w-full max-w-[343px]">
+              <div className="mx-auto h-[45px] max-w-[343px]">
                 <FormField
                   control={form.control}
                   name="career"

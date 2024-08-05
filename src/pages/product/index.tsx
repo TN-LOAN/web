@@ -8,7 +8,7 @@ import TestCard from '@/components/test/test-card';
 import { ScrollArea } from '@/components/common/scroll';
 import { Separator } from '@/components/common/separator';
 import { Info } from 'lucide-react';
-import { Popover, PopoverTrigger, PopoverContent } from '@radix-ui/react-popover';
+import { Popover, PopoverTrigger, PopoverContent } from '@/components/common/popover';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/common/dialog';
 import { cn } from '@/libs/utils';
 import { useCompareStore } from '@/libs/compareStore';
@@ -96,9 +96,9 @@ function ProductPage() {
     <PageLayout className="bg-background">
       <Navbar />
       <div className="container mx-auto py-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 mx-6 md:mx-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-0 mx-6 md:mx-10">
           {/* Left Panel */}
-          <div className="bg-white p-8 rounded-l-lg">
+          <div className="bg-white p-8 rounded-l-lg md:col-span-1">
             <div className="text-center">
               <div className='flex justify-center items-center'>
                 <h1 className="text-2xl md:text-4xl font-bold mb-4">รายละเอียดกู้สินเชื่อ</h1>
@@ -156,23 +156,23 @@ function ProductPage() {
                 </div>
               ) : (
                 <div className="mt-9 space-y-4">
-                  <p className="text-sm">อาชีพ:</p>
-                  <p>{formData.career}</p>
-                  <p className="text-sm">วัน/เดือน/ปีเกิด:</p>
-                  <p>{formatDate(formData.dateOfBirth)}</p>
-                  <p className="text-sm">รายได้ต่อเดือน:</p>
-                  <p>{formData.salary.toLocaleString()} บาท</p>
-                  <p className="text-sm">ภาระหนี้สินต่อเดือน:</p>
-                  <p>{formData.debtexpenses.toLocaleString()} บาท</p>
-                  <p className="text-sm">ระยะเวลากู้:</p>
-                  <p>{formData.loanPeriod} ปี</p>
+                  <p className="text-xl">อาชีพ: {formData.career}</p>
+                  {/* <p>{formData.career}</p> */}
+                  <p className="text-xl">วัน/เดือน/ปีเกิด: {formatDate(formData.dateOfBirth)}</p>
+                  {/* <p>{formatDate(formData.dateOfBirth)}</p> */}
+                  <p className="text-xl">รายได้ต่อเดือน: {formData.salary.toLocaleString()} บาท</p>
+                  {/* <p>{formData.salary.toLocaleString()} บาท</p> */}
+                  <p className="text-xl">ภาระหนี้สินต่อเดือน: {formData.debtexpenses.toLocaleString()} บาท</p>
+                  {/* <p>{formData.debtexpenses.toLocaleString()} บาท</p> */}
+                  <p className="text-xl">ระยะเวลากู้: {formData.loanPeriod} ปี</p>
+                  {/* <p>{formData.loanPeriod} ปี</p> */}
                 </div>
               )}
             </div>
           </div>
 
           {/* Right Panel */}
-          <div className="bg-[#d6efe4] p-6 rounded-r-lg">
+          <div className="bg-[#d6efe4] p-6 rounded-r-lg md:col-span-2">
             <h2 className="text-2xl md:text-4xl font-bold text-center mb-4">สินเชื่อแนะนำ</h2>
             <div className="flex justify-between items-center mb-4">
               <div className="flex space-x-2 items-center">
@@ -193,8 +193,9 @@ function ProductPage() {
                     <Info className="w-5 h-5 cursor-pointer" />
                   </PopoverTrigger>
                   <PopoverContent className="p-4 bg-white rounded shadow">
-                    <p>ทั่วไป คือ</p>
-                    <p>110% คือ</p>
+                    <p>110% คือ ให้กู้กรณีเพื่อจัดหาที่อยู่อาศัย รวมถึงกรณีกู้เพิ่มเติมเพื่อซื้อเฟอร์นิเจอร์ ตกแต่งบ้าน หรือสิ่งจำเป็นอื่นในการเข้าอยู่อาศัย
+                    และกรณีกู้เพิ่มเติมเพื่อเป็นค่าเบี้ยประกันชีวิตเพื่อประกันสินเชื่อ และ/หรือเป็นค่าเบี้ยประกันอัคคีภัย รวมกันสูงสุดไม่เกินร้อยละ 110
+                    ของราคาซื้อขายหรือราคาประเมินหลักทรัพย์แล้วแต่ราคาใดที่ต่ำกว่า</p>
                   </PopoverContent>
                 </Popover>
               </div>
