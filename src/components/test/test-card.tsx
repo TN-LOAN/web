@@ -3,6 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader } from '../common/card';
 
 type TestCardProps = {
   title: string;
+  provider: string;
   onClick?: () => void;
   interestRate: number;
   loanAmountProduct: number;
@@ -11,7 +12,7 @@ type TestCardProps = {
   installment: number;
 };
 
-export default function TestCard({ title, onClick, interestRate, loanAmountProduct, loanPeriodProduct, isRed = false, installment,}: TestCardProps) {
+export default function ProductCard({ title, provider,onClick, interestRate, loanAmountProduct, loanPeriodProduct, isRed = false, installment,}: TestCardProps) {
   return (
     <Card className={cn('cursor-pointer transition-colors duration-300 hover:bg-primary/10')} onClick={onClick}>
       <CardHeader className='font-bold'>
@@ -19,6 +20,7 @@ export default function TestCard({ title, onClick, interestRate, loanAmountProdu
       </CardHeader>
 
       <CardContent>
+      <p>ธนาคาร: {provider}</p>
       <p className='font-bold text-xl text-black'>งวดผ่อนต่อเดือน: {Number(installment).toFixed(2)} บาท </p>
       <p>อัตราดอกเบี้ย: {interestRate}%</p>
       <p>วงเงินกู้: {loanAmountProduct.toLocaleString()} บาท</p>

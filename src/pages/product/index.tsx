@@ -27,7 +27,7 @@ function ProductPage() {
     salary: formData.salary,
     debtexpenses: formData.debtexpenses,
     loanPeriod: formData.loanPeriod,
-    loanAmount: calculateLoanAmount(formData.salary, formData.debtexpenses)
+    loanAmount: formData.loanAmount
   });
 
   useEffect(()=>{
@@ -35,8 +35,8 @@ function ProductPage() {
   },[formData])
 
   useEffect(() => {
-    const newLoanAmount = calculateLoanAmount(editedData.salary, editedData.debtexpenses);
-    setEditedData((prev) => ({ ...prev, loanAmount: newLoanAmount }));
+    // const newLoanAmount = calculateLoanAmount(editedData.salary, editedData.debtexpenses);
+    // setEditedData((prev) => ({ ...prev, loanAmount: newLoanAmount }));
   }, [editedData.salary, editedData.debtexpenses]);
 
   const formatDate = (dateString: string) => {
@@ -47,22 +47,22 @@ function ProductPage() {
 
   const [selectedDataSet, setSelectedDataSet] = useState('ทั่วไป');
   const [isComparing, setIsComparing] = useState(false);
-  const [selectedCards, setSelectedCards] = useState<{ title: string; details: string; dataSet: string }[]>([]); 
+  const [selectedCards, setSelectedCards] = useState<{ data: any, dataSet: string }[]>([]); 
   const [dialogOpen, setDialogOpen] = useState(false); 
-  const [selectedDetail, setSelectedDetail] = useState<{ title: string; details: string } | null>(null); 
+  const [selectedDetail, setSelectedDetail] = useState<{ data: any } | null>(null); 
 
   const handleCheckboxChange = (data: any, dataSet: string) => {
-
-    const isAlreadySelected = selectedCards.some(card => card.title === data.loan.id);
+    console.log(data)
+    const isAlreadySelected = selectedCards.some(card => card.data.loan.id === data.loan.id);
 
     if (isAlreadySelected) {
-      setSelectedCards(selectedCards.filter((card) => card.title !== data.loan.id));
+      setSelectedCards(selectedCards.filter((card) => card.data.loan.id !== data.loan.id));
     } else if (selectedCards.length < 2) {
-      setSelectedCards([...selectedCards, {title:data.loan.id,details:'eieei', dataSet }]);
+      setSelectedCards([...selectedCards, {data, dataSet}]);
     }
   };
 
-  const handleCardClick = (data: { title: string; details: string }) => {
+  const handleCardClick = (data: any) => {
     setSelectedDetail(data);
     setDialogOpen(true);
   };
@@ -107,7 +107,7 @@ function ProductPage() {
                     type="date"
                     value={editedData.dateOfBirth}
                     onChange={(e) => setEditedData({ ...editedData, dateOfBirth: e.target.value })}
-                    className="border p-2 rounded mb-4"
+                    className="border p-2 rounded mb-4 "
                   />
                   <label className="block mb-2">รายได้ต่อเดือน:</label>
                   <input
@@ -225,14 +225,15 @@ function ProductPage() {
                       {isComparing && (
                         <Checkbox
                           className={cn('absolute top-1/2 left-[-25px] transform -translate-y-1/2 border-black')}
-                          checked={selectedCards.some(card => card.title === data.loan.id)}
+                          checked={selectedCards.some(card => card.data.loan.id === data.loan.id)}
                           onCheckedChange={() => handleCheckboxChange(data, selectedDataSet)}
-                          disabled={!selectedCards.some(card => card.title === data.loan.id) && selectedCards.length >= 2}
+                          disabled={!selectedCards.some(card => card.data.loan.id === data.loan.id) && selectedCards.length >= 2}
                         />
                       )}
                       <TestCard 
                         title={data.loan.product} 
-                        onClick={() => handleCardClick({details:"eiei",title: data.loan.id})} 
+                        provider={data.loan.provider}
+                        onClick={() => handleCardClick(data)} 
                         interestRate={data.loan.interest_rate_average}
                         loanAmountProduct={data.loan.credit_maximum}
                         loanPeriodProduct={data.loan.period_maximum}
@@ -255,9 +256,9 @@ function ProductPage() {
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>{selectedDetail.title}</DialogTitle>
+              <DialogTitle>{selectedDetail.data.loan.product}</DialogTitle>
             </DialogHeader>
-            <div>{selectedDetail.details}</div>
+            <div>{selectedDetail.data.loan.product}</div>
             <div className='flex justify-center'>
               <Button className='rounded-2xl text-black w-36'>สนใจ</Button>
             </div>
