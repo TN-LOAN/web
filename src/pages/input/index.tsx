@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { Button } from '@/components/common/button';
 import { Checkbox } from '@/components/common/checkbox';
@@ -21,14 +21,16 @@ import {
 } from '@/components/common/select';
 import { useStrictForm } from '@/hooks/form-hook';
 import { calculateLoanAmount } from '@/libs/calculateLoanAmount';
+import { useLoanFormStore } from '@/libs/loanFormStore';
 import { cn } from '@/libs/utils';
-import { LoanFormDefaultValues, LoanFormSchema, LoanFormType } from '@/types/schema/loan';
+import { LoanFormSchema, LoanFormType } from '@/types/schema/loan';
 
 function InputPage() {
-  const form = useStrictForm(LoanFormSchema, LoanFormDefaultValues);
+  const navigate = useNavigate();
+  const { formData, setFormData } = useLoanFormStore();
+  const form = useStrictForm(LoanFormSchema, formData);
   const [loanAmountError, setLoanAmountError] = useState<string | null>(null);
-  const [showLoanDetails, setShowLoanDetails] = useState<boolean>(false);
-  const [calculatedLoanAmount, setCalculatedLoanAmount] = useState<number | null>(null);
+  const [, setCalculatedLoanAmount] = useState<number | null>(null);
 
   const onSubmit = (data: LoanFormType) => {
     const salary = form.getValues('salary');
@@ -40,17 +42,17 @@ function InputPage() {
 
     if (inputLoanAmount > 0 && calculated < inputLoanAmount) {
       setLoanAmountError(`วงเงินกู้สูงสุดของคุณคือ ${calculated.toLocaleString()} บาท`);
-      setShowLoanDetails(false);
     } else {
-      setLoanAmountError(null);
-      setShowLoanDetails(true);
-      setTimeout(() => {
-        window.scrollTo({
-          top: document.body.scrollHeight,
-          behavior: 'smooth',
-        });
-      }, 100);
+      // setLoanAmountError(null);
+      // setTimeout(() => {
+      //   window.scrollTo({
+      //     top: document.body.scrollHeight,
+      //     behavior: 'smooth',
+      //   });
+      // }, 100);
       console.log(data);
+      setFormData(data);
+      navigate('/product');
     }
   };
 
@@ -63,12 +65,7 @@ function InputPage() {
       <div className="mb-20">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div
-              className={cn(
-                'mx-auto mt-2.5 grid h-[620px] w-[1065px] grid-cols-2 gap-x-4 gap-y-6 bg-white p-6',
-                showLoanDetails ? 'rounded-t-lg' : 'rounded-lg',
-              )}
-            >
+            <div className={cn('mx-auto mt-2.5 grid h-[620px] w-[1065px] grid-cols-2 gap-x-4 gap-y-6 bg-white p-6')}>
               {/* Form fields */}
               <div className="mx-auto h-[45px] w-full max-w-[343px]">
                 <FormField
@@ -89,7 +86,7 @@ function InputPage() {
                           <SelectContent>
                             <SelectGroup>
                               <SelectLabel>อาชีพ</SelectLabel>
-                              <SelectItem value="office">พนักงานบริษัท</SelectItem>
+                              <SelectItem value="พนักงานบริษัท">พนักงานบริษัท</SelectItem>
                             </SelectGroup>
                           </SelectContent>
                         </Select>
@@ -306,19 +303,6 @@ function InputPage() {
             </div>
           </form>
         </Form>
-
-        {showLoanDetails && (
-          <div className="mx-auto h-[600px] w-[1065px] rounded-b-lg bg-white p-20 pt-0 text-center">
-            <h2 className="text-4xl font-bold">รายละเอียดกู้สินเชื่อ</h2>
-            <p className="mt-12 text-3xl">วงเงินกู้สูงสุด</p>
-            <h3 className="mt-12 text-5xl font-bold text-primary">{calculatedLoanAmount?.toLocaleString()}</h3>
-            <p className="mt-12 text-lg text-gray-400">หมายเหตุ: วงเงินที่คำนวนนี้เป็นเพียงการคำนวนเบื้องต้นเท่านั้น</p>
-            <Link to="/eiei">
-              <Button className="col-span-2 mx-auto mt-20 h-[70px] w-[301px] text-2xl text-black">ถัดไป</Button>
-              <link rel="" href="/eiei" />
-            </Link>
-          </div>
-        )}
       </div>
     </PageLayout>
   );
