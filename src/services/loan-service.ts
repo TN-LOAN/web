@@ -1,4 +1,4 @@
-import { LoanResponseType } from '@/types/schema/loan';
+import { LoanResponseType, LoanType } from '@/types/schema/loan';
 import { LoanFormType } from '@/types/schema/loan';
 import { ApiService } from './api-service';
 

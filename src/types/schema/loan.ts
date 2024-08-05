@@ -22,35 +22,35 @@ export const LoanFormDefaultValues: LoanFormType = {
   acceptTerms: false,
 };
 
-// ID                       string  `json:"id" gorm:"primaryKey;type:char(255)"`
-// 	Provider                 string  `json:"provider"`
-// 	Product                  string  `json:"product"`
-// 	InterestRateAverage      float64 `json:"interest_rate_average"`
-// 	InterestRatedDetail      string  `json:"interest_rate_detail"`
-// 	LoanType                 string  `json:"loan_type"`
-// 	Collateral               string  `json:"collateral"`
-// 	CollateralCondition      string  `json:"collateral_condition"`
-// 	Qualification            string  `json:"qualification"`
-// 	RelevantProductCondition string  `json:"relevant_product_condition"`
-// 	ProductCondition         string  `json:"product_condition"`
-// 	AgeMinimum               int     `json:"age_minimum"`
-// 	AgeMaximum               int     `json:"age_maximum"`
-// 	EmployeeIncomeMinimum    int     `json:"employee_income_minimum"`
-// 	FreelanceIncomeMinimum   int     `json:"freelance_income_minimum"`
-// 	RegisterCondition        string  `json:"register_condition"`
-// 	CreditMinimum            int     `json:"credit_minimum"`
-// 	CreditMaximum            int     `json:"credit_maximum"`
-// 	LtvRadioDetail           string  `json:"ltv_radio_detail"`
-// 	PeriodMinimum            int     `json:"period_minimum"`
-// 	PeriodMaximum            int     `json:"period_maximum"`
-// 	PeriodAgeMaximum         int     `json:"period_age_maximum"`
-// 	MrtaDetail               string  `json:"mrta_detail"`
-// 	Mrta                     bool    `json:"mrta"`
-// 	Fee                      string  `json:"fee"`
-// 	PaymentFee               string  `json:"payment_fee"`
-// 	ProductWebsite           string  `json:"product_website"`
+// ID                       string  json:"id" gorm:"primaryKey;type:char(255)"
+//  Provider                 string  json:"provider"
+//  Product                  string  json:"product"
+//  InterestRateAverage      float64 json:"interest_rate_average"
+//  InterestRatedDetail      string  json:"interest_rate_detail"
+//  LoanType                 string  json:"loan_type"
+//  Collateral               string  json:"collateral"
+//  CollateralCondition      string  json:"collateral_condition"
+//  Qualification            string  json:"qualification"
+//  RelevantProductCondition string  json:"relevant_product_condition"
+//  ProductCondition         string  json:"product_condition"
+//  AgeMinimum               int     json:"age_minimum"
+//  AgeMaximum               int     json:"age_maximum"
+//  EmployeeIncomeMinimum    int     json:"employee_income_minimum"
+//  FreelanceIncomeMinimum   int     json:"freelance_income_minimum"
+//  RegisterCondition        string  json:"register_condition"
+//  CreditMinimum            int     json:"credit_minimum"
+//  CreditMaximum            int     json:"credit_maximum"
+//  LtvRadioDetail           string  json:"ltv_radio_detail"
+//  PeriodMinimum            int     json:"period_minimum"
+//  PeriodMaximum            int     json:"period_maximum"
+//  PeriodAgeMaximum         int     json:"period_age_maximum"
+//  MrtaDetail               string  json:"mrta_detail"
+//  Mrta                     bool    json:"mrta"
+//  Fee                      string  json:"fee"
+//  PaymentFee               string  json:"payment_fee"
+//  ProductWebsite           string  json:"product_website"
 
-export const LoanResponseType = z.object({
+export const LoanType = z.object({
   loan: z.object({
     id: z.string(),
   provider: z.string(),
@@ -83,4 +83,11 @@ export const LoanResponseType = z.object({
   installment: z.number()
 });
 
-export type LoanResponseType = z.infer<typeof LoanResponseType>;
+export const LoanResponseType = z.object({
+  normal_loan: z.array(LoanType),
+  decorate_loan: z.array(LoanType)
+})
+
+export type LoanType = z.infer<typeof LoanType>;
+
+export type LoanResponseType = z.infer<typeof LoanResponseType>
