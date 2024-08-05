@@ -38,6 +38,7 @@ function InputPage() {
     const inputLoanAmount = form.getValues('loanAmount');
 
     const calculated = calculateLoanAmount(salary, debtexpenses);
+    console.log("Onsubmit",calculated)
     setCalculatedLoanAmount(calculated);
 
     if (inputLoanAmount > 0 && calculated < inputLoanAmount) {
