@@ -168,13 +168,13 @@ function ProductPage() {
                     className={cn('rounded-2xl px-4 py-2 text-black', selectedDataSet === 'ทั่วไป' && 'bg-[#359f75] text-black')} 
                     onClick={() => setSelectedDataSet('ทั่วไป')}
                   >
-                    ทั่วไป
+                    สินเชื่อบ้าน
                   </Button>
                   <Button 
                     className={cn('rounded-2xl px-4 py-2 text-black', selectedDataSet === '110%' && 'bg-[#359f75] text-black')} 
                     onClick={() => setSelectedDataSet('110%')}
                   >
-                    110%
+                    สินเชื่อบ้านพร้อมต่อเติม
                   </Button>
                   <Popover>
                     <PopoverTrigger asChild>
@@ -232,13 +232,14 @@ function ProductPage() {
                       )}
                       <TestCard 
                         title={data.loan.product} 
-                        provider={data.loan.provider}
                         onClick={() => handleCardClick(data)} 
                         interestRate={data.loan.interest_rate_average}
                         loanAmountProduct={data.loan.credit_maximum}
                         loanPeriodProduct={data.loan.period_maximum}
                         isRed={data.loan.period_maximum < formData.loanPeriod} 
                         installment={data.installment}
+                        provider={data.loan.provider}
+                        loan_type={data.loan.loan_type}
                       />
                     </div>
                   ))}
