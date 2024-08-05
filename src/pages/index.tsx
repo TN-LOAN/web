@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 function IndexPage() {
  
   const sectionStyle1: React.CSSProperties = {
-    backgroundImage: 'url(src/assets/Frame2.png)', 
+    backgroundImage: 'url(src/assets/Frame3.png)', 
     backgroundSize: 'cover', 
     backgroundPosition: 'center', 
     minHeight: '200vh',
