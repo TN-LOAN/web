@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Button } from '@/components/common/button';
@@ -27,10 +27,14 @@ import { LoanFormSchema, LoanFormType } from '@/types/schema/loan';
 
 function InputPage() {
   const navigate = useNavigate();
-  const { formData, setFormData } = useLoanFormStore();
+  const { formData, setFormData, resetFormData } = useLoanFormStore();
   const form = useStrictForm(LoanFormSchema, formData);
   const [loanAmountError, setLoanAmountError] = useState<string | null>(null);
   const [, setCalculatedLoanAmount] = useState<number | null>(null);
+
+  useEffect(() => {
+    resetFormData(); 
+  }, [resetFormData]);
 
   const onSubmit = (data: LoanFormType) => {
     const salary = form.getValues('salary');
@@ -65,7 +69,7 @@ function InputPage() {
       <div className="mb-20">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className={cn('mx-auto mt-2.5 grid h-[620px] w-[1065px] grid-cols-2 gap-x-4 gap-y-6 bg-white p-6')}>
+            <div className={cn('mx-auto mt-2.5 grid h-[620px] w-[1065px] grid-cols-2 gap-x-4 gap-y-6 bg-white p-6 rounded-md')}>
               {/* Form fields */}
               <div className="mx-auto h-[45px] w-full max-w-[343px]">
                 <FormField

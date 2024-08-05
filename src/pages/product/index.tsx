@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/common/button';
 import Navbar from '@/components/common/navigation-bar';
@@ -26,13 +26,10 @@ function ProductPage() {
     salary: formData.salary,
     debtexpenses: formData.debtexpenses,
     loanPeriod: formData.loanPeriod,
-    loanAmount: calculateLoanAmount(formData.salary, formData.debtexpenses)
+    loanAmount: formData.loanAmount 
   });
 
-  useEffect(() => {
-    const newLoanAmount = calculateLoanAmount(editedData.salary, editedData.debtexpenses);
-    setEditedData((prev) => ({ ...prev, loanAmount: newLoanAmount }));
-  }, [editedData.salary, editedData.debtexpenses]);
+  const [tempEditedData, setTempEditedData] = useState(editedData);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -88,6 +85,13 @@ function ProductPage() {
     setSelectedCards([]);  
   };
 
+  const handleSave = () => {
+    const newLoanAmount = calculateLoanAmount(tempEditedData.salary, tempEditedData.debtexpenses);
+    setEditedData({ ...tempEditedData, loanAmount: newLoanAmount });
+    setFormData({ ...formData, ...tempEditedData, loanAmount: newLoanAmount });
+    setEditMode(false);
+  };
+
   return (
     <PageLayout className="bg-background">
       <Navbar />
@@ -116,36 +120,33 @@ function ProductPage() {
                   <label className="block mb-2">วัน/เดือน/ปีเกิด:</label>
                   <input
                     type="date"
-                    value={editedData.dateOfBirth}
-                    onChange={(e) => setEditedData({ ...editedData, dateOfBirth: e.target.value })}
+                    value={tempEditedData.dateOfBirth}
+                    onChange={(e) => setTempEditedData({ ...tempEditedData, dateOfBirth: e.target.value })}
                     className="border p-2 rounded mb-4"
                   />
                   <label className="block mb-2">รายได้ต่อเดือน:</label>
                   <input
                     type="number"
-                    value={editedData.salary}
-                    onChange={(e) => setEditedData({ ...editedData, salary: +e.target.value })}
+                    value={tempEditedData.salary}
+                    onChange={(e) => setTempEditedData({ ...tempEditedData, salary: +e.target.value })}
                     className="border p-2 rounded mb-4"
                   />
                   <label className="block mb-2">ภาระหนี้สินต่อเดือน:</label>
                   <input
                     type="number"
-                    value={editedData.debtexpenses}
-                    onChange={(e) => setEditedData({ ...editedData, debtexpenses: +e.target.value })}
+                    value={tempEditedData.debtexpenses}
+                    onChange={(e) => setTempEditedData({ ...tempEditedData, debtexpenses: +e.target.value })}
                     className="border p-2 rounded mb-4"
                   />
                   <label className="block mb-2">ระยะเวลากู้:</label>
                   <input
                     type="number"
-                    value={editedData.loanPeriod}
-                    onChange={(e) => setEditedData({ ...editedData, loanPeriod: +e.target.value })}
+                    value={tempEditedData.loanPeriod}
+                    onChange={(e) => setTempEditedData({ ...tempEditedData, loanPeriod: +e.target.value })}
                     className="border p-2 rounded mb-4"
                   />
                   <div className="flex justify-end space-x-2 mt-4">
-                    <Button className='text-black' onClick={() => { 
-                      setFormData({ ...formData, ...editedData });
-                      setEditMode(false);
-                    }}>
+                    <Button className='text-black' onClick={handleSave}>
                       บันทึก
                     </Button>
                     <Button className='bg-gray-300 text-black hover:bg-gray-200' onClick={() => setEditMode(false)}>
