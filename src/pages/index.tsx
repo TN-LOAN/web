@@ -7,21 +7,21 @@ import { Link } from 'react-router-dom';
 function IndexPage() {
  
   const sectionStyle1: React.CSSProperties = {
-    backgroundImage: 'url(src/assets/Frame3.png)', 
-    backgroundSize: 'cover', 
-    backgroundPosition: 'center', 
-    minHeight: '200vh',
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column', 
-    justifyContent: 'flex-end', 
-    alignItems: 'center',
-    color: 'white',
-    textAlign: 'center',
-    position: 'relative',
-    paddingBottom: '160px',
-
-  };
+    backgroundImage: 'url(src/assets/home.png)',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  height: '100vh', // ปรับให้ความสูงพอดีกับหน้าจอ
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'flex-end',
+  alignItems: 'center',
+  color: 'white',
+  textAlign: 'center',
+  position: 'relative',
+  paddingBottom: '160px',
+  overflow: 'hidden', // ป้องกันการเลื่อนหากมีเนื้อหาเกินขนาดหน้าจอ
+};
 
 
   const navbarStyle: React.CSSProperties = {
@@ -35,7 +35,7 @@ function IndexPage() {
   const buttonStyle: React.CSSProperties = {
     padding: '35px 35px', 
     fontSize: '1.5rem', 
-    backgroundColor: isHovered ? '#17b374' : '#1ECC83', 
+    backgroundColor: isHovered ? '#17b374' : '#1ECC84', 
     color: 'black',
     border: 'none',
     cursor: 'pointer',
