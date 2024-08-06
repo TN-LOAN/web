@@ -20,6 +20,7 @@ import { useCompareStore } from '@/libs/compareStore';
 import { useLoanFormStore } from '@/libs/loanFormStore';
 import { cn } from '@/libs/utils';
 import { LoanFormSchema, LoanResponseType, LoanType } from '@/types/schema/loan';
+import ProductCard from '@/components/test/test-card';
 
 function ProductPage() {
   const { formData, setFormData } = useLoanFormStore();
@@ -86,7 +87,6 @@ function ProductPage() {
 
   const handleCardClick = (data: any) => {
     setSelectedDetail(data);
-    setDialogOpen(true);
   };
 
   const handleCompare = () => {
@@ -357,7 +357,7 @@ function ProductPage() {
                               }
                             />
                           )}
-                          <TestCard
+                          <ProductCard
                             title={data.loan.product}
                             provider={data.loan.provider}
                             onClick={() => handleCardClick(data)}
@@ -368,6 +368,7 @@ function ProductPage() {
                             installment={data.installment}
                             mrta={data.loan.mrta}
                             loan_type={data.loan.loan_type}
+                            data={data}
                           />
                         </div>
                       ))}
@@ -381,19 +382,6 @@ function ProductPage() {
         </div>
       </div>
 
-      {selectedDetail && (
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>{selectedDetail.data.loan.product}</DialogTitle>
-            </DialogHeader>
-            <div>{selectedDetail.data.loan.product}</div>
-            <div className="flex justify-center">
-              <Button className="w-36 rounded-2xl text-black">สนใจ</Button>
-            </div>
-          </DialogContent>
-        </Dialog>
-      )}
     </PageLayout>
   );
 }
