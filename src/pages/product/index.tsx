@@ -8,7 +8,7 @@ import TestCard from '@/components/test/test-card';
 import { ScrollArea } from '@/components/common/scroll';
 import { Separator } from '@/components/common/separator';
 import { Info } from 'lucide-react';
-import { Popover, PopoverTrigger, PopoverContent } from '@radix-ui/react-popover';
+import { Popover, PopoverTrigger, PopoverContent } from '@/components/common/popover';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/common/dialog';
 import { cn } from '@/libs/utils';
 import { useCompareStore } from '@/libs/compareStore';
@@ -224,8 +224,10 @@ function ProductPage() {
                     <Info className="w-5 h-5 cursor-pointer" />
                   </PopoverTrigger>
                   <PopoverContent className="p-4 bg-white rounded shadow">
-                    <p>ทั่วไป คือ</p>
-                    <p>110% คือ</p>
+                    <p>ให้กู้กรณีเพื่อจัดหาที่อยู่อาศัย รวมถึงกรณีกู้เพิ่มเติมเพื่อซื้อเฟอร์นิเจอร์ ตกแต่งบ้าน หรือสิ่งจำเป็นอื่นในการเข้าอยู่อาศัย 
+                      และกรณีกู้เพิ่มเติมเพื่อเป็นค่าเบี้ยประกันชีวิตเพื่อประกันสินเชื่อ และ/หรือเป็นค่าเบี้ยประกันอัคคีภัย รวมกันสูงสุดไม่เกินร้อยละ 110 
+                      ของราคาซื้อขายหรือราคาประเมินหลักทรัพย์แล้วแต่ราคาใดที่ต่ำกว่า</p>
+                    <p className='italic ...'>*ทั้งนี้ เป็นไปตามเกณฑ์การพิจารณาที่ธนาคารกำหนด</p>
                   </PopoverContent>
                 </Popover>
               </div>
@@ -265,7 +267,7 @@ function ProductPage() {
    <div className='flex items-center'>
     <div className='mr-1'>MRTA</div>
     <Select  value={mrta} onValueChange={handleMrtaChange}>
-      <SelectTrigger className="w-24 bg-white justify-center" >
+      <SelectTrigger className="w-24 bg-white" >
         <SelectValue placeholder="โปรดเลือก" />
       </SelectTrigger>
       <SelectContent>
