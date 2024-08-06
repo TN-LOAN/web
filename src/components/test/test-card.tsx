@@ -10,9 +10,10 @@ type TestCardProps = {
   loanPeriodProduct: number;
   isRed?: boolean;
   installment: number;
+  mrta?: boolean;
 };
 
-export default function ProductCard({ title, provider,onClick, interestRate, loanAmountProduct, loanPeriodProduct, isRed = false, installment,}: TestCardProps) {
+export default function ProductCard({ mrta,title, provider,onClick, interestRate, loanAmountProduct, loanPeriodProduct, isRed = false, installment,}: TestCardProps) {
   return (
     <Card className={cn('cursor-pointer transition-colors duration-300 hover:bg-primary/10')} onClick={onClick}>
       <CardHeader className='font-bold'>
@@ -25,6 +26,10 @@ export default function ProductCard({ title, provider,onClick, interestRate, loa
       <p>อัตราดอกเบี้ย: {interestRate}%</p>
       <p>วงเงินกู้: {loanAmountProduct.toLocaleString()} บาท</p>
       <p className={`text-sm ${isRed ? 'text-red-500' : ''}`}>ระยะเวลากู้: {loanPeriodProduct} ปี</p>
+
+      <p >Mrta {
+        mrta? 'มี' : 'ไม่มี'
+        }</p>
 
       </CardContent>
       <CardFooter>

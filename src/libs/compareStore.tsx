@@ -3,7 +3,7 @@ import { create } from 'zustand';
 
 type CompareStoreType = {
   selectedItems: { data: LoanResponseType }[];
-  setSelectedItems: (items: { data: any, dataSet: string }[]) => void;
+  setSelectedItems: (items: { data: any }[]) => void;
 };
 
 export const useCompareStore = create<CompareStoreType>((set) => ({
