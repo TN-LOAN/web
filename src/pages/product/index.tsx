@@ -203,7 +203,6 @@ function ProductPage() {
                   </div>
                 </div>
               ) : (
-                  <p className="text-sm">ภาระหนี้สินต่อเดือน:</p>
                 <div className="mt-9 space-y-4 p-0">
                   <label className="block">อาชีพ:</label>
                   <input value={formData.career} disabled className="mt-0 rounded border p-2" />
