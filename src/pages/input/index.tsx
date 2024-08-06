@@ -78,7 +78,7 @@ function InputPage() {
     }
   
     if (inputLoanAmount > 0 && calculated < inputLoanAmount) {
-      setLoanAmountError(`วงเงินกู้สูงสุดของคุณคือ ${calculated.toLocaleString()} บาท`);
+      setLoanAmountError(`วงเงินกู้ของคุณไม่อยู่ในเกณฑ์`);
     } else {
       console.log(data);
       setLoanAmountError(null);
@@ -173,6 +173,9 @@ function InputPage() {
                     </FormItem>
                   )}
                 />
+                <p className="pt-1 text-xs text-gray-400">
+                  ยกตัวอย่างเช่น 01/08/1999
+                </p>
               </div>
 
               <div className="mx-auto h-[45px] w-full">
