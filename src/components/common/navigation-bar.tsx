@@ -1,4 +1,4 @@
-import { HomeIcon, HousePlusIcon } from 'lucide-react';
+import { HomeIcon } from 'lucide-react';
 import { useState } from 'react';
 
 const Navbar = () => {
@@ -32,7 +32,7 @@ const Navbar = () => {
         <div className={`space-x-4 md:flex md:items-center ${isOpen ? 'block' : 'hidden'}`}>
           <div className="flex items-center space-x-2 text-white hover:text-gray-300">
             <HomeIcon size={24} />
-            <a href="#home" className="">
+            <a href="/" className="">
               Home
             </a>
           </div>

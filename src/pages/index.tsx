@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Navbar from '@/components/common/navigation-bar';
 import { PageLayout } from '@/components/common/pagelayout';
 import { Button } from '@/components/common/button';
@@ -31,11 +31,11 @@ function IndexPage() {
     width: '100%',
     zIndex: 1000 
   };
-
+  const [isHovered, setIsHovered] = useState(false);
   const buttonStyle: React.CSSProperties = {
     padding: '35px 35px', 
     fontSize: '1.5rem', 
-    backgroundColor: '#1ECC83', 
+    backgroundColor: isHovered ? '#17b374' : '#1ECC83', 
     color: 'black',
     border: 'none',
     cursor: 'pointer',
@@ -53,7 +53,8 @@ function IndexPage() {
         <section style={sectionStyle1}>
         <div>
           <Link to="/input">
-            <Button style={buttonStyle} >
+            <Button style={buttonStyle} onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}>
               สินเชื่อแนะนำ
             </Button>
             </Link>
