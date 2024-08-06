@@ -60,6 +60,7 @@ function ProductPage() {
   const [selectedDetail, setSelectedDetail] = useState<{ data: any } | null>(null);
   const [selectedData, setSelectedData] = useState<LoanType[]>();
   const [mrta, setMrta] = useState('all');
+  const [sort, setSort] = useState('installment');
 
   useEffect(() => {
     if (selectNormalSet && selectDecorateSet && parsedData.success && parsedData.data) {
@@ -102,11 +103,41 @@ function ProductPage() {
     setMrta(value);
   };
 
+  const handleSortChange = (value: string) => {
+    setSort(value);
+  };
+
+  const handleSort = (data: any) => {
+    if (sort === 'installment') {
+      return data.installment;
+    } else if (sort === 'interest') {
+      return data.loan.interest_rate_average;
+    } else if (sort === 'credit') {
+      return data.loan.credit_maximum;
+    } else if (sort === 'period') {
+      return data.loan.period_maximum;
+    }
+  };
+
+  let filterData =
+    selectedData &&
+    selectedData.filter((data) => {
+      if (mrta === 'all') {
+        return data;
+      } else if (mrta === 'do' && data.loan.mrta === true) {
+        return data;
+      } else if (mrta === 'dont' && data.loan.mrta === false) {
+        return data;
+      }
+    });
+
+  let sortedData = filterData && filterData.sort((a, b) => handleSort(a) - handleSort(b));
+
   return (
     <PageLayout className="bg-background">
       <Navbar />
       <div className="container mx-auto py-6">
-        <div className="mx-6 grid grid-cols-1 gap-0 md:mx-10 md:grid-cols-2">
+        <div className="mx-6 grid grid-cols-1 gap-0 md:mx-10 md:grid-cols-3">
           {/* Left Panel */}
           <div className="rounded-l-lg bg-white p-8">
             <div className="text-center">
@@ -187,7 +218,7 @@ function ProductPage() {
           </div>
 
           {/* Right Panel */}
-          <div className="rounded-r-lg bg-[#d6efe4] p-6">
+          <div className="col-span-2 rounded-r-lg bg-[#d6efe4] p-6">
             <h2 className="mb-4 text-center text-2xl font-bold md:text-4xl">สินเชื่อแนะนำ</h2>
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center space-x-2">
@@ -260,7 +291,18 @@ function ProductPage() {
             {parsedData.success && parsedData.data && parsedData.data.normal_loan.length > 0 ? (
               <>
                 <div className="mb-4 flex items-center gap-2">
-                  <p className="text-gray-600">{`ผลการค้นหา ${selectedData?.length} ผลิตภัณฑ์`}</p>
+                  <p className="text-gray-600">{`ผลการค้นหา ${
+                    selectedData &&
+                    selectedData.filter((data) => {
+                      if (mrta === 'all') {
+                        return data;
+                      } else if (mrta === 'do' && data.loan.mrta === true) {
+                        return data;
+                      } else if (mrta === 'dont' && data.loan.mrta === false) {
+                        return data;
+                      }
+                    }).length
+                  } ผลิตภัณฑ์`}</p>
                   <div className="flex items-center">
                     <div className="mr-1">MRTA</div>
                     <Select value={mrta} onValueChange={handleMrtaChange}>
@@ -276,47 +318,53 @@ function ProductPage() {
                       </SelectContent>
                     </Select>
                   </div>
+                  <div className="flex items-center">
+                    <div className="mr-1">จัดเรียงตาม</div>
+                    <Select value={sort} onValueChange={handleSortChange}>
+                      <SelectTrigger className="w-24 justify-center bg-white">
+                        <SelectValue placeholder="โปรดเลือก" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem value="installment">งวดผ่อนต่อเดือน</SelectItem>
+                          <SelectItem value="interest">อัตราดอกเบี้ย </SelectItem>
+                          <SelectItem value="credit">วงเงินกู้</SelectItem>
+                          <SelectItem value="period">ระยะเวลากู้</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
                 <ScrollArea className="h-[300px] md:h-[500px]">
                   <div className="mx-auto w-[80%] space-y-4 md:w-[80%]">
-                    {selectedData &&
-                      selectedData
-                        .filter((data) => {
-                          if (mrta === 'all') {
-                            return data;
-                          } else if (mrta === 'do' && data.loan.mrta === true) {
-                            return data;
-                          } else if (mrta === 'dont' && data.loan.mrta === false) {
-                            return data;
-                          }
-                        })
-                        .map((data, index) => (
-                          <div key={index} className="relative">
-                            {isComparing && (
-                              <Checkbox
-                                className={cn('absolute left-[-25px] top-1/2 -translate-y-1/2 transform border-black')}
-                                checked={selectedCards.some((card) => card.data.loan.id === data.loan.id)}
-                                onCheckedChange={() => handleCheckboxChange(data)}
-                                disabled={
-                                  !selectedCards.some((card) => card.data.loan.id === data.loan.id) &&
-                                  selectedCards.length >= 2
-                                }
-                              />
-                            )}
-                            <TestCard
-                              title={data.loan.product}
-                              provider={data.loan.provider}
-                              onClick={() => handleCardClick(data)}
-                              interestRate={data.loan.interest_rate_average}
-                              loanAmountProduct={data.loan.credit_maximum}
-                              loanPeriodProduct={data.loan.period_maximum}
-                              isRed={data.loan.period_maximum < formData.loanPeriod}
-                              installment={data.installment}
-                              mrta={data.loan.mrta}
-                              loan_type={data.loan.loan_type}
+                    {sortedData &&
+                      sortedData.map((data, index) => (
+                        <div key={index} className="relative">
+                          {isComparing && (
+                            <Checkbox
+                              className={cn('absolute left-[-25px] top-1/2 -translate-y-1/2 transform border-black')}
+                              checked={selectedCards.some((card) => card.data.loan.id === data.loan.id)}
+                              onCheckedChange={() => handleCheckboxChange(data)}
+                              disabled={
+                                !selectedCards.some((card) => card.data.loan.id === data.loan.id) &&
+                                selectedCards.length >= 2
+                              }
                             />
-                          </div>
-                        ))}
+                          )}
+                          <TestCard
+                            title={data.loan.product}
+                            provider={data.loan.provider}
+                            onClick={() => handleCardClick(data)}
+                            interestRate={data.loan.interest_rate_average}
+                            loanAmountProduct={data.loan.credit_maximum}
+                            loanPeriodProduct={data.loan.period_maximum}
+                            isRed={data.loan.period_maximum < formData.loanPeriod}
+                            installment={data.installment}
+                            mrta={data.loan.mrta}
+                            loan_type={data.loan.loan_type}
+                          />
+                        </div>
+                      ))}
                   </div>
                 </ScrollArea>
               </>
