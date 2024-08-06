@@ -1,6 +1,5 @@
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { CheckIcon } from '@radix-ui/react-icons';
-import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover';
 import { HammerIcon, HouseIcon, Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -10,6 +9,7 @@ import { Checkbox } from '@/components/common/checkbox';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/common/dialog';
 import Navbar from '@/components/common/navigation-bar';
 import { PageLayout } from '@/components/common/pagelayout';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/common/popover';
 import { ScrollArea } from '@/components/common/scroll';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/common/select';
 import { Separator } from '@/components/common/separator';
@@ -246,7 +246,7 @@ function ProductPage() {
                 >
                   {selectNormalSet && <CheckIcon className="h-5 w-5" />}
                   <HouseIcon className="h-5 w-5" />
-                  <div>สินเชื่อทั่วไป</div>
+                  <div>สินเชื่อเคหะ</div>
                 </Button>
                 <Button
                   className={cn(
@@ -269,6 +269,7 @@ function ProductPage() {
                     <Info className="h-5 w-5 cursor-pointer" />
                   </PopoverTrigger>
                   <PopoverContent className="rounded bg-white p-4 shadow">
+                    <div className="font-semibold">สินเชื่อบ้านพร้อมการต่อเติม คือ</div>
                     <p>
                       ให้กู้กรณีเพื่อจัดหาที่อยู่อาศัย รวมถึงกรณีกู้เพิ่มเติมเพื่อซื้อเฟอร์นิเจอร์ ตกแต่งบ้าน
                       หรือสิ่งจำเป็นอื่นในการเข้าอยู่อาศัย
@@ -308,7 +309,7 @@ function ProductPage() {
             <Separator className="my-4 bg-black" />
             {parsedData.success && parsedData.data && parsedData.data.normal_loan.length > 0 ? (
               <>
-                <div className="mb-4 flex items-center gap-2 justify-between">
+                <div className="mb-4 flex items-center justify-between gap-2">
                   <p className="text-gray-600">{`ผลการค้นหา ${
                     selectedData &&
                     selectedData.filter((data) => {
@@ -321,38 +322,39 @@ function ProductPage() {
                       }
                     }).length
                   } ผลิตภัณฑ์`}</p>
-                  <div className="flex items-center">
-                    <div className="mr-1">MRTA</div>
-                    <Select value={mrta} onValueChange={handleMrtaChange}>
-                      <SelectTrigger className="w-24 justify-center bg-white">
-                        <SelectValue placeholder="โปรดเลือก" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectItem value="all">ทั้งหมด</SelectItem>
-                          <SelectItem value="do">ทำ </SelectItem>
-                          <SelectItem value="dont">ไม่ทำ</SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className='flex gap-4'>
-                  <div className="flex items-center">
-                    <div className="mr-1">จัดเรียงตาม</div>
-                    <Select value={sort} onValueChange={handleSortChange}>
-                      <SelectTrigger className="w-36 justify-center bg-white">
-                        <SelectValue placeholder="โปรดเลือก" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectItem value="installment">งวดผ่อนต่อเดือน</SelectItem>
-                          <SelectItem value="interest">อัตราดอกเบี้ย </SelectItem>
-                          <SelectItem value="credit">วงเงินกู้</SelectItem>
-                          <SelectItem value="period">ระยะเวลากู้</SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </div>
+
+                  <div className="flex gap-4">
+                    <div className="flex items-center">
+                      <div className="mr-1">MRTA</div>
+                      <Select value={mrta} onValueChange={handleMrtaChange}>
+                        <SelectTrigger className="w-24 justify-center bg-white">
+                          <SelectValue placeholder="โปรดเลือก" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectItem value="all">ทั้งหมด</SelectItem>
+                            <SelectItem value="do">ทำ </SelectItem>
+                            <SelectItem value="dont">ไม่ทำ</SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="flex items-center">
+                      <div className="mr-1">จัดเรียงตาม</div>
+                      <Select value={sort} onValueChange={handleSortChange}>
+                        <SelectTrigger className="w-36 justify-center bg-white">
+                          <SelectValue placeholder="โปรดเลือก" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectItem value="installment">งวดผ่อนต่อเดือน</SelectItem>
+                            <SelectItem value="interest">อัตราดอกเบี้ย </SelectItem>
+                            <SelectItem value="credit">วงเงินกู้</SelectItem>
+                            <SelectItem value="period">ระยะเวลากู้</SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
                 </div>
                 <ScrollArea className="h-[300px] md:h-[550px]">
