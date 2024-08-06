@@ -1,7 +1,12 @@
+import React, { useState } from 'react';
+
+import CustomDialog from '@/components/common/customDialog';
 import { cn } from '@/libs/utils';
+import { LoanType } from '@/types/schema/loan';
 
 import { Button } from '../common/button';
 import { Card, CardContent, CardFooter, CardHeader } from '../common/card';
+import { Dialog, DialogTrigger } from '../common/dialog';
 
 type TestCardProps = {
   title: string;
@@ -14,6 +19,7 @@ type TestCardProps = {
   mrta?: boolean;
   provider: string;
   loan_type: string;
+  data: LoanType;
 };
 
 export default function ProductCard({
@@ -27,10 +33,11 @@ export default function ProductCard({
   installment,
   provider,
   loan_type,
+  data,
 }: TestCardProps) {
   const imagePath = '/src/assets/logo';
 
-  const replaceProvider = (provider: string) => {
+   const replaceProvider = (provider: string) => {
     //use switch case to replace provider name with image
     switch (provider) {
       case 'กรุงไทย':
@@ -81,31 +88,39 @@ export default function ProductCard({
   };
 
   return (
-    <Card className={cn('cursor-pointer transition-colors duration-300 hover:bg-primary/10')} onClick={onClick}>
-      <CardHeader className="font-bold">
-        <div className="flex items-center gap-2">
-          <img src={replaceProvider(provider)} alt={provider} className="h-10 w-10" />
-          <div className="text-lg">{provider}</div>
-        </div>
-        <br />
-        สินเชื่อ {title}
-      </CardHeader>
+    <>
+      <Card className={cn('cursor-pointer transition-colors duration-300 hover:bg-primary/10')} onClick={onClick}>
+        <CardHeader className="font-bold">
+          <div className="flex items-center gap-2">
+            <img src={replaceProvider(provider)} alt={provider} className="h-10 w-10" />
+            <div className="text-lg">{provider}</div>
+          </div>
+          <br />
+          สินเชื่อ {title}
+        </CardHeader>
 
-      <CardContent className="text-lg">
-        <p className="text-xl font-bold text-black">
-          งวดผ่อนต่อเดือน:{' '}
-          <span className="rounded-md bg-green-100 px-2 py-1 text-green-500">{Number(installment).toFixed(2)}</span> บาท{' '}
-        </p>
-        <p>อัตราดอกเบี้ย: {interestRate}%</p>
-        <p>ประเภทสินเชื่อ: {loan_type}</p>
-        <p>วงเงินกู้: {loanAmountProduct.toLocaleString()} บาท</p>
-        <p className={`${isRed ? 'text-red-500' : ''}`}>ระยะเวลากู้: {loanPeriodProduct} ปี</p>
+        <CardContent className="text-lg">
+          <p className="text-xl font-bold text-black">
+            งวดผ่อนต่อเดือน:{' '}
+            <span className="rounded-md bg-green-100 px-2 py-1 text-green-500">{Number(installment).toFixed(2)}</span>{' '}
+            บาท{' '}
+          </p>
+          <p>อัตราดอกเบี้ย: {interestRate}%</p>
+          <p>ประเภทสินเชื่อ: {loan_type}</p>
+          <p>วงเงินกู้: {loanAmountProduct.toLocaleString()} บาท</p>
+          <p className={`${isRed ? 'text-red-500' : ''}`}>ระยะเวลากู้: {loanPeriodProduct} ปี</p>
 
-        <p>Mrta {mrta ? 'มี' : 'ไม่มี'}</p>
-      </CardContent>
-      <CardFooter>
-        <Button>รายละเอียด</Button>
-      </CardFooter>
-    </Card>
+          <p>Mrta {mrta ? 'มี' : 'ไม่มี'}</p>
+        </CardContent>
+        <CardFooter>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button>รายละเอียด</Button>
+            </DialogTrigger>
+            {data && <CustomDialog loanData={data.loan && data} />}
+          </Dialog>
+        </CardFooter>
+      </Card>
+    </>
   );
 }

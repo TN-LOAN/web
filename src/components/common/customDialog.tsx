@@ -7,8 +7,6 @@ import {   LoanType } from '@/types/schema/loan';
 import { ScrollArea } from '@/components/common/scroll';
 
 interface CustomDialogProps {
-  open: boolean;
-  onClose: () => void;
   loanData: LoanType;
 }
 
@@ -56,24 +54,74 @@ const LoanLTVRatio: React.FC<{ detail: string }> = ({ detail }) => {
     );
   };
 
-const CustomDialog: React.FC<CustomDialogProps> = ({ open, onClose, loanData }) => {
-    
-    if (!open) return null;
+const CustomDialog: React.FC<CustomDialogProps> = ({ loanData }) => {
+    const imagePath = '/src/assets/logo';
 
+    const replaceProvider = (provider: string) => {
+     //use switch case to replace provider name with image
+     switch (provider) {
+       case 'กรุงไทย':
+         return `${imagePath}/KTB.png`;
+       case 'กรุงเทพ':
+         return `${imagePath}/BBL.png`;
+       case 'กสิกรไทย':
+         return `${imagePath}/KBANK.png`;
+       case 'ยูโอบี':
+         return `${imagePath}/UOB.png`;
+       case 'กรุงศรีอยุธยา':
+         return `${imagePath}/BAY.png`;
+       case 'เมกะ สากลพาณิชย์':
+         return `${imagePath}/Mega.png`;
+       case 'ธอส.':
+         return `${imagePath}/GHB.png`;
+       case 'ทิสโก้':
+         return `${imagePath}/TISCO.png`;
+       case 'ออมสิน':
+         return `${imagePath}/GSB.png`;
+       case 'แลนด์ แอนด์ เฮ้าส์':
+         return `${imagePath}/LH.png`;
+       case 'บค. เวิลด์':
+         return `${imagePath}/World.png`;
+       case 'อินเดียนโอเวอร์ซีส์':
+         return `${imagePath}/Indian.png`;
+       case 'ไทยเครดิต':
+         return `${imagePath}/TCR.png`;
+       case 'บค. แคปปิตอล ลิ้งค์':
+         return `${imagePath}/CApital Link.png`;
+       case 'บง. แอ็ดวานซ์':
+         return `${imagePath}/Advance.png`;
+       case 'ทหารไทยธนชาต':
+         return `${imagePath}/TTB.png`;
+       case 'บค. เอสเบ':
+         return `${imagePath}/SBEY.png`;
+       case 'เกียรตินาคินภัทร':
+         return `${imagePath}/KK.png`;
+       case 'ธ.ก.ส.':
+         return `${imagePath}/BAAC.png`;
+       case 'ไอซีบีซี (ไทย)':
+         return `${imagePath}/ICBC.png`;
+       case 'ไทยพาณิชย์':
+         return `${imagePath}/SCB.png`;
+       default:
+         return `${imagePath}/default.png`;
+     }
+   };
   
-
     
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+ 
   <DialogContent className="bg-white sm:max-w-[675px] h-3/4">
     <DialogHeader>
+    <div className="flex items-center gap-2">
+    <img src={replaceProvider(loanData.loan.provider)} alt={loanData.loan.provider} className="h-10 w-10" />
       <DialogTitle className="text-xl">ธนาคาร {loanData.loan.provider}</DialogTitle>
+      </div>
         <h2>{loanData.loan.product}</h2>
-        </DialogHeader>
+    </DialogHeader>
       <ScrollArea className="h-full">
         {/* ข้อมูลการผ่อนชำระ */}
         <div className="mb-4 space-y-1">
-          <h3 className="font-bold">ข้อมูลการผ่อนชำระ</h3>
+          <h3 >ข้อมูลการผ่อนชำระ</h3>
           <p>งวดผ่อนชำระต่อเดือน: <span className=' '>{loanData.installment.toFixed(2)} บาท/เดือน</span></p>
           <p>อัตราดอกเบี้ยเฉลี่ย 3 ปี: {loanData.loan.interest_rate_average}%</p>
           {/* <p>อัตราดอกเบี้ยในแต่ละปี: {loanData.loan.interest_rate_detail}</p> */}
@@ -126,7 +174,7 @@ const CustomDialog: React.FC<CustomDialogProps> = ({ open, onClose, loanData }) 
       </ScrollArea>
 
   </DialogContent>
-</Dialog>
+
 
   );
 };
