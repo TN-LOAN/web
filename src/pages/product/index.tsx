@@ -1,7 +1,7 @@
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { CheckIcon } from '@radix-ui/react-icons';
 import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover';
-import { Info } from 'lucide-react';
+import { HammerIcon, HouseIcon, Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -14,13 +14,13 @@ import { ScrollArea } from '@/components/common/scroll';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/common/select';
 import { Separator } from '@/components/common/separator';
 import TestCard from '@/components/test/test-card';
+import ProductCard from '@/components/test/test-card';
 import { useGetLoan } from '@/hooks/loan-hook';
 import { calculateLoanAmount } from '@/libs/calculateLoanAmount';
 import { useCompareStore } from '@/libs/compareStore';
 import { useLoanFormStore } from '@/libs/loanFormStore';
 import { cn } from '@/libs/utils';
 import { LoanFormSchema, LoanResponseType, LoanType } from '@/types/schema/loan';
-import ProductCard from '@/components/test/test-card';
 
 function ProductPage() {
   const { formData, setFormData } = useLoanFormStore();
@@ -131,7 +131,15 @@ function ProductPage() {
       }
     });
 
-  let sortedData = filterData && filterData.sort((a, b) => handleSort(a) - handleSort(b));
+  let sortedData =
+    filterData &&
+    filterData.sort((a, b) => {
+      if (sort === 'credit') {
+        return handleSort(b) - handleSort(a);
+      } else {
+        return handleSort(a) - handleSort(b);
+      }
+    });
 
   return (
     <PageLayout className="bg-background">
@@ -226,7 +234,7 @@ function ProductPage() {
               <div className="flex items-center space-x-2">
                 <Button
                   className={cn(
-                    'rounded-2xl px-4 py-2 text-black hover:bg-[#359f75]',
+                    'space-x-2 rounded-2xl px-4 py-2 text-white hover:bg-[#359f75]',
                     selectNormalSet && 'bg-[#359f75] text-black',
                   )}
                   onClick={() => {
@@ -237,11 +245,12 @@ function ProductPage() {
                   }}
                 >
                   {selectNormalSet && <CheckIcon className="h-5 w-5" />}
-                  สินเชื่อทั่วไป
+                  <HouseIcon className="h-5 w-5" />
+                  <div>สินเชื่อทั่วไป</div>
                 </Button>
                 <Button
                   className={cn(
-                    'rounded-2xl px-4 py-2 text-black hover:bg-[#359f75]',
+                    'space-x-2 rounded-2xl px-4 py-2 text-white hover:bg-[#359f75]',
                     selectDecorateSet && 'bg-[#359f75] text-black',
                   )}
                   onClick={() => {
@@ -252,7 +261,8 @@ function ProductPage() {
                   }}
                 >
                   {selectDecorateSet && <CheckIcon className="h-5 w-5" />}
-                  สินเชื่อบ้านพร้อมการต่อเติม
+                  <HammerIcon className="h-5 w-5" />
+                  <div> สินเชื่อบ้านพร้อมการต่อเติม</div>
                 </Button>
                 <Popover>
                   <PopoverTrigger asChild>
@@ -385,7 +395,6 @@ function ProductPage() {
           </div>
         </div>
       </div>
-
     </PageLayout>
   );
 }

@@ -1,3 +1,4 @@
+import { HammerIcon, HouseIcon } from 'lucide-react';
 import React, { useState } from 'react';
 
 import CustomDialog from '@/components/common/customDialog';
@@ -37,7 +38,7 @@ export default function ProductCard({
 }: TestCardProps) {
   const imagePath = '/src/assets/logo';
 
-   const replaceProvider = (provider: string) => {
+  const replaceProvider = (provider: string) => {
     //use switch case to replace provider name with image
     switch (provider) {
       case 'กรุงไทย':
@@ -89,11 +90,20 @@ export default function ProductCard({
 
   return (
     <>
-      <Card className={cn('cursor-pointer transition-colors duration-300 hover:bg-primary/10')} onClick={onClick}>
+      <Card className={cn('transition-colors duration-300')} onClick={onClick}>
         <CardHeader className="font-bold">
-          <div className="flex items-center gap-2">
-            <img src={replaceProvider(provider)} alt={provider} className="h-10 w-10" />
-            <div className="text-lg">{provider}</div>
+          <div className="flex justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <img src={replaceProvider(provider)} alt={provider} className="h-10 w-10" />
+              <div className="text-lg">{provider}</div>
+            </div>
+            <div>
+              {data.loan.ltv_radio_detail.includes('110%') ? (
+                <HammerIcon className="h-7 w-7" />
+              ) : (
+                <HouseIcon className="h-7 w-7" />
+              )}
+            </div>
           </div>
           <br />
           สินเชื่อ {title}
@@ -107,10 +117,19 @@ export default function ProductCard({
           </div>
           <div>อัตราดอกเบี้ย: {interestRate}%</div>
           <div>ประเภทสินเชื่อ: {loan_type}</div>
-          <div>วงเงินกู้: {loanAmountProduct.toLocaleString()} บาท</div>
-          <div className={`${isRed ? 'text-red-500' : ''}`}>ระยะเวลากู้: {loanPeriodProduct} ปี</div>
+          <div>
+            วงเงินกู้:{' '}
+            {loanAmountProduct.toLocaleString() === '9,999,999,999'
+              ? 'ไม่จำกัดวงเงิน'
+              : loanAmountProduct.toLocaleString() + ' บาท'}{' '}
+          </div>
+          <div className="flex items-center justify-between">
+            <div className={`${isRed ? 'text-red-500' : ''}`}>ระยะเวลากู้: {loanPeriodProduct} ปี</div>
 
-          <div>Mrta {mrta ? 'มี' : 'ไม่มี'}</div>
+            <div className="ml-auto w-fit rounded-lg bg-secondary px-4 py-1 text-end">
+              MRTA: {mrta ? 'ต้องมีการสมัคร' : 'ไม่ต้องมีการสมัคร'}
+            </div>
+          </div>
         </CardContent>
         <CardFooter>
           <Dialog>
