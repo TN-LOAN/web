@@ -157,6 +157,8 @@ function ProductPage() {
             <div className="mt-9 space-y-4">
               {editMode ? (
                 <div>
+                  <label className="mb-2 block">อาชีพ:</label>
+                  <input value={formData.career} disabled className="mb-4 rounded border p-2" />
                   <label className="mb-2 block">วัน/เดือน/ปีเกิด:</label>
                   <input
                     type="date"
@@ -201,17 +203,18 @@ function ProductPage() {
                   </div>
                 </div>
               ) : (
-                <div className="mt-9 space-y-4">
-                  <p className="text-sm">อาชีพ:</p>
-                  <p>{formData.career}</p>
-                  <p className="text-sm">วัน/เดือน/ปีเกิด:</p>
-                  <p>{formatDate(formData.dateOfBirth)}</p>
-                  <p className="text-sm">รายได้ต่อเดือน:</p>
-                  <p>{formData.salary.toLocaleString()} บาท</p>
                   <p className="text-sm">ภาระหนี้สินต่อเดือน:</p>
-                  <p>{formData.debtexpenses.toLocaleString()} บาท</p>
-                  <p className="text-sm">ระยะเวลากู้:</p>
-                  <p>{formData.loanPeriod} ปี</p>
+                <div className="mt-9 space-y-4 p-0">
+                  <label className="block">อาชีพ:</label>
+                  <input value={formData.career} disabled className="mt-0 rounded border p-2" />
+                  <label className="block">วัน/เดือน/ปีเกิด:</label>
+                  <input value={formatDate(formData.dateOfBirth)} disabled className="mt-0 rounded border p-2" />
+                  <label className="block">รายได้ต่อเดือน:</label>
+                  <input value={formData.salary.toLocaleString()} disabled className="mt-0 rounded border p-2" />
+                  <label className="block">ภาระหนี้สินต่อเดือน:</label>
+                  <input value={formData.debtexpenses.toLocaleString()} disabled className="mt-0 rounded border p-2" />
+                  <label className="block">ระยะเวลากู้:</label>
+                  <input value={formData.loanPeriod} disabled className="mt-0 rounded border p-2" />
                 </div>
               )}
             </div>
@@ -296,7 +299,7 @@ function ProductPage() {
             <Separator className="my-4 bg-black" />
             {parsedData.success && parsedData.data && parsedData.data.normal_loan.length > 0 ? (
               <>
-                <div className="mb-4 flex items-center gap-2">
+                <div className="mb-4 flex items-center gap-2 justify-between">
                   <p className="text-gray-600">{`ผลการค้นหา ${
                     selectedData &&
                     selectedData.filter((data) => {
@@ -324,6 +327,7 @@ function ProductPage() {
                       </SelectContent>
                     </Select>
                   </div>
+                  <div className='flex gap-4'>
                   <div className="flex items-center">
                     <div className="mr-1">จัดเรียงตาม</div>
                     <Select value={sort} onValueChange={handleSortChange}>
@@ -340,8 +344,9 @@ function ProductPage() {
                       </SelectContent>
                     </Select>
                   </div>
+                  </div>
                 </div>
-                <ScrollArea className="h-[300px] md:h-[500px]">
+                <ScrollArea className="h-[300px] md:h-[550px]">
                   <div className="mx-auto w-[80%] space-y-4 md:w-[80%]">
                     {sortedData &&
                       sortedData.map((data, index) => (
