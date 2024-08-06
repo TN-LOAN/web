@@ -41,7 +41,7 @@ function ProductPage() {
   }, [formData]);
 
   useEffect(() => {
-    const newLoanAmount = calculateLoanAmount(editedData.salary, editedData.debtexpenses);
+    const newLoanAmount = calculateLoanAmount(editedData.salary, editedData.debtexpenses, editedData.loanPeriod);
     setEditedData((prev) => ({ ...prev, loanAmount: newLoanAmount }));
   }, [editedData.salary, editedData.debtexpenses]);
 
@@ -142,7 +142,7 @@ function ProductPage() {
           <div className="rounded-l-lg bg-white p-8">
             <div className="text-center">
               <div className="flex items-center justify-center">
-                <h1 className="mb-4 text-2xl font-bold md:text-4xl">รายละเอียดกู้สินเชื่อ</h1>
+                <h1 className="mb-4 text-2xl font-semibold md:text-4xl">รายละเอียดกู้สินเชื่อ</h1>
                 <EditOutlinedIcon className="mb-3 ml-2 cursor-pointer" onClick={() => setEditMode(!editMode)} />
               </div>
               <p className="text-xl md:text-4xl">วงเงินกู้</p>
@@ -219,7 +219,7 @@ function ProductPage() {
 
           {/* Right Panel */}
           <div className="col-span-2 rounded-r-lg bg-[#d6efe4] p-6">
-            <h2 className="mb-4 text-center text-2xl font-bold md:text-4xl">สินเชื่อแนะนำ</h2>
+            <h2 className="mb-4 text-center text-2xl font-semibold md:text-4xl">สินเชื่อแนะนำ</h2>
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <Button
