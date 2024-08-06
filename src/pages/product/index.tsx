@@ -35,6 +35,8 @@ function ProductPage() {
     loanAmount: formData.loanAmount,
   });
 
+  let newLoanAmount = formData.loanAmount;
+
   useEffect(() => {
     if (LoanFormSchema.safeParse(formData).success) {
       mutate(formData);
@@ -42,8 +44,10 @@ function ProductPage() {
   }, [formData]);
 
   useEffect(() => {
-    const newLoanAmount = calculateLoanAmount(editedData.salary, editedData.debtexpenses, editedData.loanPeriod);
-    setEditedData((prev) => ({ ...prev, loanAmount: newLoanAmount }));
+    if (editMode) {
+      newLoanAmount = calculateLoanAmount(editedData.salary, editedData.debtexpenses, editedData.loanPeriod);
+      setEditedData((prev) => ({ ...prev, loanAmount: newLoanAmount }));
+    }
   }, [editedData.salary, editedData.debtexpenses]);
 
   const parsedData = LoanResponseType.safeParse(data);
@@ -57,7 +61,6 @@ function ProductPage() {
   const [selectDecorateSet, setSelectedDecorateSet] = useState(false);
   const [isComparing, setIsComparing] = useState(false);
   const [selectedCards, setSelectedCards] = useState<{ data: any }[]>([]);
-  const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedDetail, setSelectedDetail] = useState<{ data: any } | null>(null);
   const [selectedData, setSelectedData] = useState<LoanType[]>();
   const [mrta, setMrta] = useState('all');
@@ -176,7 +179,6 @@ function ProductPage() {
                   />
                   <label className="mb-2 block">รายได้ต่อเดือน:</label>
                   <input
-                    type="number"
                     value={editedData.salary}
                     onChange={(e) => setEditedData({ ...editedData, salary: +e.target.value })}
                     className="mb-4 rounded border p-2"
@@ -300,7 +302,7 @@ function ProductPage() {
                   </Button>
                 </div>
               ) : (
-                <Button className="rounded-2xl bg-primary px-4 py-2 text-black" onClick={() => setIsComparing(true)}>
+                <Button className="rounded-2xl bg-primary px-4 py-2" onClick={() => setIsComparing(true)}>
                   เปรียบเทียบ
                 </Button>
               )}
@@ -333,8 +335,8 @@ function ProductPage() {
                         <SelectContent>
                           <SelectGroup>
                             <SelectItem value="all">ทั้งหมด</SelectItem>
-                            <SelectItem value="do">ทำ </SelectItem>
-                            <SelectItem value="dont">ไม่ทำ</SelectItem>
+                            <SelectItem value="do">สมัคร </SelectItem>
+                            <SelectItem value="dont">ไม่สมัคร</SelectItem>
                           </SelectGroup>
                         </SelectContent>
                       </Select>
@@ -357,7 +359,7 @@ function ProductPage() {
                     </div>
                   </div>
                 </div>
-                <ScrollArea className="h-[300px] md:h-[550px]">
+                <ScrollArea className="h-[300px] md:h-[600px]">
                   <div className="mx-auto w-[80%] space-y-4 md:w-[80%]">
                     {sortedData &&
                       sortedData.map((data, index) => (

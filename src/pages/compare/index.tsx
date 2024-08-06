@@ -2,6 +2,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import React, { useEffect, useState } from 'react';
 
+import { Button } from '@/components/common/button';
 import CustomDialog from '@/components/common/customDialog';
 import { Dialog, DialogTrigger } from '@/components/common/dialog';
 import Navbar from '@/components/common/navigation-bar';
@@ -46,7 +47,7 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
 }) => {
   return (
     <>
-      <div className="m-4 flex flex-col items-start rounded-lg bg-white p-6 shadow-lg">
+      <div className="m-4 flex h-full flex-col items-start rounded-lg bg-white p-6 shadow-lg">
         <div className="mb-4 w-full text-center text-2xl font-bold">
           <h2 className="mb-4">{title}</h2>
           <div className="mb-2 text-xl">ยอดผ่อน / เดือน</div>
@@ -60,7 +61,11 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
             <div className="mb-2 text-left text-lg">ยอดเงินกู้ของคุณ</div>
             <div className="mb-4 text-left text-lg font-bold">{Number(amount).toLocaleString()} บาท</div>
             <div className="mb-2 text-left text-lg">ยอดเงินกู้สูงสุด</div>
-            <div className="mb-4 text-left text-lg font-bold">{Number(amountLoanMax).toLocaleString()} บาท</div>
+            <div className="mb-4 text-left text-lg font-bold">
+              {Number(amountLoanMax) === 9999999999
+                ? 'ไม่จำกัดวงเงิน'
+                : Number(amountLoanMax).toLocaleString() + ' บาท'}
+            </div>
             <div className="mb-2 text-lg">อัตราดอกเบี้ยต่อปี</div>
             <div className="mb-4 text-left text-lg font-bold">{interestRate}%</div>
             <div className="mb-2 text-lg">ระยะเวลาผ่อน(ปี)</div>
@@ -78,16 +83,20 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
           </div>
         </div>
 
-        <div className="hide-in-pdf flex w-full justify-center">
+        <div className="hide-in-pdf mt-auto flex w-full justify-center">
           <Dialog>
-            <DialogTrigger className="hover:text-blue-700">รายละเอียดเพิ่มเติม</DialogTrigger>
+            <DialogTrigger>
+              <Button variant={'link'} className="text-lg">
+                รายละเอียดเพิ่มเติม
+              </Button>
+            </DialogTrigger>
             {data && <CustomDialog loanData={data} />}
           </Dialog>
         </div>
 
         <div className="hide-in-pdf flex w-full justify-center">
-          <a href={data.loan.product_website} target="_blank">
-            <button className="rounded-lg bg-green-500 px-6 py-2 font-bold text-white hover:bg-green-700">สนใจ</button>
+          <a href={data.loan.product_website} target="_blank" className="w-full">
+            <Button className="w-full">สนใจ</Button>
           </a>
         </div>
       </div>

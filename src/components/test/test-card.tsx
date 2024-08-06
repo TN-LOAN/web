@@ -131,13 +131,18 @@ export default function ProductCard({
             </div>
           </div>
         </CardContent>
-        <CardFooter>
+        <CardFooter className="flex justify-between">
           <Dialog>
             <DialogTrigger asChild>
-              <Button>รายละเอียด</Button>
+              <Button variant={'link'} className="text-lg">
+                รายละเอียด
+              </Button>
             </DialogTrigger>
             {data && <CustomDialog loanData={data.loan && data} />}
           </Dialog>
+          <a href={data.loan.product_website} target="_blank">
+            <Button className="w-full text-lg">สนใจ</Button>
+          </a>
         </CardFooter>
       </Card>
     </>

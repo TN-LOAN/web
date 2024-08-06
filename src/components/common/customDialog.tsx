@@ -121,7 +121,8 @@ const CustomDialog: React.FC<CustomDialogProps> = ({ loanData }) => {
         <div className="mb-4 space-y-1">
           <h3>ข้อมูลการผ่อนชำระ</h3>
           <p>
-            งวดผ่อนชำระต่อเดือน: <span className=" ">{loanData.installment.toFixed(2)} บาท/เดือน</span>
+            งวดผ่อนชำระต่อเดือน:{' '}
+            <span className=" ">{Number(loanData.installment.toFixed(2)).toLocaleString()} บาท/เดือน</span>
           </p>
           <p>อัตราดอกเบี้ยเฉลี่ย 3 ปี: {loanData.loan.interest_rate_average}%</p>
           {/* <p>อัตราดอกเบี้ยในแต่ละปี: {loanData.loan.interest_rate_detail}</p> */}
@@ -149,8 +150,8 @@ const CustomDialog: React.FC<CustomDialogProps> = ({ loanData }) => {
               </>
             )}
           </p>
-          <p>รายได้ขั้นต่ำ: {loanData.loan.employee_income_minimum} บาท</p>
-          <p>รายได้ผู้ประกอบอาชีพอิสระ: {loanData.loan.freelance_income_minimum} บาท</p>
+          <p>รายได้ขั้นต่ำ: {loanData.loan.employee_income_minimum.toLocaleString()} บาท</p>
+          <p>รายได้ผู้ประกอบอาชีพอิสระ: {loanData.loan.freelance_income_minimum.toLocaleString()} บาท</p>
           <p>
             เงื่อนไขในการสมัคร:
             <LoanLTVRatio detail={loanData.loan.register_condition} />
@@ -160,11 +161,13 @@ const CustomDialog: React.FC<CustomDialogProps> = ({ loanData }) => {
         {/* ข้อมูลเงื่อนไขเพิ่มเติม */}
         <div className="mb-4 space-y-1">
           <h3 className="font-bold">ข้อมูลวงเงินสินเชื่อ</h3>
-          <p>วงเงินสินเชื่อขั้นต่ำ: {loanData.loan.credit_minimum} บาท</p>
+          <p>วงเงินสินเชื่อขั้นต่ำ: {loanData.loan.credit_minimum.toLocaleString()} บาท</p>
           <p>
             {' '}
             วงเงินสินเชื่อสูงสุด:{' '}
-            {loanData.loan.credit_maximum === 9999999999 ? 'ไม่จำกัดวงเงิน' : `${loanData.loan.credit_maximum} บาท`}
+            {loanData.loan.credit_maximum === 9999999999
+              ? 'ไม่จำกัดวงเงิน'
+              : `${loanData.loan.credit_maximum.toLocaleString()} บาท`}
           </p>
           <p>
             อัตราส่วนเงินให้สินเชื่อต่อมูลค่าหลักประกัน (LTV ratio):
