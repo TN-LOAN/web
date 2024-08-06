@@ -131,7 +131,7 @@ function ProductPage() {
                     className="border p-2 rounded mb-4"
                   />
                   <div className="flex justify-end space-x-2 mt-4">
-                    <Button className='text-black' onClick={() => { 
+                    <Button className='text-white' onClick={() => { 
                       setFormData({ ...formData, ...editedData });
                       setEditMode(false);
                     }}>
@@ -145,15 +145,15 @@ function ProductPage() {
               ) : (
                 <div className="mt-9 space-y-4">
                   <p className="text-sm">อาชีพ:</p>
-                  <p>{formData.career}</p>
+                  <p className='font-bold'>{formData.career}</p>
                   <p className="text-sm">วัน/เดือน/ปีเกิด:</p>
-                  <p>{formatDate(formData.dateOfBirth)}</p>
+                  <p className='font-bold'>{formatDate(formData.dateOfBirth)}</p>
                   <p className="text-sm">รายได้ต่อเดือน:</p>
-                  <p>{formData.salary.toLocaleString()} บาท</p>
+                  <p className='font-bold'>{formData.salary.toLocaleString()} บาท</p>
                   <p className="text-sm">ภาระหนี้สินต่อเดือน:</p>
-                  <p>{formData.debtexpenses.toLocaleString()} บาท</p>
+                  <p className='font-bold'>{formData.debtexpenses.toLocaleString()} บาท</p>
                   <p className="text-sm">ระยะเวลากู้:</p>
-                  <p>{formData.loanPeriod} ปี</p>
+                  <p className='font-bold'>{formData.loanPeriod} ปี</p>
                 </div>
               )}
             </div>
@@ -165,24 +165,24 @@ function ProductPage() {
               <div className="flex justify-between items-center mb-4">
                 <div className="flex space-x-2 items-center">
                   <Button 
-                    className={cn('rounded-2xl px-4 py-2 text-black', selectedDataSet === 'ทั่วไป' && 'bg-[#359f75] text-black')} 
+                    className={cn('rounded-2xl px-4 py-2 text-white', selectedDataSet === 'ทั่วไป' && 'bg-[#359f75] text-black')} 
                     onClick={() => setSelectedDataSet('ทั่วไป')}
                   >
                     สินเชื่อบ้าน
                   </Button>
                   <Button 
-                    className={cn('rounded-2xl px-4 py-2 text-black', selectedDataSet === '110%' && 'bg-[#359f75] text-black')} 
+                    className={cn('rounded-2xl px-4 py-2 text-white', selectedDataSet === '110%' && 'bg-[#359f75] text-black')} 
                     onClick={() => setSelectedDataSet('110%')}
                   >
-                    สินเชื่อบ้านพร้อมต่อเติม
+                    สินเชื่อบ้านพร้อมการต่อเติม
                   </Button>
                   <Popover>
                     <PopoverTrigger asChild>
                       <Info className="w-5 h-5 cursor-pointer" />
                     </PopoverTrigger>
-                    <PopoverContent className="p-4 bg-white rounded shadow">
-                      <p>ทั่วไป คือ</p>
-                      <p>110% คือ</p>
+                    <PopoverContent className=" p-5 bg-white rounded shadow z-50 w-1/3">
+                      <p>สินเชื่อบ้านพร้อมการต่อเติม คือ </p>
+                      <p>ห้กู้กรณีเพื่อจัดหาที่อยู่อาศัย รวมถึงกรณีกู้เพิ่มเติมเพื่อซื้อเฟอร์นิเจอร์ ตกแต่งบ้าน หรือสิ่งจำเป็นอื่นในการเข้าอยู่อาศัย และกรณีกู้เพิ่มเติมเพื่อเป็นค่าเบี้ยประกันชีวิตเพื่อประกันสินเชื่อ และ/หรือเป็นค่าเบี้ยประกันอัคคีภัย รวมกันสูงสุดไม่เกินร้อยละ 110 ของราคาซื้อขายหรือราคาประเมินหลักทรัพย์แล้วแต่ราคาใดที่ต่ำกว่า</p>
                     </PopoverContent>
                   </Popover>
                 </div>
@@ -190,7 +190,7 @@ function ProductPage() {
                   <div className="flex space-x-2 justify-end w-full">
                     <Link to={selectedCards.length >= 2 ? "/compare" : "#"}>
                       <Button 
-                        className="rounded-2xl bg-primary px-4 py-2 text-black" 
+                        className="rounded-2xl bg-green-500 hover:bg-green-700 px-4 py-2 text-white" 
                         onClick={handleCompare}
                         disabled={selectedCards.length < 2}
                       >
@@ -206,7 +206,7 @@ function ProductPage() {
                   </div>
                 ) : (
                   <Button 
-                    className="rounded-2xl bg-primary px-4 py-2 text-black" 
+                    className="rounded-2xl bg-primary px-4 py-2 text-white" 
                     onClick={() => setIsComparing(true)}
                   >
                     เปรียบเทียบ
@@ -247,7 +247,9 @@ function ProductPage() {
               </ScrollArea>
               </>
           ) : (
-            <p className="mb-4 text-gray-600 flex justify-center">ไม่มีผลิตภัณฑ์ที่ค้นหา</p>
+            <div className="flex justify-center">
+            <p className="mb-4 text-gray-600">ไม่มีผลิตภัณฑ์ที่ค้นหา</p>
+            </div>
           )}
             </div>
         </div>
@@ -261,7 +263,7 @@ function ProductPage() {
             </DialogHeader>
             <div>{selectedDetail.data.loan.product}</div>
             <div className='flex justify-center'>
-              <Button className='rounded-2xl text-black w-36'>สนใจ</Button>
+              <Button className='rounded-2xl text-white w-36'>สนใจ</Button>
             </div>
           </DialogContent>
         </Dialog>

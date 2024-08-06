@@ -295,8 +295,8 @@ function InputPage() {
               </div>
               <Button
                 type="submit"
-                className="col-span-2 mx-auto mt-0 h-[70px] w-[301px] text-2xl text-black"
-                style={{ backgroundColor: '#1ECC83' }}
+                className="col-span-2 mx-auto mt-0 h-[70px] w-[301px] text-2xl text-white bg-green-500 hover:bg-green-700"
+                // style={{ backgroundColor: '#1ECC83' }}
                 disabled={!form.watch('acceptTerms')}
               >
                 คำนวณ

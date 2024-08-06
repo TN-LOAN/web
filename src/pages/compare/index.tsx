@@ -8,6 +8,7 @@ import { PageLayout } from '@/components/common/pagelayout';
 import { useCompareStore } from '@/libs/compareStore';
 import { useLoanFormStore } from '@/libs/loanFormStore';
 import { LoanResponseType } from '@/types/schema/loan';
+import LoanChart from '@/components/common/pie-chart';
 
 interface ComparisonCardProps {
   title: string;
@@ -15,28 +16,39 @@ interface ComparisonCardProps {
   amountLoanMin: string,
   amountLoanMax: string,
   interestRate: string;
-  duration:number;
+  duration: number;
   monthlyPayment: number;
   totalInterest: string;
   totalAmount: string;
   backgroundColor?: string;
-  data: LoanResponseType
+  data: LoanResponseType;
+  totalLoanWithInterest: number;
+  interest: number;
+  // amountLoanMaxClass: string;
+  // interestRateClass: string;
+  // installmentClass: string;
+  // totalLoanWithInterestClass: string;
+  // interestClass: string
 }
 
 const ComparisonCard: React.FC<ComparisonCardProps> = ({
   title,
   amount,
-  amountLoanMin,
   amountLoanMax,
   interestRate,
   duration,
   monthlyPayment,
   backgroundColor = 'white',
-  data
+  data,
+  totalLoanWithInterest,
+  interest,
+  // amountLoanMaxClass,
+  // interestRateClass,
+  // installmentClass,
+  // totalLoanWithInterestClass,
+  // interestClass
 }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
-  const totalLoanWithInterest = monthlyPayment * duration * 12
-  const Interest = totalLoanWithInterest - amount
   const handleOpenDialog = () => {
     setDialogOpen(true);
   };
@@ -46,57 +58,67 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
   };
 
   return (
-    
+
     <>
-      <div className="m-4 flex  flex-col items-start rounded-lg p-6 shadow-lg" style={{ backgroundColor }}>
-      <div className="mb-4 w-full text-center text-2xl font-bold">
-        <h2 className='mb-4 '>{title}</h2>
-        <div className="mb-2 text-xl">ยอดผ่อน / เดือน</div>
-        <div className="mb-4 text-3xl font-bold text-primary">{monthlyPayment.toFixed(2)} บาท</div>
+      <div className="m-4 flex  flex-col items-start rounded-lg p-6 shadow-lg bg-white">
+        <div className="mb-4 w-full text-center text-2xl font-bold">
+          <h2 className='mb-4 '>{title}</h2>
+          <div className="mb-2 text-xl">ยอดผ่อน / เดือน</div>
+          <div className="mb-2 text-3xl font-bold text-green-500">{Number(monthlyPayment.toFixed(2)).toLocaleString()} บาท</div>
+        </div>
+
+        <div className='grid grid-cols-4 w-full mb-4'>
+          <div className='col-span-2 border-r-2 '>
+            <div className="mb-2 text-left text-lg">ยอดเงินกู้ของคุณ</div>
+            <div className="mb-4 text-left text-lg font-bold">{Number(amount).toLocaleString()} บาท</div>
+            <div className="mb-2 text-left text-lg">ยอดเงินกู้สูงสุด</div>
+            <div className='mb-4 text-left text-lg font-bold'>{Number(amountLoanMax).toLocaleString()} บาท</div>
+            <div className="mb-2 text-lg">อัตราดอกเบี้ยต่อปี</div>
+            <div className="mb-4 text-left text-lg font-bold">{interestRate}%</div>
+            <div className="mb-2 text-lg">ระยะเวลาผ่อน(ปี)</div>
+            <div className="mb-4 text-lg font-bold">{duration} ปี</div>
+            <div className="mb-2 text-lg">ดอกเบี้ยรวม</div>
+            <div className='mb-4 text-left text-lg font-bold'>{Number(interest.toFixed(2)).toLocaleString()} บาท</div>
+            <div className="mb-2 text-lg">ยอดสินเชื่อรวมดอกเบี้ย</div>
+            <div className='mb-4 text-left text-lg font-bold'>{Number(totalLoanWithInterest.toFixed(2)).toLocaleString()} บาท</div>
+          </div>
+         
+          <div className='mb-4 col-span-2 w-full  justify-self-end'>
+            <LoanChart
+              totalLoanWithInterest={totalLoanWithInterest}
+              interest={interest}
+            />
+          </div>
+        </div>
+
+        <div className="hide-in-pdf flex w-full justify-center">
+          <button className="mb-6 text-blue-500 underline" onClick={handleOpenDialog}>
+            รายละเอียดเพิ่มเติม
+          </button>
+
+          <CustomDialog
+            open={dialogOpen}
+            onClose={handleCloseDialog}
+            loanData={data}
+          />
+        </div>
+
+        <div className="hide-in-pdf flex w-full justify-center">
+          <a href={data.loan.product_website} target='_blank'>
+          <button className="rounded-lg bg-green-500 px-6 py-2 font-bold text-white hover:bg-green-700">สนใจ</button>
+          </a>
+        </div>
       </div>
-      <div>
-
-      </div>
-
-      <div className="mb-2 text-left text-lg">ยอดเงินกู้ของคุณ</div>
-      <div className="mb-4 text-left text-lg font-semibold">{amount.toFixed(2)} บาท</div>
-      <div className="mb-2 text-left text-lg">ยอดเงินกู้ของสินเชื่อ</div>
-      <div className="mb-4 text-left text-lg font-semibold">{amountLoanMin} บาท - {amountLoanMax} บาท</div>
-      <div className="mb-2 text-lg">อัตราดอกเบี้ยต่อปี</div>
-      <div className="mb-4 text-lg font-semibold">{interestRate}%</div>
-      <div className="mb-2 text-lg">ระยะเวลาผ่อน(ปี)</div>
-      <div className="mb-4 text-lg font-semibold">{duration} ปี</div>
-      <div className="mb-2 text-lg">ดอกเบี้ยรวม</div>
-      <div className="mb-4 text-lg font-semibold">{Interest.toFixed(2)} บาท</div>
-      <div className="mb-2 text-lg">ยอดสินเชื่อรวมดอกเบี้ย</div>
-      <div className="mb-4 text-lg font-semibold">{totalLoanWithInterest.toFixed(2)} บาท</div>
-
-      <div className="hide-in-pdf flex w-full justify-end">
-        <button className="mb-4 text-blue-500 underline" onClick={handleOpenDialog}>
-          รายละเอียดเพิ่มเติม
-        </button>
-
-        <CustomDialog
-          open={dialogOpen}
-          onClose={handleCloseDialog}
-          loanData={data}
-        />
-      </div>  
-
-      <div className="hide-in-pdf flex w-full justify-center">
-        <button className="rounded-lg bg-green-500 px-6 py-2 font-bold text-black">สนใจ</button>
-      </div>
-    </div>
     </>
   );
 };
 
 const ComparePage: React.FC = () => {
-  const { selectedItems} = useCompareStore();
+  const { selectedItems } = useCompareStore();
   const [data, setData] = useState(selectedItems)
-  const { formData} = useLoanFormStore();
+  const { formData } = useLoanFormStore();
   const [form, setForm] = useState(formData)
-  
+
 
 
   const downloadPDF = () => {
@@ -131,56 +153,94 @@ const ComparePage: React.FC = () => {
   };
   return (
     <>
-    
-    <PageLayout>
-      <Navbar />
-      <div className="container flex items-center relative justify-center mt-6 w-full  ">
-      <h1 className=" text-center text-3xl font-bold">เปรียบเทียบสินเชื่อ</h1>
-        <button onClick={downloadPDF} className="absolute right-20 top-0  rounded-lg bg-green-500 px-4 py-2 font-bold text-black hover:bg-green-700 ">
-          ดาวน์โหลด
-        </button>
-      </div>
-      <div className="container mx-auto py-10">
-        <div className='flex w-full'> 
-      { data && data.length > 0 ? (
-        <>
-        {data.map((data, index) => (
-        <div key={index} id="comparison-cards" className="w-1/2 ">
-          <ComparisonCard
-            data={data.data}
-            title={data.data.loan.product}
-            amount={form.loanAmount}
-            amountLoanMin={data.data.loan.credit_minimum.toString()}
-            amountLoanMax={data.data.loan.credit_maximum.toString()}
-            interestRate={data.data.loan.interest_rate_average.toString()}
-            duration={form.loanPeriod}
-            monthlyPayment={data.data.installment}
-            totalInterest="xxx"
-            totalAmount="xxx"
-            backgroundColor={index == 1 ?"#CAF6E3": "white" }
 
-          />
-          {/* <ComparisonCard
-            title={data.data.loan.product}
-            amount="1,500,000"
-            interestRate="4"
-            duration="4"
-            monthlyPayment="xxx"
-            totalInterest="xxx"
-            totalAmount="xxx"
-            backgroundColor="#CAF6E3"
-          /> */}
+      <PageLayout>
+        <Navbar />
+        {data && data.length > 0 ? (
+        <>
+        <div className="container flex items-center relative justify-center mt-6 w-full  ">
+          <h1 className=" text-center text-3xl font-bold">เปรียบเทียบสินเชื่อ</h1>
+          <button onClick={downloadPDF} className="absolute right-20 top-0  rounded-lg bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700 ">
+            ดาวน์โหลดรายการเปรียบเทียบ
+          </button>
         </div>
-          ))}
-          </>
-        ) : (
-          <p className="mb-4 text-gray-600 flex justify-center">ไม่มีผลิตภัณฑ์ที่ค้นหา</p>
-      )}
+        <div className="container mx-auto py-10">
+          <div className='flex w-full'>
+            
+                {data.map((item, index) => {
+                  // // Determine max and min credit_maximum values
+                  // const maxCredit = Math.max(...data.map(d => d.data.loan.credit_maximum));
+                  // const minCredit = Math.min(...data.map(d => d.data.loan.credit_maximum));
+                  // const creditMax = item.data.loan.credit_maximum;
+
+                  // // Determine max and min interest_rate_average values
+                  // const maxInterestRate = Math.max(...data.map(d => d.data.loan.interest_rate_average));
+                  // const minInterestRate = Math.min(...data.map(d => d.data.loan.interest_rate_average));
+                  // const interestRate = item.data.loan.interest_rate_average;
+
+                  // // Determine max and min installment values
+                  // const maxInstallment = Math.max(...data.map(d => d.data.installment));
+                  // const minInstallment = Math.min(...data.map(d => d.data.installment));
+                  const installment = item.data.installment;
+
+                  const totalLoanWithInterest = installment * form.loanPeriod * 12
+                  const interest = totalLoanWithInterest - form.loanAmount
+
+                  // // Determine max and min totalLoanWithInterest values
+                  // const maxTotalLoanWithInterest = Math.max(...data.map(d => d.data.installment * form.loanPeriod * 12));
+                  // const minTotalLoanWithInterest = Math.min(...data.map(d => d.data.installment * form.loanPeriod * 12));
+
+                  // // Determine max and min Interest values
+                  // const maxInterest = Math.max(...data.map(d => (d.data.installment * form.loanPeriod * 12) - form.loanAmount));
+                  // const minInterest = Math.min(...data.map(d => (d.data.installment * form.loanPeriod * 12) - form.loanAmount));
+
+                  return (
+                    <div key={index} id="comparison-cards" className="w-1/2 ">
+                      <ComparisonCard
+                        data={item.data}
+                        title={item.data.loan.product}
+                        amount={form.loanAmount}
+                        amountLoanMin={item.data.loan.credit_minimum.toString()}
+                        amountLoanMax={item.data.loan.credit_maximum.toString()}
+                        interestRate={item.data.loan.interest_rate_average.toString()}
+                        duration={form.loanPeriod}
+                        monthlyPayment={item.data.installment}
+                        totalLoanWithInterest={totalLoanWithInterest}
+                        interest={interest}
+                        totalInterest="xxx"
+                        totalAmount="xxx"
+                        // backgroundColor={index === 1 ? "#CAF6E3" : "white"}
+                      // Applying conditional text color
+                      // amountLoanMaxClass={
+                      //   creditMax === maxCredit ? 'mb-2 text-left text-lg font-bold text-green-500 bg-green-200 rounded-md px-2 py-1 ' : creditMax === minCredit ? 'mb-2 text-left text-lg font-bold text-red-500 bg-red-100 rounded-md px-2 py-1 ' : 'mb-2 text-left text-lg font-bold text-gray-500 bg-gray-200 rounded-md px-2 py-1 '
+                      // }
+                      // interestRateClass={
+                      //   interestRate === maxInterestRate ? 'mb-2 text-left text-lg font-bold text-red-500 bg-red-100 rounded-md px-2 py-1  ' : interestRate === minInterestRate ? 'mb-2 text-left text-lg font-bold text-green-500 bg-green-200 rounded-md px-2 py-1 ' : 'mb-2 text-left text-lg font-bold text-gray-500 bg-gray-200 rounded-md px-2 py-1 '
+                      // }
+                      // installmentClass={
+                      //   installment === maxInstallment ? 'mb-2 text-3xl font-bold text-red-500 bg-red-100 rounded-md px-2 py-5' : installment === minInstallment ? 'mb-2 text-3xl font-bold text-green-500 bg-green-200 rounded-md px-2 py-5 ' : 'mb-2 text-left text-lg font-bold text-gray-500 bg-gray-200 rounded-md px-2 py-5 '
+                      // }
+                      // totalLoanWithInterestClass={
+                      //   totalLoanWithInterest === maxTotalLoanWithInterest ? 'mb-2 text-lg font-bold text-red-500 bg-red-100 rounded-md px-2 py-1' : totalLoanWithInterest === minTotalLoanWithInterest ? 'mb-2 text-lg font-bold text-green-500 bg-green-200 rounded-md px-2 py-1 ' : 'mb-2 text-left text-lg font-bold text-gray-500 bg-gray-200 rounded-md px-2 py-1 '
+                      // }
+                      // interestClass={
+                      //   Interest === maxInterest ? 'mb-2 text-lg font-bold text-red-500 bg-red-100 rounded-md px-2 py-1' : Interest === minInterest ? 'mb-2 text-lg font-bold text-green-500 bg-green-200 rounded-md px-2 py-1 ' : 'mb-2 text-left text-lg font-bold text-gray-500 bg-gray-200 rounded-md px-2 py-1 '
+                      // }
+                      />
+                    </div>
+                  );
+                })}
           </div>
-          
-      </div>
-    </PageLayout>
-  </>
+
+        </div>
+        </>
+            ) : (
+              <div className="flex justify-center">
+              <p className="mb-4 mt-4 text-gray-600 text-2xl font-bold">ไม่มีผลิตภัณฑ์ที่เปรียบเทียบ</p>
+              </div>
+            )}
+      </PageLayout>
+    </>
   );
 };
 
