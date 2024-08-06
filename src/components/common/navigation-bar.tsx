@@ -8,8 +8,10 @@ const Navbar = () => {
     <nav className="sticky top-0 z-10 bg-primary p-4">
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center">
-          <img src="src/assets/17.png" width={70} height={70}></img>
-          <div className="text-xl font-bold text-white">TN LOAN</div>
+        
+        <a href="/" className=""><img src="src/assets/17.png" width={70} height={70}></img></a>
+        <a href="/" className=""><div className="text-xl font-bold text-white">
+          TN LOAN</div></a>
         </div>
         <div className="md:hidden">
           <button onClick={() => setIsOpen(!isOpen)} type="button" className="text-white focus:outline-none">
@@ -29,14 +31,14 @@ const Navbar = () => {
             </svg>
           </button>
         </div>
-        <div className={`space-x-4 md:flex md:items-center ${isOpen ? 'block' : 'hidden'}`}>
+        {/* <div className={`space-x-4 md:flex md:items-center ${isOpen ? 'block' : 'hidden'}`}>
           <div className="flex items-center space-x-2 text-white hover:text-gray-300">
             <HomeIcon size={24} />
             <a href="/" className="">
               Home
             </a>
           </div>
-        </div>
+        </div> */}
       </div>
     </nav>
   );

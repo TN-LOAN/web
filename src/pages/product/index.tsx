@@ -61,7 +61,7 @@ function ProductPage() {
   const [selectDecorateSet, setSelectedDecorateSet] = useState(false);
   const [isComparing, setIsComparing] = useState(false);
   const [selectedCards, setSelectedCards] = useState<{ data: LoanType }[]>([]);
-  const [selectedProducts, setSelectedProducts] = useState(false)
+  const [selectedProducts, setSelectedProducts] = useState(false);
   // const [selectedDetail, setSelectedDetail] = useState<{ data: any } | null>(null);
   const [selectedData, setSelectedData] = useState<LoanType[]>();
   const [mrta, setMrta] = useState('all');
@@ -87,7 +87,7 @@ function ProductPage() {
     } else if (selectedCards.length < 2) {
       setSelectedCards([...selectedCards, { data }]);
     }
-    console.log(selectedCards)
+    console.log(selectedCards);
   };
 
   const handleCardClick = (data: LoanType) => {
@@ -98,7 +98,7 @@ function ProductPage() {
     } else if (selectedCards.length < 2) {
       setSelectedCards([...selectedCards, { data }]);
     }
-    console.log(selectedCards)
+    console.log(selectedCards);
   };
 
   const handleCompare = () => {
@@ -296,7 +296,7 @@ function ProductPage() {
                 <div className="flex w-full justify-end space-x-2">
                   <Link to={selectedCards.length >= 2 ? '/compare' : '#'}>
                     <Button
-                      className="rounded-2xl bg-primary px-4 py-2 text-black"
+                      className="rounded-2xl bg-primary px-4 py-2 text-white"
                       onClick={handleCompare}
                       disabled={selectedCards.length < 2}
                     >
@@ -337,6 +337,23 @@ function ProductPage() {
                   <div className="flex gap-4">
                     <div className="flex items-center">
                       <div className="mr-1">MRTA</div>
+                      <div className='mr-1'>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Info className="h-5 w-5 cursor-pointer" />
+                        </PopoverTrigger>
+                        <PopoverContent className="rounded bg-white p-4 shadow">
+                          <div className="font-semibold">MRTA คือ</div>
+                          <p>
+                           ประกันที่มอบความคุ้มครองด้านการประกันชีวิตเพื่อสินเชื่อที่อยู่อาศัย
+หากมีเหตุการณ์ ไม่คาดฝันเกิดขึ้นก่อนการผ่อนชำระสินเชื่อบ้านสิ้นสุดลง ประกันนี้
+จะรับภาระเพื่อชำระเงินกู้คงเหลือแทนคุณ ไม่ให้เป็นภาระแก่คนข้างหลัง ซึ่งบริษัท
+ประกันชีวิตจะให้ความคุ้มครองให้คุณได้สบายใจและไร้กังวล ได้ทุกที่ ทุกเวลา
+ในทุกสถานการณ์
+                          </p>
+                        </PopoverContent>
+                      </Popover>
+                      </div>
                       <Select value={mrta} onValueChange={handleMrtaChange}>
                         <SelectTrigger className="w-24 justify-center bg-white">
                           <SelectValue placeholder="โปรดเลือก" />
@@ -359,7 +376,7 @@ function ProductPage() {
                         <SelectContent>
                           <SelectGroup>
                             <SelectItem value="installment">งวดผ่อนต่อเดือน</SelectItem>
-                            <SelectItem value="interest">อัตราดอกเบี้ย </SelectItem>
+                            <SelectItem value="interest">อัตราดอกเบี้ย</SelectItem>
                             <SelectItem value="credit">วงเงินกู้</SelectItem>
                             <SelectItem value="period">ระยะเวลากู้</SelectItem>
                           </SelectGroup>

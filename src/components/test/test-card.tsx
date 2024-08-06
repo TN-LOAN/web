@@ -94,7 +94,7 @@ export default function ProductCard({
 
   return (
     <>
-      <Card className={cn(`transition-colors duration-300 ${isSelected ? 'bg-green-100' : 'bg-white'} ${isComparing && 'cursor-pointer'} `)} onClick={onClick}>
+      <Card className={cn(`transition-colors duration-300 ${isSelected ? 'border-2 border-emerald-400 bg-green-100' : 'bg-white'} ${isComparing && 'cursor-pointer'} `)} onClick={onClick}>
         <CardHeader className="font-bold">
           <div className="flex justify-between gap-2">
             <div className="flex items-center gap-2">
@@ -121,7 +121,7 @@ export default function ProductCard({
             </span>{' '}
             บาท{' '}
           </div>
-          <div>อัตราดอกเบี้ย: {interestRate}%</div>
+          <div>อัตราดอกเบี้ยเฉลี่ย 3 ปี: {interestRate}%</div>
           <div>ประเภทสินเชื่อ: {loan_type}</div>
           <div>
             วงเงินกู้:{' '}

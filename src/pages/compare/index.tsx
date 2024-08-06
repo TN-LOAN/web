@@ -15,6 +15,7 @@ import { LoanResponseType, LoanType } from '@/types/schema/loan';
 interface ComparisonCardProps {
   title: string;
   amount: number;
+  provider: string;
   amountLoanMin: string;
   amountLoanMax: string;
   interestRate: string;
@@ -36,6 +37,7 @@ interface ComparisonCardProps {
 const ComparisonCard: React.FC<ComparisonCardProps> = ({
   title,
   amount,
+  provider,
   amountLoanMax,
   interestRate,
   duration,
@@ -45,6 +47,57 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
   interest,
   totalLoanWithInterest,
 }) => {
+  const imagePath = '/src/assets/logo';
+
+  const replaceProvider = (provider: string) => {
+    //use switch case to replace provider name with image
+    switch (provider) {
+      case 'กรุงไทย':
+        return `${imagePath}/KTB.png`;
+      case 'กรุงเทพ':
+        return `${imagePath}/BBL.png`;
+      case 'กสิกรไทย':
+        return `${imagePath}/KBANK.png`;
+      case 'ยูโอบี':
+        return `${imagePath}/UOB.png`;
+      case 'กรุงศรีอยุธยา':
+        return `${imagePath}/BAY.png`;
+      case 'เมกะ สากลพาณิชย์':
+        return `${imagePath}/Mega.png`;
+      case 'ธอส.':
+        return `${imagePath}/GHB.png`;
+      case 'ทิสโก้':
+        return `${imagePath}/TISCO.png`;
+      case 'ออมสิน':
+        return `${imagePath}/GSB.png`;
+      case 'แลนด์ แอนด์ เฮ้าส์':
+        return `${imagePath}/LH.png`;
+      case 'บค. เวิลด์':
+        return `${imagePath}/World.png`;
+      case 'อินเดียนโอเวอร์ซีส์':
+        return `${imagePath}/Indian.png`;
+      case 'ไทยเครดิต':
+        return `${imagePath}/TCR.png`;
+      case 'บค. แคปปิตอล ลิ้งค์':
+        return `${imagePath}/CApital Link.png`;
+      case 'บง. แอ็ดวานซ์':
+        return `${imagePath}/Advance.png`;
+      case 'ทหารไทยธนชาต':
+        return `${imagePath}/TTB.png`;
+      case 'บค. เอสเบ':
+        return `${imagePath}/SBEY.png`;
+      case 'เกียรตินาคินภัทร':
+        return `${imagePath}/KK.png`;
+      case 'ธ.ก.ส.':
+        return `${imagePath}/BAAC.png`;
+      case 'ไอซีบีซี (ไทย)':
+        return `${imagePath}/ICBC.png`;
+      case 'ไทยพาณิชย์':
+        return `${imagePath}/SCB.png`;
+      default:
+        return `${imagePath}/default.png`;
+    }
+  };
   return (
     <>
       <div className="m-4 flex h-full flex-col items-start rounded-lg bg-white p-6 shadow-lg">
@@ -58,6 +111,10 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
 
         <div className="mb-4 grid w-full grid-cols-4">
           <div className="col-span-2 border-r-2">
+          <div className="mb-6 flex items-center gap-2">
+              <img src={replaceProvider(provider)} alt={provider} className="h-10 w-10" />
+              <div className="text-lg font-bold">{provider}</div>
+            </div>
             <div className="mb-2 text-left text-lg">ยอดเงินกู้ของคุณ</div>
             <div className="mb-4 text-left text-lg font-bold">{Number(amount).toLocaleString()} บาท</div>
             <div className="mb-2 text-left text-lg">ยอดเงินกู้สูงสุด</div>
@@ -66,7 +123,7 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
                 ? 'ไม่จำกัดวงเงิน'
                 : Number(amountLoanMax).toLocaleString() + ' บาท'}
             </div>
-            <div className="mb-2 text-lg">อัตราดอกเบี้ยต่อปี</div>
+            <div className="mb-2 text-lg">อัตราดอกเบี้ยเฉลี่ย 3 ปี</div>
             <div className="mb-4 text-left text-lg font-bold">{interestRate}%</div>
             <div className="mb-2 text-lg">ระยะเวลาผ่อน(ปี)</div>
             <div className="mb-4 text-lg font-bold">{duration} ปี</div>
@@ -205,6 +262,7 @@ const ComparePage: React.FC = () => {
                       <ComparisonCard
                         data={item.data}
                         title={item.data.loan.product}
+                        provider={item.data.loan.provider}
                         amount={form.loanAmount}
                         amountLoanMin={item.data.loan.credit_minimum.toString()}
                         amountLoanMax={item.data.loan.credit_maximum.toString()}
