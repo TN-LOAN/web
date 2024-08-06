@@ -21,6 +21,8 @@ type TestCardProps = {
   provider: string;
   loan_type: string;
   data: LoanType;
+  isSelected: boolean;
+  isComparing: boolean;
 };
 
 export default function ProductCard({
@@ -35,6 +37,8 @@ export default function ProductCard({
   provider,
   loan_type,
   data,
+  isSelected,
+  isComparing
 }: TestCardProps) {
   const imagePath = '/src/assets/logo';
 
@@ -90,7 +94,7 @@ export default function ProductCard({
 
   return (
     <>
-      <Card className={cn('transition-colors duration-300')} onClick={onClick}>
+      <Card className={cn(`transition-colors duration-300 ${isSelected ? 'bg-green-100' : 'bg-white'} ${isComparing && 'cursor-pointer'} `)} onClick={onClick}>
         <CardHeader className="font-bold">
           <div className="flex justify-between gap-2">
             <div className="flex items-center gap-2">

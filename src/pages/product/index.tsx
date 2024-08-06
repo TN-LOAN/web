@@ -60,8 +60,9 @@ function ProductPage() {
   const [selectNormalSet, setSelectedNormalSet] = useState(true);
   const [selectDecorateSet, setSelectedDecorateSet] = useState(false);
   const [isComparing, setIsComparing] = useState(false);
-  const [selectedCards, setSelectedCards] = useState<{ data: any }[]>([]);
-  const [selectedDetail, setSelectedDetail] = useState<{ data: any } | null>(null);
+  const [selectedCards, setSelectedCards] = useState<{ data: LoanType }[]>([]);
+  const [selectedProducts, setSelectedProducts] = useState(false)
+  // const [selectedDetail, setSelectedDetail] = useState<{ data: any } | null>(null);
   const [selectedData, setSelectedData] = useState<LoanType[]>();
   const [mrta, setMrta] = useState('all');
   const [sort, setSort] = useState('installment');
@@ -86,10 +87,18 @@ function ProductPage() {
     } else if (selectedCards.length < 2) {
       setSelectedCards([...selectedCards, { data }]);
     }
+    console.log(selectedCards)
   };
 
-  const handleCardClick = (data: any) => {
-    setSelectedDetail(data);
+  const handleCardClick = (data: LoanType) => {
+    const isAlreadySelected = selectedCards.some((card) => card.data.loan.id === data.loan.id);
+
+    if (isAlreadySelected) {
+      setSelectedCards(selectedCards.filter((card) => card.data.loan.id !== data.loan.id));
+    } else if (selectedCards.length < 2) {
+      setSelectedCards([...selectedCards, { data }]);
+    }
+    console.log(selectedCards)
   };
 
   const handleCompare = () => {
@@ -291,7 +300,7 @@ function ProductPage() {
                       onClick={handleCompare}
                       disabled={selectedCards.length < 2}
                     >
-                      เสร็จสิ้น
+                      เสร็จสิ้น ({selectedCards.length})
                     </Button>
                   </Link>
                   <Button
@@ -387,6 +396,8 @@ function ProductPage() {
                             mrta={data.loan.mrta}
                             loan_type={data.loan.loan_type}
                             data={data}
+                            isSelected={isComparing && selectedCards.some((card) => card.data.loan.id === data.loan.id)}
+                            isComparing={isComparing}
                           />
                         </div>
                       ))}
