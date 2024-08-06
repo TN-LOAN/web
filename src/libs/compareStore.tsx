@@ -1,8 +1,8 @@
-import { LoanResponseType } from '@/types/schema/loan';
+import { LoanResponseType, LoanType } from '@/types/schema/loan';
 import { create } from 'zustand';
 
 type CompareStoreType = {
-  selectedItems: { data: LoanResponseType }[];
+  selectedItems: { data: LoanType }[];
   setSelectedItems: (items: { data: any }[]) => void;
 };
 

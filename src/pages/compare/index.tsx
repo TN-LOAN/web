@@ -7,7 +7,7 @@ import Navbar from '@/components/common/navigation-bar';
 import { PageLayout } from '@/components/common/pagelayout';
 import { useCompareStore } from '@/libs/compareStore';
 import { useLoanFormStore } from '@/libs/loanFormStore';
-import { LoanResponseType } from '@/types/schema/loan';
+import { LoanResponseType, LoanType } from '@/types/schema/loan';
 
 interface ComparisonCardProps {
   title: string;
@@ -20,7 +20,7 @@ interface ComparisonCardProps {
   totalInterest: string;
   totalAmount: string;
   backgroundColor?: string;
-  data: LoanResponseType
+  data: LoanType
 }
 
 const ComparisonCard: React.FC<ComparisonCardProps> = ({
