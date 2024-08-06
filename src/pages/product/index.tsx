@@ -18,7 +18,7 @@ import { calculateLoanAmount } from '@/libs/calculateLoanAmount';
 import { useGetLoan } from '@/hooks/loan-hook';
 import { LoanFormSchema, LoanResponseType ,LoanType} from '@/types/schema/loan';
 import { CheckIcon } from '@radix-ui/react-icons';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/common/select';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/common/select';
 
 function ProductPage() {
   const { formData, setFormData } = useLoanFormStore();
@@ -262,10 +262,10 @@ function ProductPage() {
               <>
      <div className='flex gap-2 items-center mb-4'>
                 <p className="text-gray-600">{`ผลการค้นหา ${selectedData?.length} ผลิตภัณฑ์`}</p>
-   <div className=' '>
-    <div>MRTA</div>
+   <div className='flex items-center'>
+    <div className='mr-1'>MRTA</div>
     <Select  value={mrta} onValueChange={handleMrtaChange}>
-      <SelectTrigger className="w-[180px] bg-white" >
+      <SelectTrigger className="w-24 bg-white justify-center" >
         <SelectValue placeholder="โปรดเลือก" />
       </SelectTrigger>
       <SelectContent>
