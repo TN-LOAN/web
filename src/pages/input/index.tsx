@@ -53,8 +53,7 @@ function InputPage() {
 
     const ageLimit = 2024 - yearOfBirth + loanPeriod;
   
-    const calculated = calculateLoanAmount(salary, debtexpenses);
-    console.log("Onsubmit",calculated)
+    const calculated = calculateLoanAmount(salary, debtexpenses, loanPeriod);
     setCalculatedLoanAmount(calculated);
   
     if (yearOfBirth < 1963 || yearOfBirth > 2005) {
@@ -78,9 +77,8 @@ function InputPage() {
     }
   
     if (inputLoanAmount > 0 && calculated < inputLoanAmount) {
-      setLoanAmountError(`วงเงินกู้ของคุณไม่อยู่ในเกณฑ์`);
+      setLoanAmountError(`วงเงินกู้สูงสุดของคุณคือ ${calculated.toLocaleString()} บาท`);
     } else {
-      console.log(data);
       setLoanAmountError(null);
       setFormData(data);
       navigate('/product');
@@ -173,7 +171,7 @@ function InputPage() {
                     </FormItem>
                   )}
                 />
-                <p className="pt-1 text-xs text-gray-400">
+                <p className="pt-1 text-xs text-gray-400 flex justify-end ">
                   ยกตัวอย่างเช่น 01/08/1999
                 </p>
               </div>
@@ -242,7 +240,7 @@ function InputPage() {
                         />
                       </FormControl>
                       <FormMessage />
-                      {loanAmountError && <p className="mt-2 text-sm text-destructive">{loanAmountError}</p>}
+                      {/* {loanAmountError && <p className="mt-2 text-sm text-destructive">{loanAmountError}</p>} */}
                     </FormItem>
                   )}
                 />
@@ -331,6 +329,15 @@ function InputPage() {
                   )}
                 />
               </div>
+
+              {loanAmountError && (
+                <div className="col-span-2 mx-auto text-center">
+                  <p className="mt-2 text-xl text-destructive ">{loanAmountError}</p>
+                  <p className="mt-2 text-xl text-destructive">กรุณาปรับลดวงเงินกู้หรือเพิ่มระยะเวลากู้</p>
+                </div>
+              )}
+
+
               <Button
                 type="submit"
                 className="col-span-2 mx-auto mt-0 h-[70px] w-[301px] text-2xl text-black"
