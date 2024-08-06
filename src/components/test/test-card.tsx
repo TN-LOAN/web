@@ -112,7 +112,9 @@ export default function ProductCard({
         <CardContent className="text-lg">
           <div className="text-xl font-bold text-black">
             งวดผ่อนต่อเดือน:{' '}
-            <span className="rounded-md bg-green-100 px-2 py-1 text-green-500">{Number(installment).toFixed(2)}</span>{' '}
+            <span className="rounded-md bg-green-100 px-2 py-1 text-green-500">
+              {Number(installment.toFixed(2)).toLocaleString()}
+            </span>{' '}
             บาท{' '}
           </div>
           <div>อัตราดอกเบี้ย: {interestRate}%</div>
