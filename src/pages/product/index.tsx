@@ -321,7 +321,7 @@ function ProductPage() {
                   <div className="flex items-center">
                     <div className="mr-1">จัดเรียงตาม</div>
                     <Select value={sort} onValueChange={handleSortChange}>
-                      <SelectTrigger className="w-24 justify-center bg-white">
+                      <SelectTrigger className="w-36 justify-center bg-white">
                         <SelectValue placeholder="โปรดเลือก" />
                       </SelectTrigger>
                       <SelectContent>
