@@ -100,17 +100,17 @@ export default function ProductCard({
         </CardHeader>
 
         <CardContent className="text-lg">
-          <p className="text-xl font-bold text-black">
+          <div className="text-xl font-bold text-black">
             งวดผ่อนต่อเดือน:{' '}
             <span className="rounded-md bg-green-100 px-2 py-1 text-green-500">{Number(installment).toFixed(2)}</span>{' '}
             บาท{' '}
-          </p>
-          <p>อัตราดอกเบี้ย: {interestRate}%</p>
-          <p>ประเภทสินเชื่อ: {loan_type}</p>
-          <p>วงเงินกู้: {loanAmountProduct.toLocaleString()} บาท</p>
-          <p className={`${isRed ? 'text-red-500' : ''}`}>ระยะเวลากู้: {loanPeriodProduct} ปี</p>
+          </div>
+          <div>อัตราดอกเบี้ย: {interestRate}%</div>
+          <div>ประเภทสินเชื่อ: {loan_type}</div>
+          <div>วงเงินกู้: {loanAmountProduct.toLocaleString()} บาท</div>
+          <div className={`${isRed ? 'text-red-500' : ''}`}>ระยะเวลากู้: {loanPeriodProduct} ปี</div>
 
-          <p>Mrta {mrta ? 'มี' : 'ไม่มี'}</p>
+          <div>Mrta {mrta ? 'มี' : 'ไม่มี'}</div>
         </CardContent>
         <CardFooter>
           <Dialog>
