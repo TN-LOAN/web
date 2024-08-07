@@ -165,7 +165,7 @@ const CustomDialog: React.FC<CustomDialogProps> = ({ loanData }) => {
           <p>
             {' '}
             วงเงินสินเชื่อสูงสุด:{' '}
-            {loanData.loan.credit_maximum === 9999999999
+            {loanData.loan.credit_maximum === 9999999999 || loanData.loan.credit_maximum === 0
               ? 'ไม่จำกัดวงเงิน'
               : `${loanData.loan.credit_maximum.toLocaleString()} บาท`}
           </p>

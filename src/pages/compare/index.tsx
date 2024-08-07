@@ -111,7 +111,7 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
 
         <div className="mb-4 grid w-full grid-cols-4">
           <div className="col-span-2 border-r-2">
-          <div className="mb-6 flex items-center gap-2">
+            <div className="mb-6 flex items-center gap-2">
               <img src={replaceProvider(provider)} alt={provider} className="h-10 w-10" />
               <div className="text-lg font-bold">{provider}</div>
             </div>
@@ -119,7 +119,7 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
             <div className="mb-4 text-left text-lg font-bold">{Number(amount).toLocaleString()} บาท</div>
             <div className="mb-2 text-left text-lg">ยอดเงินกู้สูงสุด</div>
             <div className="mb-4 text-left text-lg font-bold">
-              {Number(amountLoanMax) === 9999999999
+              {Number(amountLoanMax) === 9999999999 || Number(amountLoanMax) === 0
                 ? 'ไม่จำกัดวงเงิน'
                 : Number(amountLoanMax).toLocaleString() + ' บาท'}
             </div>

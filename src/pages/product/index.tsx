@@ -129,15 +129,13 @@ function ProductPage() {
       })
       .slice(0, 10);
 
-    const bestDecorateLoan = parsedData.data?.decorate_loan
-      .sort((a, b) => {
-        if (sort === 'credit') {
-          return handleSort(b) - handleSort(a);
-        } else {
-          return handleSort(a) - handleSort(b);
-        }
-      })
-      .slice(0, 10);
+    const bestDecorateLoan = parsedData.data?.decorate_loan.sort((a, b) => {
+      if (sort === 'credit') {
+        return handleSort(b) - handleSort(a);
+      } else {
+        return handleSort(a) - handleSort(b);
+      }
+    });
 
     if (selectNormalSet && selectDecorateSet && parsedData.success && parsedData.data) {
       setSelectedData(bestNormalLoan!.concat(bestDecorateLoan!));
@@ -325,8 +323,7 @@ function ProductPage() {
                       และ/หรือเป็นค่าเบี้ยประกันอัคคีภัย รวมกันสูงสุดไม่เกินร้อยละ 110
                       ของราคาซื้อขายหรือราคาประเมินหลักทรัพย์
                     </p>
-                    <p>แล้วแต่ราคาใดที่ต่ำกว่า</p>
-                    <p className="... italic">*ทั้งนี้ เป็นไปตามเกณฑ์การพิจารณาที่ธนาคารกำหนด</p>
+                    <p className="... italic text-destructive">*ทั้งนี้ เป็นไปตามเกณฑ์การพิจารณาที่ธนาคารกำหนด</p>
                   </PopoverContent>
                 </Popover>
               </div>

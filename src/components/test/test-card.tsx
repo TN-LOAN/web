@@ -38,7 +38,7 @@ export default function ProductCard({
   loan_type,
   data,
   isSelected,
-  isComparing
+  isComparing,
 }: TestCardProps) {
   const imagePath = '/src/assets/logo';
 
@@ -94,7 +94,12 @@ export default function ProductCard({
 
   return (
     <>
-      <Card className={cn(`transition-colors duration-300 ${isSelected ? 'border-2 border-emerald-400 bg-green-100' : 'bg-white'} ${isComparing && 'cursor-pointer'} `)} onClick={onClick}>
+      <Card
+        className={cn(
+          `transition-colors duration-300 ${isSelected ? 'border-2 border-emerald-400 bg-green-100' : 'bg-white'} ${isComparing && 'cursor-pointer'} `,
+        )}
+        onClick={onClick}
+      >
         <CardHeader className="font-bold">
           <div className="flex justify-between gap-2">
             <div className="flex items-center gap-2">
@@ -125,7 +130,7 @@ export default function ProductCard({
           <div>ประเภทสินเชื่อ: {loan_type}</div>
           <div>
             วงเงินกู้สูงสุด:{' '}
-            {loanAmountProduct.toLocaleString() === '9,999,999,999'
+            {loanAmountProduct.toLocaleString() === '9,999,999,999' || loanAmountProduct === 0
               ? 'ไม่จำกัดวงเงิน'
               : loanAmountProduct.toLocaleString() + ' บาท'}{' '}
           </div>
