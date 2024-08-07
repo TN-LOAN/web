@@ -119,7 +119,7 @@ const CustomDialog: React.FC<CustomDialogProps> = ({ loanData }) => {
       <ScrollArea className="h-full">
         {/* ข้อมูลการผ่อนชำระ */}
         <div className="mb-4 space-y-1">
-          <h3>ข้อมูลการผ่อนชำระ</h3>
+          <h3 className="font-bold">ข้อมูลการผ่อนชำระ</h3>
           <p>
             งวดผ่อนชำระต่อเดือน:{' '}
             <span className=" ">{Number(loanData.installment.toFixed(2)).toLocaleString()} บาท/เดือน</span>

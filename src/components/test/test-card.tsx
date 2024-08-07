@@ -124,13 +124,13 @@ export default function ProductCard({
           <div>อัตราดอกเบี้ยเฉลี่ย 3 ปี: {interestRate}%</div>
           <div>ประเภทสินเชื่อ: {loan_type}</div>
           <div>
-            วงเงินกู้:{' '}
+            วงเงินกู้สูงสุด:{' '}
             {loanAmountProduct.toLocaleString() === '9,999,999,999'
               ? 'ไม่จำกัดวงเงิน'
               : loanAmountProduct.toLocaleString() + ' บาท'}{' '}
           </div>
           <div className="flex items-center justify-between">
-            <div className={`${isRed ? 'text-red-500' : ''}`}>ระยะเวลากู้: {loanPeriodProduct} ปี</div>
+            <div className={`${isRed ? 'text-red-500' : ''}`}>ระยะเวลากู้สูงสุด: {loanPeriodProduct} ปี</div>
 
             <div className="ml-auto w-fit rounded-lg bg-secondary px-4 py-1 text-end">
               MRTA: {mrta ? 'ต้องมีการสมัคร' : 'ไม่ต้องมีการสมัคร'}

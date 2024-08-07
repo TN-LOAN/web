@@ -52,10 +52,10 @@ const LoanChart: React.FC<LoanChartProps> = ({ totalLoanWithInterest, interest }
           className="mx-auto aspect-square "
         >
           <PieChart>
-            <ChartTooltip
+            {/* <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
-            />
+            /> */}
             <Pie data={chartData} dataKey="value" nameKey="name" cx="50%" cy="50%">
               {chartData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={entry.fill} />

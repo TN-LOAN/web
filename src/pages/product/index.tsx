@@ -153,6 +153,8 @@ function ProductPage() {
       }
     });
 
+  
+
   return (
     <PageLayout className="bg-background">
       <Navbar />
@@ -163,18 +165,18 @@ function ProductPage() {
             <div className="text-center">
               <div className="flex items-center justify-center">
                 <h1 className="mb-4 text-2xl font-semibold md:text-4xl">รายละเอียดกู้สินเชื่อ</h1>
-                <EditOutlinedIcon className="mb-3 ml-2 cursor-pointer" onClick={() => setEditMode(!editMode)} />
+                {/* <EditOutlinedIcon className="mb-3 ml-2 cursor-pointer" onClick={() => setEditMode(!editMode)} /> */}
               </div>
               <p className="text-xl md:text-4xl">วงเงินกู้</p>
               <p className="mt-2 text-4xl font-bold text-primary md:text-6xl">
                 {editedData.loanAmount.toLocaleString()}
               </p>
             </div>
-            <p className="mt-4 pt-4 text-xs text-gray-500 md:text-sm">
+            <p className="mt-4 p-0 text-xs text-gray-500 md:text-sm">
               หมายเหตุ: ผลการคำนวณนี้เป็นเพียงการคำนวณเบื้องต้นเท่านั้น
               การพิจารณาวงเงินสินเชื่ออาจมีการเปลี่ยนแปลงได้ตามข้อกำหนดของสถาบันการเงินที่ท่านเลือก
             </p>
-            <div className="mt-9 space-y-4">
+            <div className="mt-2 space-y-4">
               {editMode ? (
                 <div>
                   <label className="mb-2 block">อาชีพ:</label>
@@ -222,17 +224,23 @@ function ProductPage() {
                   </div>
                 </div>
               ) : (
-                <div className="mt-9 space-y-4 p-0">
+                <div className="mt-5 space-y-2 p-0">
+                  <div className='space-y-2'>
                   <label className="block">อาชีพ:</label>
-                  <input value={formData.career} disabled className="mt-0 rounded border p-2" />
+                  <p className='py-1 font-bold text-lg'>{formData.career}</p>
+                  </div>
+                  <Separator className="bg-slate-300" />
                   <label className="block">วัน/เดือน/ปีเกิด:</label>
-                  <input value={formatDate(formData.dateOfBirth)} disabled className="mt-0 rounded border p-2" />
+                  <p className='py-1 font-bold text-lg'>{formatDate(formData.dateOfBirth)}</p>
+                  <Separator className="bg-slate-300" />
                   <label className="block">รายได้ต่อเดือน:</label>
-                  <input value={formData.salary.toLocaleString()} disabled className="mt-0 rounded border p-2" />
+                  <p className='py-1 font-bold text-lg'>{formData.salary.toLocaleString()} บาท</p>
+                  <Separator className="bg-slate-300" />
                   <label className="block">ภาระหนี้สินต่อเดือน:</label>
-                  <input value={formData.debtexpenses.toLocaleString()} disabled className="mt-0 rounded border p-2" />
+                  <p className='py-1 font-bold text-lg'>{formData.debtexpenses.toLocaleString()} บาท</p>
+                  <Separator className="bg-slate-300" />
                   <label className="block">ระยะเวลากู้:</label>
-                  <input value={formData.loanPeriod} disabled className="mt-0 rounded border p-2" />
+                  <p className='py-1 font-bold text-lg'>{formData.loanPeriod} ปี</p>
                 </div>
               )}
             </div>
@@ -377,15 +385,15 @@ function ProductPage() {
                           <SelectGroup>
                             <SelectItem value="installment">งวดผ่อนต่อเดือน</SelectItem>
                             <SelectItem value="interest">อัตราดอกเบี้ย</SelectItem>
-                            <SelectItem value="credit">วงเงินกู้</SelectItem>
-                            <SelectItem value="period">ระยะเวลากู้</SelectItem>
+                            <SelectItem value="credit">วงเงินกู้สูงสุด</SelectItem>
+                            <SelectItem value="period">ระยะเวลากู้สูงสุด</SelectItem>
                           </SelectGroup>
                         </SelectContent>
                       </Select>
                     </div>
                   </div>
                 </div>
-                <ScrollArea className="h-[300px] md:h-[600px]">
+                <ScrollArea className="h-[300px] md:h-[500px]">
                   <div className="mx-auto w-[80%] space-y-4 md:w-[80%]">
                     {sortedData &&
                       sortedData.map((data, index) => (
