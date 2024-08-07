@@ -76,8 +76,12 @@ function InputPage() {
       form.clearErrors('loanPeriod');
     }
   
-    if (inputLoanAmount > 0 && calculated < inputLoanAmount) {
-      setLoanAmountError(`วงเงินกู้สูงสุดของคุณคือ ${calculated.toLocaleString()} บาท`);
+    if (inputLoanAmount > 0 && calculated < inputLoanAmount  && calculated > 0) {
+      setLoanAmountError(`วงเงินกู้สูงสุดของคุณคือ ${calculated.toLocaleString()} บาท \nกรุณาปรับลดวงเงินกู้หรือเพิ่มระยะเวลากู้`);
+  }
+  
+    else if ( salary*0.4 < debtexpenses) {
+      setLoanAmountError(`เนื่องจากภาระหนี้สินของท่านเกิน 40% ของรายได้ จึงไม่สามารถคำนวณวงเงินให้ท่านได้`);
     } else {
       setLoanAmountError(null);
       setFormData(data);
@@ -94,7 +98,7 @@ function InputPage() {
       <div className="mb-20">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className={cn('mx-auto mt-2.5 grid h-[620px] w-11/12 grid-cols-2 gap-x-4 gap-y-6 bg-white p-6 rounded-md')}>
+            <div className={cn('mx-auto mt-2.5 grid h-max w-11/12 grid-cols-2 gap-x-4 gap-y-6 bg-white p-6 rounded-md')}>
               {/* Form fields */}
               <div className="mx-auto h-[45px] w-full">
                 <FormField
@@ -150,7 +154,7 @@ function InputPage() {
                 </p>
               </div>
 
-              <div className="mx-auto h-[45px] w-full">
+              <div className="mx-auto h-[45px] w-full mt-12 relative">
                 <FormField
                   control={form.control}
                   name="dateOfBirth"
@@ -171,12 +175,12 @@ function InputPage() {
                     </FormItem>
                   )}
                 />
-                <p className="pt-1 text-xs text-gray-400 flex justify-end ">
+                <p className=" text-xs text-gray-400 right-0  top-20 absolute">
                   ยกตัวอย่างเช่น 01/08/1999
                 </p>
               </div>
 
-              <div className="mx-auto h-[45px] w-full">
+              <div className="mx-auto h-[45px] w-full mt-12">
                 <FormField
                   control={form.control}
                   name="loanPeriod"
@@ -199,7 +203,7 @@ function InputPage() {
                 />
               </div>
 
-              <div className="mx-auto h-[45px] w-full">
+              <div className="mx-auto h-[45px] w-full mt-12">
                 <FormField
                   control={form.control}
                   name="salary"
@@ -222,7 +226,7 @@ function InputPage() {
                 />
               </div>
 
-              <div className="mx-auto h-[45px] w-full">
+              <div className="mx-auto h-[45px] w-full mt-12">
                 <FormField
                   control={form.control}
                   name="loanAmount"
@@ -246,7 +250,7 @@ function InputPage() {
                 />
               </div>
 
-              <div className="mx-auto h-[45px] w-full">
+              <div className="mx-auto h-[45px] w-full mt-6">
                 <FormField
                   control={form.control}
                   name="acceptTerms"
@@ -332,8 +336,8 @@ function InputPage() {
 
               {loanAmountError && (
                 <div className="col-span-2 mx-auto text-center">
-                  <p className="mt-2 text-xl text-destructive ">{loanAmountError}</p>
-                  <p className="mt-2 text-xl text-destructive">กรุณาปรับลดวงเงินกู้หรือเพิ่มระยะเวลากู้</p>
+                  <p className="mt-2 text-lg text-destructive whitespace-pre-line ">{loanAmountError}</p>
+
                 </div>
               )}
 
