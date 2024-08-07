@@ -149,7 +149,7 @@ function InputPage() {
                     </FormItem>
                   )}
                 />
-                <p className="pt-1 text-xs text-gray-400">
+                <p className="pt-1 text-xs text-gray-400 flex justify-end">
                   (รวมถึงสินเชื่อเพื่อการศึกษา, สินเชื่อรถยนต์, สินเชื่อส่วนบุคคล และอื่นๆ)
                 </p>
               </div>
