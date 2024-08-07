@@ -290,7 +290,7 @@ function ProductPage() {
                 >
                   {selectNormalSet && <CheckIcon className="h-5 w-5" />}
                   <HouseIcon className="h-5 w-5" />
-                  <div>สินเชื่อเคหะ </div>
+                  <div>สินเชื่อบ้าน </div>
                 </Button>
                 <Button
                   className={cn(
