@@ -66,18 +66,7 @@ function ProductPage() {
   const [selectedData, setSelectedData] = useState<LoanType[]>();
   const [mrta, setMrta] = useState('all');
   const [sort, setSort] = useState('installment');
-
-  useEffect(() => {
-    if (selectNormalSet && selectDecorateSet && parsedData.success && parsedData.data) {
-      setSelectedData(parsedData.data.normal_loan.concat(parsedData.data.decorate_loan));
-    } else if (selectDecorateSet && parsedData.success && parsedData.data) {
-      setSelectedData(parsedData.data.decorate_loan);
-    } else if (selectNormalSet && parsedData.success && parsedData.data) {
-      setSelectedData(parsedData.data.normal_loan);
-    } else {
-      setSelectedData([]);
-    }
-  }, [selectNormalSet, selectDecorateSet, parsedData.success, parsedData.data]);
+  const [loading, setLoading] = useState(false);
 
   const handleCheckboxChange = (data: any) => {
     const isAlreadySelected = selectedCards.some((card) => card.data.loan.id === data.loan.id);
@@ -116,8 +105,46 @@ function ProductPage() {
   };
 
   const handleSortChange = (value: string) => {
+    setLoading(true);
     setSort(value);
+    setTimeout(() => {
+      setLoading(false);
+    }, 100);
   };
+
+  useEffect(() => {
+    //get best of normal loan 10 items
+    //get best of decorate loan 10 items
+    const bestNormalLoan = parsedData.data?.normal_loan
+      .sort((a, b) => {
+        if (sort === 'credit') {
+          return handleSort(b) - handleSort(a);
+        } else {
+          return handleSort(a) - handleSort(b);
+        }
+      })
+      .slice(0, 10);
+
+    const bestDecorateLoan = parsedData.data?.decorate_loan
+      .sort((a, b) => {
+        if (sort === 'credit') {
+          return handleSort(b) - handleSort(a);
+        } else {
+          return handleSort(a) - handleSort(b);
+        }
+      })
+      .slice(0, 10);
+
+    if (selectNormalSet && selectDecorateSet && parsedData.success && parsedData.data) {
+      setSelectedData(bestNormalLoan!.concat(bestDecorateLoan!));
+    } else if (selectDecorateSet && parsedData.success && parsedData.data) {
+      setSelectedData(bestDecorateLoan);
+    } else if (selectNormalSet && parsedData.success && parsedData.data) {
+      setSelectedData(bestNormalLoan);
+    } else {
+      setSelectedData([]);
+    }
+  }, [selectNormalSet, selectDecorateSet, parsedData.success, parsedData.data]);
 
   const handleSort = (data: any) => {
     if (sort === 'installment') {
@@ -152,8 +179,6 @@ function ProductPage() {
         return handleSort(a) - handleSort(b);
       }
     });
-
-  
 
   return (
     <PageLayout className="bg-background">
@@ -225,22 +250,22 @@ function ProductPage() {
                 </div>
               ) : (
                 <div className="mt-5 space-y-2 p-0">
-                  <div className='space-y-2'>
-                  <label className="block">อาชีพ:</label>
-                  <p className='py-1 font-bold text-lg'>{formData.career}</p>
+                  <div className="space-y-2">
+                    <label className="block">อาชีพ:</label>
+                    <p className="py-1 text-lg font-bold">{formData.career}</p>
                   </div>
                   <Separator className="bg-slate-300" />
                   <label className="block">วัน/เดือน/ปีเกิด:</label>
-                  <p className='py-1 font-bold text-lg'>{formatDate(formData.dateOfBirth)}</p>
+                  <p className="py-1 text-lg font-bold">{formatDate(formData.dateOfBirth)}</p>
                   <Separator className="bg-slate-300" />
                   <label className="block">รายได้ต่อเดือน:</label>
-                  <p className='py-1 font-bold text-lg'>{formData.salary.toLocaleString()} บาท</p>
+                  <p className="py-1 text-lg font-bold">{formData.salary.toLocaleString()} บาท</p>
                   <Separator className="bg-slate-300" />
                   <label className="block">ภาระหนี้สินต่อเดือน:</label>
-                  <p className='py-1 font-bold text-lg'>{formData.debtexpenses.toLocaleString()} บาท</p>
+                  <p className="py-1 text-lg font-bold">{formData.debtexpenses.toLocaleString()} บาท</p>
                   <Separator className="bg-slate-300" />
                   <label className="block">ระยะเวลากู้:</label>
-                  <p className='py-1 font-bold text-lg'>{formData.loanPeriod} ปี</p>
+                  <p className="py-1 text-lg font-bold">{formData.loanPeriod} ปี</p>
                 </div>
               )}
             </div>
@@ -265,7 +290,7 @@ function ProductPage() {
                 >
                   {selectNormalSet && <CheckIcon className="h-5 w-5" />}
                   <HouseIcon className="h-5 w-5" />
-                  <div>สินเชื่อเคหะ</div>
+                  <div>สินเชื่อเคหะ </div>
                 </Button>
                 <Button
                   className={cn(
@@ -281,7 +306,7 @@ function ProductPage() {
                 >
                   {selectDecorateSet && <CheckIcon className="h-5 w-5" />}
                   <HammerIcon className="h-5 w-5" />
-                  <div> สินเชื่อบ้านพร้อมการต่อเติม</div>
+                  <div> สินเชื่อบ้านพร้อมการต่อเติม </div>
                 </Button>
                 <Popover>
                   <PopoverTrigger asChild>
@@ -330,37 +355,64 @@ function ProductPage() {
               <>
                 <div className="mb-4 flex items-center justify-between gap-2">
                   <p className="text-gray-600">{`ผลการค้นหา ${
-                    selectedData &&
-                    selectedData.filter((data) => {
-                      if (mrta === 'all') {
-                        return data;
-                      } else if (mrta === 'do' && data.loan.mrta === true) {
-                        return data;
-                      } else if (mrta === 'dont' && data.loan.mrta === false) {
-                        return data;
-                      }
-                    }).length
+                    selectNormalSet && selectDecorateSet
+                      ? parsedData.data?.decorate_loan
+                          .sort((a, b) => {
+                            if (sort === 'credit') {
+                              return handleSort(b) - handleSort(a);
+                            } else {
+                              return handleSort(a) - handleSort(b);
+                            }
+                          })
+                          .slice(0, 10).length +
+                        parsedData.data?.normal_loan
+                          .sort((a, b) => {
+                            if (sort === 'credit') {
+                              return handleSort(b) - handleSort(a);
+                            } else {
+                              return handleSort(a) - handleSort(b);
+                            }
+                          })
+                          .slice(0, 10).length
+                      : selectDecorateSet
+                        ? parsedData.data?.decorate_loan
+                            .sort((a, b) => {
+                              if (sort === 'credit') {
+                                return handleSort(b) - handleSort(a);
+                              } else {
+                                return handleSort(a) - handleSort(b);
+                              }
+                            })
+                            .slice(0, 10).length
+                        : parsedData.data?.normal_loan
+                            .sort((a, b) => {
+                              if (sort === 'credit') {
+                                return handleSort(b) - handleSort(a);
+                              } else {
+                                return handleSort(a) - handleSort(b);
+                              }
+                            })
+                            .slice(0, 10).length
                   } ผลิตภัณฑ์`}</p>
 
                   <div className="flex gap-4">
                     <div className="flex items-center">
                       <div className="mr-1">MRTA</div>
-                      <div className='mr-1'>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Info className="h-5 w-5 cursor-pointer" />
-                        </PopoverTrigger>
-                        <PopoverContent className="rounded bg-white p-4 shadow">
-                          <div className="font-semibold">MRTA คือ</div>
-                          <p>
-                           ประกันที่มอบความคุ้มครองด้านการประกันชีวิตเพื่อสินเชื่อที่อยู่อาศัย
-หากมีเหตุการณ์ ไม่คาดฝันเกิดขึ้นก่อนการผ่อนชำระสินเชื่อบ้านสิ้นสุดลง ประกันนี้
-จะรับภาระเพื่อชำระเงินกู้คงเหลือแทนคุณ ไม่ให้เป็นภาระแก่คนข้างหลัง ซึ่งบริษัท
-ประกันชีวิตจะให้ความคุ้มครองให้คุณได้สบายใจและไร้กังวล ได้ทุกที่ ทุกเวลา
-ในทุกสถานการณ์
-                          </p>
-                        </PopoverContent>
-                      </Popover>
+                      <div className="mr-1">
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Info className="h-5 w-5 cursor-pointer" />
+                          </PopoverTrigger>
+                          <PopoverContent className="rounded bg-white p-4 shadow">
+                            <div className="font-semibold">MRTA คือ</div>
+                            <p>
+                              ประกันที่มอบความคุ้มครองด้านการประกันชีวิตเพื่อสินเชื่อที่อยู่อาศัย หากมีเหตุการณ์
+                              ไม่คาดฝันเกิดขึ้นก่อนการผ่อนชำระสินเชื่อบ้านสิ้นสุดลง ประกันนี้
+                              จะรับภาระเพื่อชำระเงินกู้คงเหลือแทนคุณ ไม่ให้เป็นภาระแก่คนข้างหลัง ซึ่งบริษัท
+                              ประกันชีวิตจะให้ความคุ้มครองให้คุณได้สบายใจและไร้กังวล ได้ทุกที่ ทุกเวลา ในทุกสถานการณ์
+                            </p>
+                          </PopoverContent>
+                        </Popover>
                       </div>
                       <Select value={mrta} onValueChange={handleMrtaChange}>
                         <SelectTrigger className="w-24 justify-center bg-white">
@@ -394,39 +446,51 @@ function ProductPage() {
                   </div>
                 </div>
                 <ScrollArea className="h-[300px] md:h-[500px]">
-                  <div className="mx-auto w-[80%] space-y-4 md:w-[80%]">
-                    {sortedData &&
-                      sortedData.map((data, index) => (
-                        <div key={index} className="relative">
-                          {isComparing && (
-                            <Checkbox
-                              className={cn('absolute left-[-25px] top-1/2 -translate-y-1/2 transform border-black')}
-                              checked={selectedCards.some((card) => card.data.loan.id === data.loan.id)}
-                              onCheckedChange={() => handleCheckboxChange(data)}
-                              disabled={
-                                !selectedCards.some((card) => card.data.loan.id === data.loan.id) &&
-                                selectedCards.length >= 2
+                  {loading ? (
+                    <>
+                      {/* sekelton loading  */}
+                      <div className="mx-auto w-3/4 animate-pulse space-y-4">
+                        <div className="h-96 w-full rounded-lg bg-white/70"></div>
+                        <div className="h-96 w-full rounded-lg bg-white/70"></div>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="mx-auto w-[80%] space-y-4 md:w-[80%]">
+                      {sortedData &&
+                        sortedData.map((data, index) => (
+                          <div key={index} className="relative">
+                            {isComparing && (
+                              <Checkbox
+                                className={cn('absolute left-[-25px] top-1/2 -translate-y-1/2 transform border-black')}
+                                checked={selectedCards.some((card) => card.data.loan.id === data.loan.id)}
+                                onCheckedChange={() => handleCheckboxChange(data)}
+                                disabled={
+                                  !selectedCards.some((card) => card.data.loan.id === data.loan.id) &&
+                                  selectedCards.length >= 2
+                                }
+                              />
+                            )}
+                            <ProductCard
+                              title={data.loan.product}
+                              provider={data.loan.provider}
+                              onClick={() => handleCardClick(data)}
+                              interestRate={data.loan.interest_rate_average}
+                              loanAmountProduct={data.loan.credit_maximum}
+                              loanPeriodProduct={data.loan.period_maximum}
+                              isRed={data.loan.period_maximum < formData.loanPeriod}
+                              installment={data.installment}
+                              mrta={data.loan.mrta}
+                              loan_type={data.loan.loan_type}
+                              data={data}
+                              isSelected={
+                                isComparing && selectedCards.some((card) => card.data.loan.id === data.loan.id)
                               }
+                              isComparing={isComparing}
                             />
-                          )}
-                          <ProductCard
-                            title={data.loan.product}
-                            provider={data.loan.provider}
-                            onClick={() => handleCardClick(data)}
-                            interestRate={data.loan.interest_rate_average}
-                            loanAmountProduct={data.loan.credit_maximum}
-                            loanPeriodProduct={data.loan.period_maximum}
-                            isRed={data.loan.period_maximum < formData.loanPeriod}
-                            installment={data.installment}
-                            mrta={data.loan.mrta}
-                            loan_type={data.loan.loan_type}
-                            data={data}
-                            isSelected={isComparing && selectedCards.some((card) => card.data.loan.id === data.loan.id)}
-                            isComparing={isComparing}
-                          />
-                        </div>
-                      ))}
-                  </div>
+                          </div>
+                        ))}
+                    </div>
+                  )}
                 </ScrollArea>
               </>
             ) : (
