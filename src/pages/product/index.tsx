@@ -260,7 +260,7 @@ function ProductPage() {
                   </div>
                   <Separator className="bg-slate-300" />
                   <label className="block">วัน/เดือน/ปีเกิด:</label>
-                  <p className="py-1 text-lg font-bold">{formatDate(formData.dateOfBirth)}</p>
+                  <p className="py-1 text-lg font-bold">{formatDate(formData.dateOfBirth).split('.').join('/')}</p>
                   <Separator className="bg-slate-300" />
                   <label className="block">รายได้ต่อเดือน:</label>
                   <p className="py-1 text-lg font-bold">{formData.salary.toLocaleString()} บาท</p>
