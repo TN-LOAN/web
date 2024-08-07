@@ -348,7 +348,7 @@ function InputPage() {
                 // style={{ backgroundColor: '#1ECC83' }}
                 disabled={!form.watch('acceptTerms')}
               >
-                คำนวณ
+                ถัดไป
               </Button>
             </div>
           </form>
