@@ -101,7 +101,11 @@ function ProductPage() {
   };
 
   const handleMrtaChange = (value: string) => {
+    setLoading(true);
     setMrta(value);
+    setTimeout(() => {
+      setLoading(false);
+    }, 100);
   };
 
   const handleSortChange = (value: string) => {
@@ -354,46 +358,7 @@ function ProductPage() {
             {parsedData.success && parsedData.data && parsedData.data.normal_loan.length > 0 ? (
               <>
                 <div className="mb-4 flex items-center justify-between gap-2">
-                  <p className="text-gray-600">{`ผลการค้นหา ${
-                    selectNormalSet && selectDecorateSet
-                      ? parsedData.data?.decorate_loan
-                          .sort((a, b) => {
-                            if (sort === 'credit') {
-                              return handleSort(b) - handleSort(a);
-                            } else {
-                              return handleSort(a) - handleSort(b);
-                            }
-                          })
-                          .slice(0, 10).length +
-                        parsedData.data?.normal_loan
-                          .sort((a, b) => {
-                            if (sort === 'credit') {
-                              return handleSort(b) - handleSort(a);
-                            } else {
-                              return handleSort(a) - handleSort(b);
-                            }
-                          })
-                          .slice(0, 10).length
-                      : selectDecorateSet
-                        ? parsedData.data?.decorate_loan
-                            .sort((a, b) => {
-                              if (sort === 'credit') {
-                                return handleSort(b) - handleSort(a);
-                              } else {
-                                return handleSort(a) - handleSort(b);
-                              }
-                            })
-                            .slice(0, 10).length
-                        : parsedData.data?.normal_loan
-                            .sort((a, b) => {
-                              if (sort === 'credit') {
-                                return handleSort(b) - handleSort(a);
-                              } else {
-                                return handleSort(a) - handleSort(b);
-                              }
-                            })
-                            .slice(0, 10).length
-                  } ผลิตภัณฑ์`}</p>
+                  <p className="text-gray-600">{`ผลการค้นหา ${sortedData?.length} ผลิตภัณฑ์`}</p>
 
                   <div className="flex gap-4">
                     <div className="flex items-center">
